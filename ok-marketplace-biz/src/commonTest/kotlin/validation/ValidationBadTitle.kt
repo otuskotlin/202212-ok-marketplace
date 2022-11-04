@@ -5,6 +5,8 @@ import kotlinx.coroutines.test.runTest
 import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.models.*
+import ru.otus.otuskotlin.marketplace.common.permissions.MkplPrincipalModel
+import ru.otus.otuskotlin.marketplace.common.permissions.MkplUserGroups
 import ru.otus.otuskotlin.marketplace.stubs.MkplAdStub
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
@@ -25,6 +27,13 @@ fun validationTitleCorrect(command: MkplCommand, processor: MkplAdProcessor) = r
             adType = MkplDealSide.DEMAND,
             visibility = MkplVisibility.VISIBLE_PUBLIC,
             lock = MkplAdLock("123-234-abc-ABC"),
+        ),
+        principal = MkplPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MkplUserGroups.USER,
+                MkplUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -47,6 +56,13 @@ fun validationTitleTrim(command: MkplCommand, processor: MkplAdProcessor) = runT
             visibility = MkplVisibility.VISIBLE_PUBLIC,
             lock = MkplAdLock("123-234-abc-ABC"),
         ),
+        principal = MkplPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MkplUserGroups.USER,
+                MkplUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
@@ -67,6 +83,13 @@ fun validationTitleEmpty(command: MkplCommand, processor: MkplAdProcessor) = run
             adType = MkplDealSide.DEMAND,
             visibility = MkplVisibility.VISIBLE_PUBLIC,
             lock = MkplAdLock("123-234-abc-ABC"),
+        ),
+        principal = MkplPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MkplUserGroups.USER,
+                MkplUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -90,6 +113,13 @@ fun validationTitleSymbols(command: MkplCommand, processor: MkplAdProcessor) = r
             adType = MkplDealSide.DEMAND,
             visibility = MkplVisibility.VISIBLE_PUBLIC,
             lock = MkplAdLock("123-234-abc-ABC"),
+        ),
+        principal = MkplPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MkplUserGroups.USER,
+                MkplUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)

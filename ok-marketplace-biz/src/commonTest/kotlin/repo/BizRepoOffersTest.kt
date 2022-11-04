@@ -8,6 +8,8 @@ import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.common.models.*
+import ru.otus.otuskotlin.marketplace.common.permissions.MkplPrincipalModel
+import ru.otus.otuskotlin.marketplace.common.permissions.MkplUserGroups
 import ru.otus.otuskotlin.marketplace.common.repo.DbAdResponse
 import ru.otus.otuskotlin.marketplace.common.repo.DbAdsResponse
 import kotlin.test.Test
@@ -62,6 +64,13 @@ class BizRepoOffersTest {
             workMode = MkplWorkMode.TEST,
             adRequest = MkplAd(
                 id = MkplAdId("123"),
+            ),
+            principal = MkplPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    MkplUserGroups.USER,
+                    MkplUserGroups.TEST,
+                )
             ),
         )
         processor.exec(ctx)
