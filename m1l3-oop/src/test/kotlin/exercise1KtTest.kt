@@ -51,7 +51,7 @@ class exercise1KtTest {
         */
     }
 
-    // задание 4 - сделать интерфейс Figure c методом area(), отнаследуйте от него Rectangle и Square
+    // задание 5 - сделать интерфейс Figure c методом area(), отнаследуйте от него Rectangle и Square
     // тест ниже должен пройти - раскомментируйте код в нем
     @Test
     fun figureArea() {
@@ -63,7 +63,7 @@ class exercise1KtTest {
         */
     }
 
-    // задание 5 - сделать метод diffArea(a, b)
+    // задание 6 - сделать метод diffArea(a, b)
     // тест ниже должен пройти - раскомментируйте код в нем
     @Test
     fun diffArea() {
