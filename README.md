@@ -1,22 +1,26 @@
 # Otus Kotlin Marketplace 2022-12
 
 Учебный проект курса [Otus](https://otus.ru) [Kotlin Backend Developer](https://otus.ru/lessons/kotlin/).
-Поток курса 2022-12. Marketplace -- это площадка, на которой пользователи выставляют предложения и потребности. Задача
+Поток курса 2022-12.
+
+Marketplace -- это площадка, на которой пользователи выставляют предложения и потребности. Задача
 площадки -- предоставить наиболее подходящие варианты в обоих случаях: для предложения -- набор вариантов с
 потребностями, для потребностей -- набор вариантов с предложениями.
 
 ## Документация
+
 1. Маркетинг
-   1. [Заинтерессанты](./docs/01-marketing/01-stakeholders.md)
-   2. [Целевая аудитория](./docs/01-marketing/02-target-audience.md)
-   3. [Пользовательские истории](./docs/01-marketing/03-user-stories.md)
-   4. [Бизнес-требования](./docs/01-marketing/04-brd.md)
+    1. [Заинтерессанты](./docs/01-marketing/01-stakeholders.md)
+    2. [Целевая аудитория](./docs/01-marketing/02-target-audience.md)
+    3. [Пользовательские истории](./docs/01-marketing/03-user-stories.md)
+    4. [Бизнес-требования](./docs/01-marketing/04-brd.md)
 2. Тесты
 3. Архитектура
 
 [//]: # (## Описание MVP)
 
 [//]: # ()
+
 [//]: # (![]&#40;imgs/design-layout.png&#41;)
 
 [//]: # ()[//]: # (3. [m1l3-oop]&#40;m1l3-oop&#41; - Объектно-ориентированное программирование)
@@ -32,9 +36,11 @@
 [//]: # (6. [m2l2-testing]&#40;m2l2-testing&#41; - Тестирование проекта, TDD, MDD)
 
 [//]: # ()
+
 [//]: # (## Транспортные модели, API)
 
 [//]: # ()
+
 [//]: # (1. [specs]&#40;specs&#41; - описание API в форме OpenAPI-спецификаций)
 
 [//]: # (2. [ok-marketplace-api-v1-jackson]&#40;ok-marketplace-api-v1-jackson&#41; - Генерация первой версии транспортных модеелй с)
@@ -52,9 +58,11 @@
 [//]: # (6. [ok-marketplace-mappers-v2]&#40;ok-marketplace-mappers-v2&#41; - Мапер между внутренними моделями и моделями API v1)
 
 [//]: # ()
+
 [//]: # (## Фреймворки и транспорты)
 
 [//]: # ()
+
 [//]: # (1. [ok-marketplace-app-spring]&#40;ok-marketplace-app-spring&#41; - Приложение на Spring Framework)
 
 [//]: # (1. [ok-marketplace-app-ktor]&#40;ok-marketplace-app-ktor&#41; - Приложение на Ktor JVM/Native)
@@ -66,17 +74,21 @@
 [//]: # (1. [ok-marketplace-app-kafka]&#40;ok-marketplace-app-kafka&#41; - Микросервис на Kafka)
 
 [//]: # ()
+
 [//]: # (## Модули бизнес-логики)
 
 [//]: # ()
+
 [//]: # (1. [ok-marketplace-stubs]&#40;ok-marketplace-stubs&#41; - Стабы для ответов сервиса)
 
 [//]: # (1. [ok-marketplace-biz]&#40;ok-marketplace-biz&#41; - Модуль бизнес-логики приложения)
 
 [//]: # ()
+
 [//]: # (## Хранение, репозитории, базы данных)
 
 [//]: # ()
+
 [//]: # (1. [ok-marketplace-repo-tests]&#40;ok-marketplace-repo-tests&#41; - Базовые тесты для репозиториев всех баз данных)
 
 [//]: # (2. [ok-marketplace-repo-inmemory]&#40;ok-marketplace-repo-inmemory&#41; - Репозиторий на базе кэша в памяти для тестирования)
@@ -90,14 +102,17 @@
 [//]: # (### Функции &#40;эндпониты&#41;)
 
 [//]: # ()
+
 [//]: # (1. CRUDS &#40;create, read, update, delete, search&#41; для объявлений &#40;ad&#41;)
 
 [//]: # (1. ad.offers &#40;опционально&#41;)
 
 [//]: # ()
+
 [//]: # (### Описание сущности ad)
 
 [//]: # ()
+
 [//]: # (1. Info)
 
 [//]: # (    1. Title)
@@ -133,9 +148,11 @@
 [//]: # (6. [m2l2-testing]&#40;m2l2-testing&#41; - Тестирование проекта, TDD, MDD)
 
 [//]: # ()
+
 [//]: # (## Транспортные модели, API)
 
 [//]: # ()
+
 [//]: # (1. [specs]&#40;specs&#41; - описание API в форме OpenAPI-спецификаций)
 
 [//]: # (2. [ok-marketplace-api-v1-jackson]&#40;ok-marketplace-api-v1-jackson&#41; - Генерация первой версии транспортных модеелй с)
@@ -153,9 +170,11 @@
 [//]: # (6. [ok-marketplace-mappers-v2]&#40;ok-marketplace-mappers-v2&#41; - Мапер между внутренними моделями и моделями API v1)
 
 [//]: # ()
+
 [//]: # (## Фреймворки и транспорты)
 
 [//]: # ()
+
 [//]: # (1. [ok-marketplace-app-spring]&#40;ok-marketplace-app-spring&#41; - Приложение на Spring Framework)
 
 [//]: # (1. [ok-marketplace-app-ktor]&#40;ok-marketplace-app-ktor&#41; - Приложение на Ktor JVM/Native)
@@ -167,17 +186,21 @@
 [//]: # (1. [ok-marketplace-app-kafka]&#40;ok-marketplace-app-kafka&#41; - Микросервис на Kafka)
 
 [//]: # ()
+
 [//]: # (## Модули бизнес-логики)
 
 [//]: # ()
+
 [//]: # (1. [ok-marketplace-stubs]&#40;ok-marketplace-stubs&#41; - Стабы для ответов сервиса)
 
 [//]: # (1. [ok-marketplace-biz]&#40;ok-marketplace-biz&#41; - Модуль бизнес-логики приложения)
 
 [//]: # ()
+
 [//]: # (## Хранение, репозитории, базы данных)
 
 [//]: # ()
+
 [//]: # (1. [ok-marketplace-repo-tests]&#40;ok-marketplace-repo-tests&#41; - Базовые тесты для репозиториев всех баз данных)
 
 [//]: # (2. [ok-marketplace-repo-inmemory]&#40;ok-marketplace-repo-inmemory&#41; - Репозиторий на базе кэша в памяти для тестирования)

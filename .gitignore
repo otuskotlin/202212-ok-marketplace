@@ -6,4 +6,4 @@
 !**/src/*Main/**/build/
 !**/src/*Test/**/build/
 
-.idea
+/.idea/
