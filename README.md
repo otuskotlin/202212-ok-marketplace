@@ -10,14 +10,19 @@ Marketplace -- это площадка, на которой пользовате
 ## Документация
 
 1. Маркетинг
-    1. [Заинтерессанты](./docs/01-marketing/01-stakeholders.md)
-    2. [Целевая аудитория](./docs/01-marketing/02-target-audience.md)
-    3. [Пользовательские истории](./docs/01-marketing/03-user-stories.md)
-    4. [Бизнес-требования](./docs/01-marketing/04-brd.md)
-2. Тесты
-3. Архитектура
+   1. [Заинтересанты](./docs/01-marketing/01-stakeholders.md)
+   2. [Целевая аудитория](./docs/01-marketing/02-target-audience.md)
+   3. [Пользовательские истории](./docs/01-marketing/03-user-stories.md)
+   4. [Конкурентный анализ](./docs/01-marketing/04-concurrency.md)
+   5. [Анализ экономики](./docs/01-marketing/05-economy.md)
+2. DevOps
+3. Тесты
+4. Архитектура
 
-## Модули проекта
+# Структура проекта
+
+## Подпроекты для занятий по языку Kotlin
+
 1. [m1l1-quickstart](m1l1-quickstart) - Быстрый старт, первая программа и тест
 2. [m1l3-oop](m1l3-oop) - Объектно-ориентированное программирование
 3. [m1l4-dsl](m1l4-dsl) - Предметно ориентированные языки (DSL)
