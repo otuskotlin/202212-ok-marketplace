@@ -1,3 +1,4 @@
+// TODO-1 (Общие сведения): показать Multiplatform plugin
 plugins {
     kotlin("multiplatform")
 }
@@ -6,6 +7,7 @@ repositories {
     mavenCentral()
 }
 
+// TODO-2 (Общие сведения): показать различные target-ы для Multiplatform проекта
 kotlin {
     jvm {
         compilations.all {
@@ -17,6 +19,8 @@ kotlin {
         }
     }
 
+    // TODO (Kotlin/JS): показать возможность выбора компилятора IR
+    //  + различные целевые окружения - browser/nodejs
     js(IR) {
         browser {}
     }
@@ -45,6 +49,10 @@ kotlin {
 
     val coroutinesVersion: String by project
 
+
+    // TODO-3: (Общие сведения) Описание модулей, соответствующих нашим целевым платформам
+    //  common - общий код, который мы сможем использовать на разных платформах
+    //  для каждой целевой платформы можем указать свои специфические зависимости
     sourceSets {
         val commonMain by getting {
             dependencies {
