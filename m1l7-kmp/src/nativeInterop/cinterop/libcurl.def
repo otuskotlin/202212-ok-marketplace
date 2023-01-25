@@ -1,8 +1,11 @@
+# TODO-2 (Kotlin/Native): в def-файле для линкера перечисление хедер файлов, из которых нужно сгенерироват стабы
+
 # list of header files to generate Kotlin stubs
 headers = curl/curl.h
 # show what exactly is included
 headerFilter = curl/*
 
+# TODO-3 (Kotlin/Native): также для различных платформ нужно указать параметры линковки
 compilerOpts.linux = -I/usr/include -I/usr/include/x86_64-linux-gnu
 linkerOpts.osx = -L/opt/local/lib -L/usr/local/opt/curl/lib -lcurl
 linkerOpts.linux = -L/usr/lib/x86_64-linux-gnu -lcurl

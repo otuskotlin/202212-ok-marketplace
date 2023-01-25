@@ -1,4 +1,4 @@
-// TODO-2 (Kotlin/JVM) Преобразование функций в статические методы класса
+// TODO-jvm-2: Преобразование функций в статические методы класса
 
 @file:JvmName("Utils")
 @file:JvmMultifileClass

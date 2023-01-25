@@ -1,4 +1,4 @@
-// TODO-1 (Общие сведения): показать Multiplatform plugin
+// TODO-general-1: показать Multiplatform plugin
 plugins {
     kotlin("multiplatform")
 }
@@ -7,7 +7,7 @@ repositories {
     mavenCentral()
 }
 
-// TODO-2 (Общие сведения): показать различные target-ы для Multiplatform проекта
+// TODO-general-2 (Общие сведения): показать различные target-ы для Multiplatform проекта
 kotlin {
     jvm {
         compilations.all {
@@ -19,12 +19,12 @@ kotlin {
         }
     }
 
-    // TODO (Kotlin/JS): показать возможность выбора компилятора IR
+    // TODO-js-3: показать возможность выбора компилятора IR
     //  + различные целевые окружения - browser/nodejs
     js(IR) {
         browser {}
     }
-
+    // TODO-native-4: выявляем окружение, на котором работаем и по результатам определяем целевую платформу
     val hostOs = System.getProperty("os.name")
     val isMingwX64 = hostOs.startsWith("Windows")
     val nativeTarget = when {
@@ -50,7 +50,7 @@ kotlin {
     val coroutinesVersion: String by project
 
 
-    // TODO-3: (Общие сведения) Описание модулей, соответствующих нашим целевым платформам
+    // TODO-general-3: (Общие сведения) Описание модулей, соответствующих нашим целевым платформам
     //  common - общий код, который мы сможем использовать на разных платформах
     //  для каждой целевой платформы можем указать свои специфические зависимости
     sourceSets {
@@ -72,6 +72,7 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
+        // TODO-js-5: зависимости из npm
         val jsMain by getting {
             dependencies {
                 implementation(npm("js-big-decimal", "~1.3.4"))

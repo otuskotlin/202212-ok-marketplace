@@ -1,6 +1,6 @@
 package jvm
 
-// TODO-1 (Kotlin/JVM) аннотации для преобразования в Java-классы
+// TODO-jvm-1 аннотации для преобразования в Java-классы
 //  build/classes/kotlin/jvm/main/jvm/InteroperabilityJava.class
 class InteroperabilityJava {
 

@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class ApiServiceTest {
 
-    // TODO-6 (Общие сведения): использование runTest вместо runBlocking для coroutine
+    // TODO-general-6: использование runTest вместо runBlocking для coroutine
     //  (пропускает вызовы delay на всех платформах)
     @Test
     fun test1() =  runTest {

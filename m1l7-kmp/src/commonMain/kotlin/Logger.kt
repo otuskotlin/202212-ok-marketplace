@@ -1,4 +1,4 @@
 expect class Logger() {
-    // TODO-5 (Общие сведения): пример expect/actual
+    // TODO-general-5: пример expect/actual
     fun log(message: String)
 }

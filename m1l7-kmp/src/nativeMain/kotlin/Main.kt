@@ -1,6 +1,7 @@
 import kotlinx.cinterop.*
 import libcurl.*
 
+// TODO-native-1: использование C-бибилиотеки libcurl из Kotlin
 fun main(args: Array<String>) {
     val curl = curl_easy_init()
     if (curl != null) {
