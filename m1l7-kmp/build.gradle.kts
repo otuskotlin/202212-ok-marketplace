@@ -19,12 +19,11 @@ kotlin {
         }
     }
 
-    // TODO-js-3: показать возможность выбора компилятора IR
-    //  + различные целевые окружения - browser/nodejs
+    // TODO-js-1: различных целевых окружений - browser/nodejs
     js(IR) {
         browser {}
     }
-    // TODO-native-4: выявляем окружение, на котором работаем и по результатам определяем целевую платформу
+    // TODO-native-2: выявляем окружение, на котором работаем и по результатам определяем целевую платформу
     val hostOs = System.getProperty("os.name")
     val isMingwX64 = hostOs.startsWith("Windows")
     val nativeTarget = when {
@@ -72,7 +71,7 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        // TODO-js-5: зависимости из npm
+        // TODO-js-2: зависимости из npm
         val jsMain by getting {
             dependencies {
                 implementation(npm("js-big-decimal", "~1.3.4"))
