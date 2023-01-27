@@ -5,7 +5,7 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import org.junit.jupiter.api.Test
 
-class FlowOperatorsTest {
+class ex1FlowOperatorsTest {
 
     @Test
     fun test1(): Unit = runBlocking {

@@ -8,10 +8,8 @@ import org.junit.jupiter.api.Test
 import java.time.Instant
 import kotlin.random.Random
 
-class FlowTest {
-
-    @Test
-    fun test1(): Unit = runBlocking {
+class ex3FlowTest {
+    private fun detectors() : List<Detector> {
         val random = Random.Default
         val seq = sequence {
             while (true) {
@@ -19,13 +17,17 @@ class FlowTest {
             }
         }
 
-        val detectors = listOf(
+        return listOf(
             CoroutineDetector("coroutine", seq, 500L),
             BlockingDetector("blocking", seq, 800L),
             CallbackDetector("callback", seq, 2_000L)
         )
+    }
 
-        detectors
+    @Test
+    fun test1(): Unit = runBlocking {
+        // сырые данные от датчиков
+        detectors()
             .map { it.samples() }
             .merge()
             .onEach { println(it) }
@@ -37,29 +39,17 @@ class FlowTest {
 
     @Test
     fun test2(): Unit = runBlocking {
-        val random = Random.Default
-        val seq = sequence {
-            while (true) {
-                yield(random.nextDouble())
-            }
-        }
-
-        val detectors = listOf(
-            CoroutineDetector("coroutine", seq, 500L),
-            BlockingDetector("blocking", seq, 800L),
-            CallbackDetector("callback", seq, 2_000L)
-        )
-
+        // данные от датчиков раз в секунду от каждого (если нового нет, то последнее)
         val desiredPeriod = 1000L
-        detectors
+        detectors()
             .map {
                 it.samples()
                     .transformLatest { sample ->
-                        println("Start transformLatest for ${sample.serialNumber}")
+                        //println("Start transformLatest for ${sample.serialNumber}")
                         emit(sample)
                         while (true) {
                             delay(desiredPeriod)
-                            println("Add old value to flow in transformLatest for = ${sample.serialNumber}")
+                            //println("Add old value to flow in transformLatest for = ${sample.serialNumber}")
                             emit(sample.copy(timestamp = Instant.now()))
                         }
                     }
@@ -75,21 +65,8 @@ class FlowTest {
 
     @Test
     fun test3(): Unit = runBlocking {
-        val random = Random.Default
-        val seq = sequence {
-            while (true) {
-                yield(random.nextDouble())
-            }
-        }
-
-        val detectors = listOf(
-            CoroutineDetector("coroutine", seq, 500L),
-            BlockingDetector("blocking", seq, 800L),
-            CallbackDetector("callback", seq, 2_000L)
-        )
-
         val desiredPeriod = 1000L
-        val samples = detectors
+        val samples = detectors()
             .map {
                 it.samples()
                     .transformLatest { sample ->
@@ -118,21 +95,8 @@ class FlowTest {
 
     @Test
     fun test4(): Unit = runBlocking {
-        val random = Random.Default
-        val seq = sequence {
-            while (true) {
-                yield(random.nextDouble())
-            }
-        }
-
-        val detectors = listOf(
-            CoroutineDetector("coroutine", seq, 500L),
-            BlockingDetector("blocking", seq, 800L),
-            CallbackDetector("callback", seq, 2_000L)
-        )
-
         val desiredPeriod = 1000L
-        val flows = detectors
+        val flows = detectors()
             .map {
                 it.samples()
                     .transformLatest { sample ->
