@@ -1,0 +1,100 @@
+# Кластерная версия инфраструктуры на базе
+# OpenSearch (2 узла)
+# OpenSearch Dashboards
+# Fluent Bit
+
+version: '3'
+services:
+
+  app:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    depends_on:
+      - fluent-bit
+    volumes:
+      - ./volumes/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./volumes/nginx/nginx.conf:/etc/nginx/nginx.conf
+    logging:
+      # используемый драйвер логгирования
+      driver: "fluentd"
+      options:
+        # куда посылать лог-сообщения, необходимо чтобы адрес
+        # совпадал с настройками плагина forward
+        fluentd-address: localhost:24224
+        # теги используются для маршрутизации лог-сообщений, тема
+        # маршрутизации будет рассмотрена ниже
+        tag: app.logs
+
+  fluent-bit:
+    container_name: fluent-bit
+    image: fluent/fluent-bit
+    ports:
+      # необходимо открыть порты, которые используются плагином forward
+      - "24224:24224"
+      - "24224:24224/udp"
+      - "2020:2020"
+    environment:
+      - opensearch_host=opensearch
+      - opensearch_user=admin
+      - opensearch_pass=admin
+    volumes:
+      - ./volumes/fluent-bit-etc/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./volumes/fluent-bit-etc/parsers.conf:/fluent-bit/etc/parsers.conf
+
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    environment:
+      - cluster.name=opensearch-cluster # Name the cluster
+      - node.name=opensearch # Name the node that will run in this container
+      - discovery.seed_hosts=opensearch,opensearch2 # Nodes to look for when discovering the cluster
+      - cluster.initial_cluster_manager_nodes=opensearch,opensearch2 # Nodes eligible to serve as cluster manager
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - '9200:9200'
+      - '9600:9600'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - opensearch-data1:/usr/share/opensearch/data
+
+  opensearch2:
+    image: opensearchproject/opensearch:latest
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch2
+      - discovery.seed_hosts=opensearch,opensearch2
+      - cluster.initial_cluster_manager_nodes=opensearch,opensearch2
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - opensearch-data2:/usr/share/opensearch/data
+
+  dashboards:
+    image: opensearchproject/opensearch-dashboards:latest
+    container_name: opensearch-dashboards
+    ports:
+      - 5601:5601
+    expose:
+      - "5601"
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch:9200","https://opensearch2:9200"]'
+    depends_on:
+      - opensearch
+
+volumes:
+  opensearch-data1:
+  opensearch-data2:
