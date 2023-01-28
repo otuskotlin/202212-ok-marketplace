@@ -7,14 +7,14 @@ public class InteroperabilityJavaTest {
     void test1() {
         InteroperabilityJava.Companion.functionOne();
         InteroperabilityJava.functionOne();
-//
-//        new InteroperabilityJava().defaults("123", 123, true);
+
+        new InteroperabilityJava().defaults("123", 123, true);
     }
 
-//    @Test
-//    void test2() {
-//        InteroperabilityJava.functionOne();
-//    }
+    @Test
+    void test2() {
+        InteroperabilityJava.functionOne();
+    }
 
     @Test
     void test3() {
@@ -22,14 +22,14 @@ public class InteroperabilityJavaTest {
                 new InteroperabilityJava().defaults()
         );
     }
-//
-//    @Test
-//    void test4() {
-//        System.out.println(new InteroperabilityJava().defaults("p1"));
-//    }
 
-//    @Test
-//    void test5() {
-//        System.out.println(new InteroperabilityJava().customName());
-//    }
+    @Test
+    void test4() {
+        System.out.println(new InteroperabilityJava().defaults("p1"));
+    }
+
+    @Test
+    void test5() {
+        System.out.println(new InteroperabilityJava().customName());
+    }
 }

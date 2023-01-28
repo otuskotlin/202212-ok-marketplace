@@ -1,21 +1,21 @@
 package js
 
 import org.w3c.dom.Window
-// TODO-js-4: обёртка над Window JS API
+// TODO-js-5: обёртка над Window JS API
 external val window: Window
 
 val windowLocation = window.location
 
-// TODO-js-5: вызов JS-кода через функцию js, неудобно для сопровождения
+// TODO-js-6: вызов JS-кода через функцию js, неудобно для сопровождения
 fun useMathRound(value: Double) = js("Math.round(value)")
 
-// TODO-js-4: использование аннотаций для JS модулей
+// TODO-js-7: использование аннотаций для JS модулей
 @JsModule("is-sorted")
 @JsNonModule
 external fun <T> sorted(array: Array<T>): Boolean
 
 
-// TODO-js-5: использование оберток для JS модулей.
+// TODO-js-8: использование оберток для JS модулей.
 //  Можно сгененить из TS, используя dukat (jsGenerateExternals).
 @JsModule("js-big-decimal")
 @JsNonModule

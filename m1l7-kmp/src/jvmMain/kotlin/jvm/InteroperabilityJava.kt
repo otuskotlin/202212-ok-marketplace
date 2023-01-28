@@ -5,7 +5,7 @@ package jvm
 class InteroperabilityJava {
 
     @JvmName("customName")
-    fun someFunction() = "JVM: someFunction"
+    fun `asd asd`() = "JVM: someFunction"
 
 
     @JvmOverloads
