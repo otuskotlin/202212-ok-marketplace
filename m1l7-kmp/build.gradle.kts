@@ -23,7 +23,7 @@ kotlin {
     js(IR) {
         browser {}
     }
-    // TODO-native-2: выявляем окружение, на котором работаем и по результатам определяем целевую платформу
+    // TODO-native-1: выявляем окружение, на котором работаем и по результатам определяем целевую платформу
     val hostOs = System.getProperty("os.name")
     val isMingwX64 = hostOs.startsWith("Windows")
     val nativeTarget = when {
