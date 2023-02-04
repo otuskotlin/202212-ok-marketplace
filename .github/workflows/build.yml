@@ -11,6 +11,10 @@ on:
       - 'master'
       - 'v-*'
   pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
     branches:
       - 'main'
       - 'master'
@@ -43,7 +47,7 @@ jobs:
       - name: Run Tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: allTests
+          arguments: check
 
 #      - name: List Tests
 #        run: ls .;echo "---build";ls build/;echo "---test-results"; ls build/test-results/;echo "---jvmTest"; ls build/test-results/jvmTest/

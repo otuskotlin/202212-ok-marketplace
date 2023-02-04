@@ -33,13 +33,13 @@ jobs:
         run: sudo apt install -y libcurl4-openssl-dev
 
       - name: Test package
-        run: gradle allTests
+        run: gradle check
 
-      - name: Report unit tests
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Gradle Tests
-          path: '**/build/test-results/*/TEST-*.xml'
-          reporter: java-junit
-          fail-on-error: true
+#      - name: Report unit tests
+#        uses: dorny/test-reporter@v1
+#        if: always()
+#        with:
+#          name: Gradle Tests
+#          path: '**/build/test-results/*/TEST-*.xml'
+#          reporter: java-junit
+#          fail-on-error: true
