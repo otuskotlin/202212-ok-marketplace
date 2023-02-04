@@ -27,8 +27,8 @@ Marketplace -- это площадка, на которой пользовате
 2. [m1l3-oop](m1l3-oop) - Объектно-ориентированное программирование
 3. [m1l4-dsl](m1l4-dsl) - Предметно ориентированные языки (DSL)
 4. [m1l5-coroutines](m1l5-coroutines) - Асинхронное и многопоточное программирование с корутинами
-4. [m1l6-flows-and-channels](m1l6-flows-and-channels) - Асинхронное и многопоточное программирование с Flow и каналами
-5. [m1l7-kmp](m1l7-kmp) - Kotlin Multiplatform и интероперабельность с JVM, JS
+5. [m1l6-flows-and-channels](m1l6-flows-and-channels) - Асинхронное и многопоточное программирование с Flow и каналами
+6. [m1l7-kmp](m1l7-kmp) - Kotlin Multiplatform и интероперабельность с JVM, JS
 
 [//]: # (6. [m2l2-testing]&#40;m2l2-testing&#41; - Тестирование проекта, TDD, MDD)
 
