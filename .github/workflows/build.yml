@@ -43,7 +43,7 @@ jobs:
           arguments: allTests
 
       - name: Install curl-dev
-        run: apt install -y libcurl4-openssl-dev
+        run: sudo apt install -y libcurl4-openssl-dev
 
 #      - name: List Tests
 #        run: ls .;echo "---build";ls build/;echo "---test-results"; ls build/test-results/;echo "---jvmTest"; ls build/test-results/jvmTest/
