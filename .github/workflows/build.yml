@@ -23,7 +23,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 #    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
@@ -41,6 +41,9 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: allTests
+
+      - name: Install curl-dev
+        run: apt install -y libcurl4-openssl-dev
 
 #      - name: List Tests
 #        run: ls .;echo "---build";ls build/;echo "---test-results"; ls build/test-results/;echo "---jvmTest"; ls build/test-results/jvmTest/

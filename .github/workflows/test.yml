@@ -4,7 +4,6 @@ name: 'CI-test'
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches-ignore:
       - 'v-*'
@@ -23,7 +22,8 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    runs-on: macos-latest
+#    runs-on: macos-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
@@ -33,6 +33,9 @@ jobs:
           distribution: 'temurin'
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+
+      - name: Install curl-dev
+        run: apt install -y libcurl4-openssl-dev
 
       - name: Test package
         run: gradle allTests
