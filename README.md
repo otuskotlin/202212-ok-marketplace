@@ -17,12 +17,12 @@ Marketplace -- это площадка, на которой пользовате
    5. [Пользовательские истории](./docs/01-marketing/05-user-stories.md)
 2. DevOps
    1. [Схема инфраструктуры](./docs/02-devops/01-infrastruture.md)
-   1. [Схема мониторинга](./docs/02-devops/02-monitoring.md)
+   2. [Схема мониторинга](./docs/02-devops/02-monitoring.md)
 3. Тесты
 4. Архитектура
    1. [Компонентная схема](./docs/04-architecture/01-arch.md)
-   1. [Интеграционная схема](./docs/04-architecture/02-integration.md)
-   2. [Описание API](./docs/04-architecture/03-api.md)
+   2. [Интеграционная схема](./docs/04-architecture/02-integration.md)
+   3. [Описание API](./docs/04-architecture/03-api.md)
 
 # Структура проекта
 
@@ -34,10 +34,8 @@ Marketplace -- это площадка, на которой пользовате
 4. [m1l5-coroutines](m1l5-coroutines) - Асинхронное и многопоточное программирование с корутинами
 5. [m1l6-flows-and-channels](m1l6-flows-and-channels) - Асинхронное и многопоточное программирование с Flow и каналами
 6. [m1l7-kmp](m1l7-kmp) - Kotlin Multiplatform и интероперабельность с JVM, JS
+7. [m2l3-testing](m2l3-testing) - Тестирование проекта, TDD, MDD
 
-[//]: # (6. [m2l2-testing]&#40;m2l2-testing&#41; - Тестирование проекта, TDD, MDD)
-
-[//]: # ()
 
 [//]: # (## Транспортные модели, API)
 
