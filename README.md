@@ -126,7 +126,7 @@ Marketplace -- это площадка, на которой пользовате
 
 [//]: # (    4. Visibility)
 
-[//]: # (2. DealSide: Demand/Proposal)
+[//]: # (2. DealSide: Demand/Supply)
 
 [//]: # (3. ProductType &#40;гаечный ключ, ...&#41;)
 
