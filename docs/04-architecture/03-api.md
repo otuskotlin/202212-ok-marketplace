@@ -12,6 +12,6 @@
     2. Description
     3. Owner
     4. Visibility
-2. DealSide: Demand/Proposal
+2. DealSide: Demand/Supply
 3. ProductType (гаечный ключ, ...)
 4. ProductId - идентификатор модели товара
