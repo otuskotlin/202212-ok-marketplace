@@ -1,8 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform") apply false
+    kotlin("jvm") apply false
 }
+
+val JVM_TAEGET = "11"
 
 group = "ru.otus.otuskotlin.marketplace"
 version = "0.0.1-SNAPSHOT"
@@ -20,6 +24,9 @@ subprojects {
     version = rootProject.version
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = JVM_TAEGET
+    }
+    tasks.withType<KotlinJvmCompile> {
+        kotlinOptions.jvmTarget = JVM_TAEGET
     }
 }
