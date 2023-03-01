@@ -16,7 +16,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:$springdocOpenapiUiVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin") // from models to json and Vice versa
     implementation("org.jetbrains.kotlin:kotlin-reflect") // for spring-boot app
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // for spring-boot app
+    implementation("org.jetbrains.kotlin:kotlin-stdlib") // for spring-boot app
 
     // transport models
     implementation(project(":ok-marketplace-common"))
