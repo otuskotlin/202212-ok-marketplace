@@ -2,9 +2,6 @@ plugins {
     kotlin("multiplatform")
 }
 
-group = rootProject.group
-version = rootProject.version
-
 kotlin {
     jvm {}
     macosX64 {}
@@ -15,7 +12,6 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-common"))
 
-                implementation(project(":ok-marketplace-api-v2-kmp"))
                 implementation(project(":ok-marketplace-common"))
             }
         }
@@ -35,6 +31,5 @@ kotlin {
                 implementation(kotlin("test-junit"))
             }
         }
-
     }
 }
