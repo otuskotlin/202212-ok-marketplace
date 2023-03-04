@@ -32,6 +32,7 @@ pluginManagement {
 //include("m1l6-flows-and-channels")
 //include("m1l7-kmp")
 //include("m2l3-testing")
+include("m3l1-spring")
 
 include("ok-marketplace-api-v1-jackson")
 include("ok-marketplace-api-v2-kmp")
