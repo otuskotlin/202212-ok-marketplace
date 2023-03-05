@@ -11,8 +11,6 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.json.Json
 import ru.otus.otuskotlin.marketplace.app.v2.v2Ad
 import ru.otus.otuskotlin.marketplace.app.v2.v2Offer
-import ru.otus.otuskotlin.marketplace.backend.services.AdService
-import ru.otus.otuskotlin.marketplace.backend.services.OfferService
 
 fun main() {
     embeddedServer(CIO, port = 8080) {
@@ -25,16 +23,13 @@ fun main() {
             })
         }
 
-        val adService = AdService()
-        val offerService = OfferService()
-
         routing {
             get("/") {
                 call.respondText("Hello, world!")
             }
             route("v2") {
-                v2Ad(adService)
-                v2Offer(offerService)
+                v2Ad()
+                v2Offer()
             }
         }
     }.start(wait = true)
