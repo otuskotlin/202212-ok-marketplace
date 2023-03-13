@@ -42,3 +42,4 @@ include("ok-marketplace-mappers-v2")
 
 include("ok-marketplace-stubs")
 include("ok-marketplace-app-spring")
+include("ok-marketplace-app-serverless")
