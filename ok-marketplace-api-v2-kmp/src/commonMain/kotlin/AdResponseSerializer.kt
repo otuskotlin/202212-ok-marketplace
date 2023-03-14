@@ -14,7 +14,7 @@ import ru.otus.otuskotlin.marketplace.api.v2.requests.IResponseStrategy
 val AdResponseSerializer = ResponseSerializer(AdResponseSerializerBase)
 
 private object AdResponseSerializerBase : JsonContentPolymorphicSerializer<IResponse>(IResponse::class) {
-    private const val discriminator = "requestType"
+    private const val discriminator = "responseType"
 
     override fun selectDeserializer(element: JsonElement): KSerializer<out IResponse> {
 

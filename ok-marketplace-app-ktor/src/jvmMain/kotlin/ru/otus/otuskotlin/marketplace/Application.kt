@@ -18,8 +18,10 @@ import org.slf4j.event.Level
 import ru.otus.otuskotlin.marketplace.api.v1.apiV1Mapper
 import ru.otus.otuskotlin.marketplace.app.v2.v2Ad
 import ru.otus.otuskotlin.marketplace.app.v2.v2Offer
+import ru.otus.otuskotlin.marketplace.app.v2.wsHandlerV2
 import ru.otus.otuskotlin.marketplace.v1.v1Ad
 import ru.otus.otuskotlin.marketplace.v1.v1Offer
+import ru.otus.otuskotlin.marketplace.v1.wsHandlerV1
 
 // function with config (application.conf)
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -72,6 +74,13 @@ fun Application.module() {
         route("v2") {
             v2Ad()
             v2Offer()
+        }
+
+        webSocket("/ws/v1") {
+            wsHandlerV1()
+        }
+        webSocket("/ws/v2") {
+            wsHandlerV2()
         }
 
         static("static") {
