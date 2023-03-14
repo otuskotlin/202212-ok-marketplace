@@ -8,64 +8,83 @@ import ru.otus.otuskotlin.marketplace.api.v1.models.*
 import ru.otus.otuskotlin.marketplace.mappers.v1.*
 import ru.otus.otuskotlin.marketplace.serverlessapp.api.utils.withContext
 import ru.otus.otuskotlin.marketplace.stubs.MkplAdStub
-import yandex.cloud.sdk.functions.YcFunction
+import yandex.cloud.sdk.functions.Context
 
-val createAdHandler = YcFunction<Request, Response> { input, yandexContext ->
-    println("CreateAdHandler v1 start work")
-    val request = input.toTransportModel<AdCreateRequest>()
-    withContext(yandexContext) {
-        fromTransport(request)
-        adResponse = MkplAdStub.get()
-        toTransportCreate().toResponse()
+object CreateAdHandler : IV1HandleStrategy {
+    override val path: String = "ad/create"
+    override fun handle(req: Request, reqContext: Context): Response {
+        println("CreateAdHandler v1 start work")
+        val request = req.toTransportModel<AdCreateRequest>()
+        return withContext(reqContext) {
+            fromTransport(request)
+            adResponse = MkplAdStub.get()
+            toTransportCreate().toResponse()
+        }
     }
 }
 
-val readAdHandler = YcFunction<Request, Response> { input, yandexContext ->
-    println("ReadAdHandler v1 start work")
-    val request = input.toTransportModel<AdReadRequest>()
-    withContext(yandexContext) {
-        fromTransport(request)
-        adResponse = MkplAdStub.get()
-        toTransportRead().toResponse()
+object ReadAdHandler : IV1HandleStrategy {
+    override val path: String = "ad/read"
+    override fun handle(req: Request, reqContext: Context): Response {
+        println("ReadAdHandler v1 start work")
+        val request = req.toTransportModel<AdReadRequest>()
+        return withContext(reqContext) {
+            fromTransport(request)
+            adResponse = MkplAdStub.get()
+            toTransportRead().toResponse()
+        }
     }
 }
 
-val updateAdHandler = YcFunction<Request, Response> { input, yandexContext ->
-    println("UpdateAdHandler v1 start work")
-    val request = input.toTransportModel<AdUpdateRequest>()
-    withContext(yandexContext) {
-        fromTransport(request)
-        adResponse = MkplAdStub.get()
-        toTransportUpdate().toResponse()
-    }
+object UpdateAdHandler : IV1HandleStrategy {
+    override val path: String = "ad/create"
+    override fun handle(req: Request, reqContext: Context): Response {
 
-}
+        println("UpdateAdHandler v1 start work")
+        val request = req.toTransportModel<AdUpdateRequest>()
+        return withContext(reqContext) {
+            fromTransport(request)
+            adResponse = MkplAdStub.get()
+            toTransportUpdate().toResponse()
+        }
 
-val deleteAdHandler = YcFunction<Request, Response> { input, yandexContext ->
-    println("DeleteAdHandler v1 start work")
-    val request = input.toTransportModel<AdDeleteRequest>()
-    withContext(yandexContext) {
-        fromTransport(request)
-        toTransportDelete().toResponse()
     }
 }
 
-val searchAdHandler = YcFunction<Request, Response> { input, yandexContext ->
-    println("SearchAdHandler v1 start work")
-    val request = input.toTransportModel<AdSearchRequest>()
-    withContext(yandexContext) {
-        fromTransport(request)
-        adResponse = MkplAdStub.get()
-        toTransportSearch().toResponse()
+object DeleteAdHandler : IV1HandleStrategy {
+    override val path: String = "ad/create"
+    override fun handle(req: Request, reqContext: Context): Response {
+        println("DeleteAdHandler v1 start work")
+        val request = req.toTransportModel<AdDeleteRequest>()
+        return withContext(reqContext) {
+            fromTransport(request)
+            toTransportDelete().toResponse()
+        }
     }
 }
 
-val offersAdHandler = YcFunction<Request, Response> { input, yandexContext ->
-    println("OffersAdHandler v1 start work")
-    val request = input.toTransportModel<AdOffersRequest>()
-    withContext(yandexContext) {
-        fromTransport(request)
-        adsResponse.add(MkplAdStub.get())
-        toTransportOffers().toResponse()
+object SearchAdHandler : IV1HandleStrategy {
+    override val path: String = "ad/create"
+    override fun handle(req: Request, reqContext: Context): Response {
+        println("SearchAdHandler v1 start work")
+        val request = req.toTransportModel<AdSearchRequest>()
+        return withContext(reqContext) {
+            fromTransport(request)
+            adResponse = MkplAdStub.get()
+            toTransportSearch().toResponse()
+        }
+    }
+}
+
+object OffersAdHandler : IV1HandleStrategy {
+    override val path: String = "ad/create"
+    override fun handle(req: Request, reqContext: Context): Response {
+        println("OffersAdHandler v1 start work")
+        val request = req.toTransportModel<AdOffersRequest>()
+        return withContext(reqContext) {
+            fromTransport(request)
+            adsResponse.add(MkplAdStub.get())
+            toTransportOffers().toResponse()
+        }
     }
 }

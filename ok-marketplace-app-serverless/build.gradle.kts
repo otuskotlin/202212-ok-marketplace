@@ -1,7 +1,7 @@
 
 plugins {
     kotlin("jvm")
-    id("com.github.johnrengelman.shadow") version "6.1.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 dependencies {
@@ -14,13 +14,15 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
 
+    val serializationVersion: String by project
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+
     // transport models
     implementation(project(":ok-marketplace-common"))
     implementation(project(":ok-marketplace-api-v1-jackson"))
     implementation(project(":ok-marketplace-api-v2-kmp"))
     implementation(project(":ok-marketplace-mappers-v1"))
-
-    // v2 api
     implementation(project(":ok-marketplace-mappers-v2"))
 
     // Stubs
