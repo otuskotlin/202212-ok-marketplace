@@ -33,7 +33,7 @@ class RabbitDirectProcessor(
                 println("TYPE: ${this::class.simpleName}")
             }
         }
-        val response = processor.exec().run { context.toTransportAd() }
+        val response = processor.exec(context).run { context.toTransportAd() }
         jacksonMapper.writeValueAsBytes(response).also {
             println("Publishing $response to ${processorConfig.exchange} exchange for keyOut ${processorConfig.keyOut}")
             basicPublish(processorConfig.exchange, processorConfig.keyOut, null, it)
