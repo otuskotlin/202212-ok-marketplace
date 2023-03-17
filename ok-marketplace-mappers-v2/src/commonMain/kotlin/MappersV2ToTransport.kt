@@ -62,6 +62,12 @@ fun List<MkplAd>.toTransportAd(): List<AdResponseObject>? = this
     .toList()
     .takeIf { it.isNotEmpty() }
 
+fun MkplContext.toTransportInit() = AdInitResponse(
+    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    result = if (errors.isEmpty()) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    errors = errors.toTransportErrors(),
+)
+
 private fun MkplAd.toTransportAd(): AdResponseObject = AdResponseObject(
     id = id.takeIf { it != MkplAdId.NONE }?.asString(),
     title = title.takeIf { it.isNotBlank() },

@@ -16,4 +16,3 @@ fun Throwable.asMkplError(
 )
 
 fun MkplContext.addError(vararg error: MkplError) = errors.addAll(error)
-
