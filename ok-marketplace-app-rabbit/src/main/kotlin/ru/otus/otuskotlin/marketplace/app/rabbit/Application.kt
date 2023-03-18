@@ -13,7 +13,7 @@ fun main() {
     val config = RabbitConfig()
     val adProcessor = MkplAdProcessor()
 
-    val producerConfig = RabbitExchangeConfiguration(
+    val producerConfigV1 = RabbitExchangeConfiguration(
         keyIn = "in-v1",
         keyOut = "out-v1",
         exchange = "transport-exchange",
