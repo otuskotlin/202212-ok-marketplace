@@ -15,13 +15,14 @@ import ru.otus.otuskotlin.marketplace.common.helpers.isUpdatableCommand
 import ru.otus.otuskotlin.marketplace.mappers.v1.fromTransport
 import ru.otus.otuskotlin.marketplace.mappers.v1.toTransportAd
 import ru.otus.otuskotlin.marketplace.mappers.v1.toTransportInit
+import java.util.*
 
 @Component
 class WsAdHandlerV1 : TextWebSocketHandler() {
-    private val sessions = mutableMapOf<String, WebSocketSession>()
+    private val sessions = Collections.synchronizedSet<WebSocketSession>(LinkedHashSet())
 
     override fun afterConnectionEstablished(session: WebSocketSession) {
-        sessions[session.id] = session
+        sessions.add(session)
 
         val context = MkplContext()
 
@@ -39,7 +40,7 @@ class WsAdHandlerV1 : TextWebSocketHandler() {
 
                 val result = apiV1Mapper.writeValueAsString(ctx.toTransportAd())
                 if (ctx.isUpdatableCommand()) {
-                    sessions.values.forEach {
+                    sessions.forEach {
                         it.sendMessage(TextMessage(result))
                     }
                 } else {
@@ -55,6 +56,6 @@ class WsAdHandlerV1 : TextWebSocketHandler() {
     }
 
     override fun afterConnectionClosed(session: WebSocketSession, status: CloseStatus) {
-        sessions.remove(session.id)
+        sessions.remove(session)
     }
 }

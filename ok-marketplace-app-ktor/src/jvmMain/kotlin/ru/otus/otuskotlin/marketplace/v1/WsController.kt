@@ -14,8 +14,9 @@ import ru.otus.otuskotlin.marketplace.common.helpers.asMkplError
 import ru.otus.otuskotlin.marketplace.common.helpers.isUpdatableCommand
 import ru.otus.otuskotlin.marketplace.mappers.v1.*
 import ru.otus.otuskotlin.marketplace.stubs.MkplAdStub
+import java.util.*
 
-val sessions = mutableSetOf<WebSocketSession>()
+val sessions = Collections.synchronizedSet<WebSocketSession>(LinkedHashSet())
 
 suspend fun WebSocketSession.wsHandlerV1() {
     sessions.add(this)
