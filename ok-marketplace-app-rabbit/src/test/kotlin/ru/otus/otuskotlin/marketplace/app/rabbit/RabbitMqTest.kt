@@ -58,7 +58,7 @@ internal class RabbitMqTest {
             port = rabbitMqTestPort
         )
     }
-    val processor by lazy {
+    val processorV1 by lazy {
         RabbitDirectProcessor(
             config = config,
             processorConfig = RabbitExchangeConfiguration(
