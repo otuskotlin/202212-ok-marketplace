@@ -1,6 +1,5 @@
 package ru.otus.otuskotlin.marketplace.app.rabbit
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.ConnectionFactory
 import com.rabbitmq.client.DeliverCallback
@@ -8,6 +7,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 import org.testcontainers.containers.RabbitMQContainer
+import ru.otus.otuskotlin.marketplace.api.v1.apiV1Mapper
 import ru.otus.otuskotlin.marketplace.api.v1.models.AdCreateObject
 import ru.otus.otuskotlin.marketplace.api.v1.models.AdCreateRequest
 import ru.otus.otuskotlin.marketplace.api.v1.models.AdCreateResponse
@@ -19,7 +19,7 @@ import ru.otus.otuskotlin.marketplace.api.v2.responses.apiV2ResponseDeserialize
 import ru.otus.otuskotlin.marketplace.app.rabbit.config.RabbitConfig
 import ru.otus.otuskotlin.marketplace.app.rabbit.config.RabbitExchangeConfiguration
 import ru.otus.otuskotlin.marketplace.app.rabbit.controller.RabbitController
-import ru.otus.otuskotlin.marketplace.app.rabbit.processor.RabbitDirectProcessor
+import ru.otus.otuskotlin.marketplace.app.rabbit.processor.RabbitDirectProcessorV1
 import ru.otus.otuskotlin.marketplace.app.rabbit.processor.RabbitDirectProcessorV2
 import ru.otus.otuskotlin.marketplace.stubs.MkplAdStub
 import kotlin.test.BeforeTest
@@ -59,7 +59,7 @@ internal class RabbitMqTest {
         )
     }
     val processorV1 by lazy {
-        RabbitDirectProcessor(
+        RabbitDirectProcessorV1(
             config = config,
             processorConfig = RabbitExchangeConfiguration(
                 keyIn = "in-v1",
@@ -86,10 +86,9 @@ internal class RabbitMqTest {
     }
     val controller by lazy {
         RabbitController(
-            processors = setOf(processor, processorV2)
+            processors = setOf(processorV1, processorV2)
         )
     }
-    val mapper = ObjectMapper()
 
     @BeforeTest
     fun tearUp() {
@@ -97,9 +96,9 @@ internal class RabbitMqTest {
     }
 
     @Test
-    fun adCreateTest() {
-        val keyOut = processor.processorConfig.keyOut
-        val keyIn = processor.processorConfig.keyIn
+    fun adCreateTestV1() {
+        val keyOut = processorV1.processorConfig.keyOut
+        val keyIn = processorV1.processorConfig.keyIn
         ConnectionFactory().apply {
             host = config.host
             port = config.port
@@ -117,7 +116,7 @@ internal class RabbitMqTest {
                 }
                 channel.basicConsume(queueOut, true, deliverCallback, CancelCallback { })
 
-                channel.basicPublish(exchange, keyIn, null, mapper.writeValueAsBytes(boltCreateV1))
+                channel.basicPublish(exchange, keyIn, null, apiV1Mapper.writeValueAsBytes(boltCreateV1))
 
                 runBlocking {
                     withTimeoutOrNull(265L) {
@@ -128,7 +127,7 @@ internal class RabbitMqTest {
                 }
 
                 println("RESPONSE: $responseJson")
-                val response = mapper.readValue(responseJson, AdCreateResponse::class.java)
+                val response = apiV1Mapper.readValue(responseJson, AdCreateResponse::class.java)
                 val expected = MkplAdStub.get()
 
                 assertEquals(expected.title, response.ad?.title)

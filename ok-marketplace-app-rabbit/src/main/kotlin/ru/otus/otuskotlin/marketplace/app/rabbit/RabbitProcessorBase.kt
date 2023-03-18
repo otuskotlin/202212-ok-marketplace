@@ -1,6 +1,5 @@
 package ru.otus.otuskotlin.marketplace.app.rabbit
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.ConnectionFactory
@@ -23,8 +22,6 @@ abstract class RabbitProcessorBase(
     private val config: RabbitConfig,
     val processorConfig: RabbitExchangeConfiguration
 ) {
-    val jacksonMapper = ObjectMapper()
-
     suspend fun process(dispatcher: CoroutineContext = Dispatchers.IO) {
         withContext(dispatcher) {
             ConnectionFactory().apply {
@@ -78,21 +75,27 @@ abstract class RabbitProcessorBase(
         deliverCallback: DeliverCallback,
         cancelCallback: CancelCallback
     ) {
-        exchangeDeclare(processorConfig.exchange, processorConfig.exchangeType)
-        // Объявляем очередь (не сохраняется при перезагрузке сервера; неэксклюзивна - доступна другим соединениям;
-        // не удаляется, если не используется)
-        queueDeclare(processorConfig.queue, false, false, false, null)
-        // связываем обменник с очередью по ключу (сообщения будут поступать в данную очередь с данного обменника при совпадении ключа)
-        queueBind(processorConfig.queue, processorConfig.exchange, processorConfig.keyIn)
-        // запуск консьюмера с автоотправкой подтверждение при получении сообщения
-        basicConsume(processorConfig.queue, true, processorConfig.consumerTag, deliverCallback, cancelCallback)
-        while (isOpen) {
-            kotlin.runCatching {
-                delay(100)
-            }.onFailure { e ->
-                e.printStackTrace()
+        withContext(Dispatchers.IO) {
+            exchangeDeclare(processorConfig.exchange, processorConfig.exchangeType)
+            // Объявляем очередь (не сохраняется при перезагрузке сервера; неэксклюзивна - доступна другим соединениям;
+            // не удаляется, если не используется)
+            queueDeclare(processorConfig.queue, false, false, false, null)
+            // связываем обменник с очередью по ключу (сообщения будут поступать в данную очередь с данного обменника при совпадении ключа)
+            queueBind(processorConfig.queue, processorConfig.exchange, processorConfig.keyIn)
+            // запуск консьюмера с автоотправкой подтверждение при получении сообщения
+            basicConsume(processorConfig.queue, true, processorConfig.consumerTag, deliverCallback, cancelCallback)
+
+            while (isOpen) {
+                kotlin.runCatching {
+                    delay(100)
+                }.onFailure { e ->
+                    e.printStackTrace()
+                }
             }
+
+            println("Channel for [${processorConfig.consumerTag}] was closed.")
         }
-        println("Channel for [${processorConfig.consumerTag}] was closed.")
+
+
     }
 }
