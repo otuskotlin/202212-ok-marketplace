@@ -22,6 +22,8 @@ import ru.otus.otuskotlin.marketplace.app.v2.wsHandlerV2
 import ru.otus.otuskotlin.marketplace.v1.v1Ad
 import ru.otus.otuskotlin.marketplace.v1.v1Offer
 import ru.otus.otuskotlin.marketplace.v1.wsHandlerV1
+import ru.otus.otuskotlin.marketplace.ws.wsChat
+import ru.otus.otuskotlin.marketplace.ws.wsPing
 
 // function with config (application.conf)
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -79,8 +81,17 @@ fun Application.module() {
         webSocket("/ws/v1") {
             wsHandlerV1()
         }
-        webSocket("/ws/v2") {
+
+        webSocket("/ws/2") {
             wsHandlerV2()
+        }
+
+        webSocket("/ws/ping") {
+            wsPing()
+        }
+
+        webSocket("/ws/chat") {
+            wsChat()
         }
 
         static("static") {
