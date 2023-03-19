@@ -15,7 +15,7 @@ import ru.otus.otuskotlin.marketplace.common.helpers.asMkplError
 import ru.otus.otuskotlin.marketplace.common.models.MkplState
 import ru.otus.otuskotlin.marketplace.mappers.v1.fromTransport
 import ru.otus.otuskotlin.marketplace.mappers.v1.toTransportAd
-
+// TODO-rmq-6: наследник RabbitProcessorBase, увязывает транспортную и бизнес-части
 class RabbitDirectProcessorV1(
     config: RabbitConfig,
     processorConfig: RabbitExchangeConfiguration,

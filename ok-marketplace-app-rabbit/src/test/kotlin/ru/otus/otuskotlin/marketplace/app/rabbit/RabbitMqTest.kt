@@ -32,6 +32,7 @@ import ru.otus.otuskotlin.marketplace.api.v2.models.AdDebug as AdDebugV2
 import ru.otus.otuskotlin.marketplace.api.v2.models.AdRequestDebugMode as AdRequestDebugModeV2
 import ru.otus.otuskotlin.marketplace.api.v2.models.AdRequestDebugStubs as AdRequestDebugStubsV2
 
+//  TODO-rmq-8: тесты в использованием testcontainers
 internal class RabbitMqTest {
 
     companion object {

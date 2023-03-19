@@ -13,6 +13,7 @@ import ru.otus.otuskotlin.marketplace.app.rabbit.config.RabbitConfig
 import ru.otus.otuskotlin.marketplace.app.rabbit.config.RabbitExchangeConfiguration
 import kotlin.coroutines.CoroutineContext
 
+// // TODO-rmq-6: абстрактный класс с boilerplate-кодом для связи с RMQ
 /**
  * Абстрактный класс для процессоров-консьюмеров RabbitMQ
  * @property config - настройки подключения
