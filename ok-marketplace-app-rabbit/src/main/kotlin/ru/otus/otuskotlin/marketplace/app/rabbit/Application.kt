@@ -13,6 +13,9 @@ fun main() {
     val config = RabbitConfig()
     val adProcessor = MkplAdProcessor()
 
+    // TODO-rmq-4: т.к. у нас две версии API, создаём две конфигурации,
+    //  передаем их в два процессора и объединяем в рамках контроллера
+
     val producerConfigV1 = RabbitExchangeConfiguration(
         keyIn = "in-v1",
         keyOut = "out-v1",

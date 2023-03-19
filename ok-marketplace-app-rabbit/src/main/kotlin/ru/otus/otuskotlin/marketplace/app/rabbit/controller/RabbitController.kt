@@ -2,7 +2,6 @@ package ru.otus.otuskotlin.marketplace.app.rabbit.controller
 
 import kotlinx.coroutines.*
 import ru.otus.otuskotlin.marketplace.app.rabbit.RabbitProcessorBase
-import java.util.concurrent.Executors
 
 class RabbitController(
     private val processors: Set<RabbitProcessorBase>
@@ -18,8 +17,7 @@ class RabbitController(
     fun start() = scope.launch {
         processors.forEach {
             launch(
-                Executors.newSingleThreadExecutor()
-                    .asCoroutineDispatcher() + CoroutineName("thread-${it.processorConfig.consumerTag}")
+                limitedParallelismContext + CoroutineName("thread-${it.processorConfig.consumerTag}")
             ) {
                 try {
                     it.process()
