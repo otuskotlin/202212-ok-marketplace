@@ -1,0 +1,14 @@
+#  application.yaml работает в jvm и native, но не работает в режиме сервлета с Tomcat
+# в этом случае необходимо сформировать application.conf
+
+ktor:
+  development: true
+  deployment:
+    port: 8080
+  watch:
+    - classes
+    - resources
+#  urls:
+#    - "http://127.0.0.1:8080/v1"
+#    - "http://0.0.0.0:8080/v1"
+#    - "http://192.168.0.182:8080/v1"

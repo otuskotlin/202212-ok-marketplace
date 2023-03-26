@@ -9,7 +9,7 @@ plugins {
 val JVM_TAEGET = "11"
 
 group = "ru.otus.otuskotlin.marketplace"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.2"
 
 allprojects {
     repositories {

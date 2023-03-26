@@ -1,36 +1,35 @@
-import org.jetbrains.kotlin.util.suffixIfNot
-import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 val ktorVersion: String by project
 val logbackVersion: String by project
 val serializationVersion: String by project
 
-// ex: Converts to "io.ktor:ktor-ktor-server-netty:2.0.1" with only ktor("netty")
-fun ktor(module: String, prefix: String = "server-", version: String? = this@Build_gradle.ktorVersion): Any =
-    "io.ktor:ktor-${prefix.suffixIfNot("-")}$module:$version"
+fun ktorServer(module: String, version: String? = this@Build_gradle.ktorVersion): Any =
+    "io.ktor:ktor-server-$module:$version"
+fun ktorClient(module: String, version: String? = this@Build_gradle.ktorVersion): Any =
+    "io.ktor:ktor-client-$module:$version"
 
 plugins {
-    id("application")
-    id("com.bmuschko.docker-java-application")
-    id("com.bmuschko.docker-remote-api")
-    kotlin("plugin.serialization")
     kotlin("multiplatform")
     id("io.ktor.plugin")
 }
 
-repositories {
-    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
+val webjars: Configuration by configurations.creating
+dependencies {
+    val swaggerUiVersion: String by project
+    webjars("org.webjars:swagger-ui:$swaggerUiVersion")
 }
 
+//repositories {
+//    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
+//}
+
 application {
-//    mainClass.set("io.ktor.server.netty.EngineMain")
-    mainClass.set("ru.otus.otuskotlin.marketplace.ApplicationKt")
+    mainClass.set("io.ktor.server.netty.EngineMain")
+//    mainClass.set("ru.otus.otuskotlin.marketplace.ApplicationKt")
 }
 
 kotlin {
-    jvm {}
+    jvm { withJava() }
 
     val nativeTarget = when (System.getProperty("os.name")) {
         "Mac OS X" -> macosX64("native")
@@ -52,13 +51,26 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-                implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
+                implementation(ktorServer("core")) // "io.ktor:ktor-server-core:$ktorVersion"
 
                 implementation(project(":ok-marketplace-common"))
                 implementation(project(":ok-marketplace-api-v2-kmp"))
                 implementation(project(":ok-marketplace-mappers-v2"))
                 implementation(project(":ok-marketplace-stubs"))
 
+                implementation(ktorServer("core")) // "io.ktor:ktor-server-core:$ktorVersion"
+                implementation(ktorServer("cio")) // "io.ktor:ktor-server-cio:$ktorVersion"
+                implementation(ktorServer("auth")) // "io.ktor:ktor-server-auth:$ktorVersion"
+                implementation(ktorServer("auto-head-response")) // "io.ktor:ktor-server-auto-head-response:$ktorVersion"
+                implementation(ktorServer("caching-headers")) // "io.ktor:ktor-server-caching-headers:$ktorVersion"
+                implementation(ktorServer("cors")) // "io.ktor:ktor-server-cors:$ktorVersion"
+                implementation(ktorServer("websockets")) // "io.ktor:ktor-server-websockets:$ktorVersion"
+                implementation(ktorServer("config-yaml")) // "io.ktor:ktor-server-config-yaml:$ktorVersion"
+                implementation(ktorServer("content-negotiation")) // "io.ktor:ktor-server-content-negotiation:$ktorVersion"
+                implementation(ktorServer("websockets")) // "io.ktor:ktor-websockets:$ktorVersion"
+                implementation(ktorServer("auth")) // "io.ktor:ktor-auth:$ktorVersion"
+
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
             }
@@ -68,26 +80,14 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+
+                implementation(ktorServer("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
+                implementation(ktorClient("content-negotiation"))
             }
         }
         @Suppress("UNUSED_VARIABLE")
        val nativeMain by getting {
             dependencies {
-                implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
-                implementation(ktor("cio")) // "io.ktor:ktor-server-cio:$ktorVersion"
-                implementation(ktor("auth")) // "io.ktor:ktor-server-auth:$ktorVersion"
-                implementation(ktor("auto-head-response")) // "io.ktor:ktor-server-auto-head-response:$ktorVersion"
-                implementation(ktor("caching-headers")) // "io.ktor:ktor-server-caching-headers:$ktorVersion"
-                implementation(ktor("cors")) // "io.ktor:ktor-server-cors:$ktorVersion"
-                implementation(ktor("websockets")) // "io.ktor:ktor-server-websockets:$ktorVersion"
-                implementation(ktor("config-yaml")) // "io.ktor:ktor-server-config-yaml:$ktorVersion"
-                implementation(ktor("content-negotiation")) // "io.ktor:ktor-server-content-negotiation:$ktorVersion"
-
-                implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-
-                implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
             }
         }
         @Suppress("UNUSED_VARIABLE")
@@ -95,35 +95,29 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
 
-                implementation(ktor("test-host"))
-                implementation(ktor("content-negotiation", prefix = "client-"))
-                implementation(ktor("websockets", prefix = "client-"))
+                implementation(ktorServer("test-host"))
+                implementation(ktorClient("content-negotiation"))
+                implementation(ktorClient("websockets"))
             }
         }
         @Suppress("UNUSED_VARIABLE")
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
-                implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
-                implementation(ktor("netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"
+
+                implementation(ktorServer("netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"
 
                 // jackson
-                implementation(ktor("jackson", "serialization")) // io.ktor:ktor-serialization-jackson
-                implementation(ktor("content-negotiation")) // io.ktor:ktor-server-content-negotiation
-                implementation(ktor("kotlinx-json", "serialization")) // io.ktor:ktor-serialization-kotlinx-json
+                implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
 
-                implementation(ktor("locations"))
-                implementation(ktor("caching-headers"))
-                implementation(ktor("call-logging"))
-                implementation(ktor("auto-head-response"))
-                implementation(ktor("cors")) // "io.ktor:ktor-cors:$ktorVersion"
-                implementation(ktor("default-headers")) // "io.ktor:ktor-cors:$ktorVersion"
-                implementation(ktor("cors")) // "io.ktor:ktor-cors:$ktorVersion"
-                implementation(ktor("auto-head-response"))
+//                implementation(ktorServer("locations"))
+                implementation(ktorServer("caching-headers"))
+                implementation(ktorServer("call-logging"))
+                implementation(ktorServer("auto-head-response"))
+                implementation(ktorServer("default-headers")) // "io.ktor:ktor-cors:$ktorVersion"
+                implementation(ktorServer("auto-head-response"))
 
-                implementation(ktor("websockets")) // "io.ktor:ktor-websockets:$ktorVersion"
-                implementation(ktor("auth")) // "io.ktor:ktor-auth:$ktorVersion"
-                implementation(ktor("auth-jwt")) // "io.ktor:ktor-auth-jwt:$ktorVersion"
+                implementation(ktorServer("auth-jwt")) // "io.ktor:ktor-auth-jwt:$ktorVersion"
 
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
@@ -144,52 +138,42 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
-                implementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
-                implementation(ktor("content-negotiation", prefix = "client-"))
-                implementation(ktor("websockets", prefix = "client-"))
             }
         }
     }
 }
 
 tasks {
-    val dockerJvmDockerfile by creating(Dockerfile::class) {
-        group = "docker"
-        from("openjdk:17")
-        copyFile("app.jar", "app.jar")
-        entryPoint("java", "-Xms256m", "-Xmx512m", "-jar", "/app.jar")
-    }
-    create("dockerBuildJvmImage", DockerBuildImage::class) {
-        group = "docker"
-        dependsOn(dockerJvmDockerfile, named("jvmJar"))
-        doFirst {
-            copy {
-                from(named("jvmJar"))
-                into("${project.buildDir}/docker/app.jar")
+    @Suppress("UnstableApiUsage")
+    withType<ProcessResources>().configureEach {
+        println("RESOURCES: ${this.name} ${this::class}")
+        from("$rootDir/specs") {
+            into("specs")
+            filter {
+                // Устанавливаем версию в сваггере
+                it.replace("\${VERSION_APP}", project.version.toString())
             }
         }
-        images.add("${project.name}:${project.version}")
-    }
-}
-
-tasks {
-    val linkReleaseExecutableNative by getting(KotlinNativeLink::class)
-
-    val dockerDockerfile by creating(Dockerfile::class) {
-        group = "docker"
-        from("ubuntu:22.02")
-        doFirst {
+        webjars.forEach { jar ->
+//        emptyList<File>().forEach { jar ->
+            val conf = webjars.resolvedConfiguration
+            println("JarAbsPa: ${jar.absolutePath}")
+            val artifact = conf.resolvedArtifacts.find { it.file.toString() == jar.absolutePath } ?: return@forEach
+            val upStreamVersion = artifact.moduleVersion.id.version.replace("(-[\\d.-]+)", "")
             copy {
-                from(linkReleaseExecutableNative.binary.outputFile)
-                into("${this@creating.temporaryDir}/app")
+                from(zipTree(jar))
+                duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                into(file("${buildDir}/webjars-content/${artifact.name}"))
+            }
+            with(this@configureEach) {
+                this.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                from(
+                    "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${upStreamVersion}"
+                ) { into(artifact.name) }
+                from(
+                    "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${artifact.moduleVersion.id.version}"
+                ) { into(artifact.name) }
             }
         }
-        copyFile("app", "/app")
-        entryPoint("/app")
-    }
-    create("dockerBuildNativeImage", DockerBuildImage::class) {
-        group = "docker"
-        dependsOn(dockerDockerfile)
-        images.add("${project.name}:${project.version}")
     }
 }

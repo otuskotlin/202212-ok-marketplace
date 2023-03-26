@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.v1
+package ru.otus.otuskotlin.marketplace.app.v1
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.ktor.websocket.*

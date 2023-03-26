@@ -30,7 +30,7 @@ jobs:
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
 
       - name: Install curl-dev
-        run: sudo apt install -y libcurl4-openssl-dev
+        run: sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev
 
       - name: Test package
         run: gradle check

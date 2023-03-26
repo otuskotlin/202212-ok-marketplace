@@ -1,22 +1,21 @@
-package ru.otus.otuskotlin.marketplace.stubs
+package ru.otus.otuskotlin.marketplace.app
 
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.server.application.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
-import org.junit.Test
 import ru.otus.otuskotlin.marketplace.api.v2.apiV2Mapper
 import ru.otus.otuskotlin.marketplace.api.v2.models.*
-import ru.otus.otuskotlin.marketplace.module
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class V2AdStubApiTest {
 
     @Test
     fun create() = testApplication {
+        application { module() }
         val response = client.post("/v2/ad/create") {
             val requestObj = AdCreateRequest(
                 requestId = "12345",
@@ -43,6 +42,7 @@ class V2AdStubApiTest {
 
     @Test
     fun read() = testApplication {
+        application { module() }
         val response = client.post("/v2/ad/read") {
             val requestObj = AdReadRequest(
                 requestId = "12345",
@@ -64,6 +64,7 @@ class V2AdStubApiTest {
 
     @Test
     fun update() = testApplication {
+        application { module() }
         val response = client.post("/v2/ad/update") {
             val requestObj = AdUpdateRequest(
                 requestId = "12345",
@@ -91,6 +92,7 @@ class V2AdStubApiTest {
 
     @Test
     fun delete() = testApplication {
+        application { module() }
         val response = client.post("/v2/ad/delete") {
             val requestObj = AdDeleteRequest(
                 requestId = "12345",
@@ -115,6 +117,7 @@ class V2AdStubApiTest {
 
     @Test
     fun search() = testApplication {
+        application { module() }
         val response = client.post("/v2/ad/search") {
             val requestObj = AdSearchRequest(
                 requestId = "12345",
@@ -136,6 +139,7 @@ class V2AdStubApiTest {
 
     @Test
     fun offers() = testApplication {
+        application { module() }
         val response = client.post("/v2/ad/offers") {
             val requestObj = AdOffersRequest(
                 requestId = "12345",

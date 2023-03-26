@@ -17,17 +17,10 @@ fun Application.module() {
     install(Routing)
     install(WebSockets)
 
-    install(ContentNegotiation) {
-        json(apiV2Mapper)
-    }
 
     routing {
         get("/") {
             call.respondText("Hello, world!")
-        }
-        route("v2") {
-            v2Ad()
-            v2Offer()
         }
         webSocket("/ws/v2") {
             wsHandlerV2()
