@@ -37,4 +37,14 @@ class RequestSerializationTest {
 
         assertEquals(request, obj)
     }
+
+    @Test
+    fun deserializeNaked() {
+        val jsonString = """
+            {"requestId": "123"}
+        """.trimIndent()
+        val obj = apiV1Mapper.readValue(jsonString, AdCreateRequest::class.java)
+
+        assertEquals("123", obj.requestId)
+    }
 }

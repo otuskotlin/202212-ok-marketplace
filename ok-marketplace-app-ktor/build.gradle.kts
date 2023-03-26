@@ -17,6 +17,7 @@ plugins {
     id("com.bmuschko.docker-remote-api")
     kotlin("plugin.serialization")
     kotlin("multiplatform")
+    id("io.ktor.plugin")
 }
 
 repositories {
