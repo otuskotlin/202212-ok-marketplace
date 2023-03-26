@@ -40,43 +40,25 @@ Marketplace -- это площадка, на которой пользовате
 7. [m2l3-testing](m2l3-testing) - Тестирование проекта, TDD, MDD
 
 
-[//]: # (## Транспортные модели, API)
+## Транспортные модели, API
 
-[//]: # ()
+1. [specs](specs) - описание API в форме OpenAPI-спецификаций
+2. [ok-marketplace-api-v1-jackson](ok-marketplace-api-v1-jackson) - Генерация первой версии транспортных модеелй с
+   Jackson
+3. [ok-marketplace-api-v2-kmp](ok-marketplace-api-v2-kmp) - Генерация второй версии транспортных модеелй с KMP
+4. [ok-marketplace-common](ok-marketplace-common) - модуль с общими классами для модулей проекта. В частности, там
+   располагаются внутренние модели и контекст.
+5. [ok-marketplace-mappers-v1](ok-marketplace-mappers-v1) - Мапер между внутренними моделями и моделями API v1
+6. [ok-marketplace-mappers-v2](ok-marketplace-mappers-v2) - Мапер между внутренними моделями и моделями API v1
 
-[//]: # (1. [specs]&#40;specs&#41; - описание API в форме OpenAPI-спецификаций)
+## Фреймворки и транспорты
 
-[//]: # (2. [ok-marketplace-api-v1-jackson]&#40;ok-marketplace-api-v1-jackson&#41; - Генерация первой версии транспортных модеелй с)
-
-[//]: # (   Jackson)
-
-[//]: # (3. [ok-marketplace-api-v2-kmp]&#40;ok-marketplace-api-v2-kmp&#41; - Генерация второй версии транспортных модеелй с KMP)
-
-[//]: # (4. [ok-marketplace-common]&#40;ok-marketplace-common&#41; - модуль с общими классами для модулей проекта. В частности, там)
-
-[//]: # (   располагаются внутренние модели и контекст.)
-
-[//]: # (5. [ok-marketplace-mappers-v1]&#40;ok-marketplace-mappers-v1&#41; - Мапер между внутренними моделями и моделями API v1)
-
-[//]: # (6. [ok-marketplace-mappers-v2]&#40;ok-marketplace-mappers-v2&#41; - Мапер между внутренними моделями и моделями API v1)
-
-[//]: # ()
-
-[//]: # (## Фреймворки и транспорты)
-
-[//]: # ()
-
-[//]: # (1. [ok-marketplace-app-spring]&#40;ok-marketplace-app-spring&#41; - Приложение на Spring Framework)
-
-[//]: # (1. [ok-marketplace-app-ktor]&#40;ok-marketplace-app-ktor&#41; - Приложение на Ktor JVM/Native)
-
-[//]: # (1. [ok-marketplace-app-knative]&#40;ok-marketplace-app-serverless&#41; - Приложение для Yandex.Cloud lambda)
-
-[//]: # (1. [ok-marketplace-app-rabbit]&#40;ok-marketplace-app-rabbit&#41; - Микросервис на RabbitMQ)
-
-[//]: # (1. [ok-marketplace-app-kafka]&#40;ok-marketplace-app-kafka&#41; - Микросервис на Kafka)
-
-[//]: # ()
+1. [ok-marketplace-app-spring](ok-marketplace-app-spring) - Приложение на Spring Framework
+2. [ok-marketplace-app-ktor](ok-marketplace-app-ktor) - Приложение на Ktor JVM/Native
+3. [ok-marketplace-app-serverless](ok-marketplace-app-serverless) - Приложение для Yandex.Cloud lambda
+4. [ok-marketplace-app-rabbit](ok-marketplace-app-rabbit) - Микросервис на RabbitMQ
+5. [ok-marketplace-app-kafka](ok-marketplace-app-kafka) - Микросервис на Kafka
+6. [ok-marketplace-stubs](ok-marketplace-stubs) - Стабовые объекты для приложения
 
 [//]: # (## Модули бизнес-логики)
 
