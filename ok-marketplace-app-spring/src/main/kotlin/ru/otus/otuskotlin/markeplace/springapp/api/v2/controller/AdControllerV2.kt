@@ -11,7 +11,7 @@ import ru.otus.otuskotlin.marketplace.stubs.MkplAdStub
 class AdControllerV2 {
 
     @PostMapping("create")
-    fun createAd(@RequestBody request: AdCreateRequest): AdCreateResponse {
+    suspend fun createAd(@RequestBody request: AdCreateRequest): AdCreateResponse {
         val context = MkplContext()
         context.fromTransport(request)
         context.adResponse = MkplAdStub.get()
@@ -19,7 +19,7 @@ class AdControllerV2 {
     }
 
     @PostMapping("read")
-    fun readAd(@RequestBody request: AdReadRequest): AdReadResponse {
+    suspend fun readAd(@RequestBody request: AdReadRequest): AdReadResponse {
         val context = MkplContext()
         context.fromTransport(request)
         context.adResponse = MkplAdStub.get()
@@ -27,7 +27,7 @@ class AdControllerV2 {
     }
 
     @PostMapping("update")
-    fun updateAd(@RequestBody request: AdUpdateRequest): AdUpdateResponse {
+    suspend fun updateAd(@RequestBody request: AdUpdateRequest): AdUpdateResponse {
         val context = MkplContext()
         context.fromTransport(request)
         context.adResponse = MkplAdStub.get()
@@ -35,7 +35,7 @@ class AdControllerV2 {
     }
 
     @PostMapping("delete")
-    fun deleteAd(@RequestBody request: AdDeleteRequest): AdDeleteResponse {
+    suspend fun deleteAd(@RequestBody request: AdDeleteRequest): AdDeleteResponse {
         val context = MkplContext()
         context.fromTransport(request)
         context.adResponse = MkplAdStub.get()
@@ -43,7 +43,7 @@ class AdControllerV2 {
     }
 
     @PostMapping("search")
-    fun searchAd(@RequestBody request: AdSearchRequest): AdSearchResponse {
+    suspend fun searchAd(@RequestBody request: AdSearchRequest): AdSearchResponse {
         val context = MkplContext()
         context.fromTransport(request)
         context.adsResponse.add(MkplAdStub.get())

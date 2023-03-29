@@ -1,27 +1,22 @@
 package ru.otus.otuskotlin.markeplace.springapp.api.v1.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.web.reactive.function.BodyInserters
 import ru.otus.otuskotlin.marketplace.api.v1.models.*
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.mappers.v1.*
 import ru.otus.otuskotlin.marketplace.stubs.MkplAdStub
 
 // Temporary simple test with stubs
-@WebMvcTest(AdController::class, OfferController::class)
+@WebFluxTest(AdController::class, OfferController::class)
 internal class AdControllerTest {
     @Autowired
-    private lateinit var mvc: MockMvc
-
-    @Autowired
-    private lateinit var mapper: ObjectMapper
+    private lateinit var webClient: WebTestClient
 
     @Test
     fun createAd() = testStubAd(
@@ -65,20 +60,22 @@ internal class AdControllerTest {
         MkplContext().apply { adsResponse.add(MkplAdStub.get()) }.toTransportOffers()
     )
 
-    private fun <Req : Any, Res : Any> testStubAd(
+    private inline fun <reified Req : Any, reified Res : Any> testStubAd(
         url: String,
         requestObj: Req,
         responseObj: Res,
     ) {
-        val request = mapper.writeValueAsString(requestObj)
-        val response = mapper.writeValueAsString(responseObj)
-
-        mvc.perform(
-            post(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(request)
-        )
-            .andExpect(status().isOk)
-            .andExpect(content().json(response))
+        webClient
+            .post()
+            .uri(url)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(BodyInserters.fromValue(requestObj))
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(Res::class.java)
+            .value {
+                println("RESPONSE: $it")
+                assertThat(it).isEqualTo(responseObj)
+            }
     }
 }

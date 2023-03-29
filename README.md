@@ -8,24 +8,25 @@ Marketplace -- это площадка, на которой пользовате
 потребностями, для потребностей -- набор вариантов с предложениями.
 
 ## Визуальная схема фронтенда
+
 ![Макет фронта](imgs/design-layout.png)
 
 ## Документация
 
 1. Маркетинг
-   1. [Заинтересанты](./docs/01-marketing/01-stakeholders.md)
-   2. [Целевая аудитория](./docs/01-marketing/02-target-audience.md)
-   3. [Конкурентный анализ](./docs/01-marketing/03-concurrency.md)
-   4. [Анализ экономики](./docs/01-marketing/04-economy.md)
-   5. [Пользовательские истории](./docs/01-marketing/05-user-stories.md)
+    1. [Заинтересанты](./docs/01-marketing/01-stakeholders.md)
+    2. [Целевая аудитория](./docs/01-marketing/02-target-audience.md)
+    3. [Конкурентный анализ](./docs/01-marketing/03-concurrency.md)
+    4. [Анализ экономики](./docs/01-marketing/04-economy.md)
+    5. [Пользовательские истории](./docs/01-marketing/05-user-stories.md)
 2. DevOps
-   1. [Схема инфраструктуры](./docs/02-devops/01-infrastruture.md)
-   2. [Схема мониторинга](./docs/02-devops/02-monitoring.md)
+    1. [Схема инфраструктуры](./docs/02-devops/01-infrastruture.md)
+    2. [Схема мониторинга](./docs/02-devops/02-monitoring.md)
 3. Тесты
 4. Архитектура
-   1. [Компонентная схема](./docs/04-architecture/01-arch.md)
-   2. [Интеграционная схема](./docs/04-architecture/02-integration.md)
-   3. [Описание API](./docs/04-architecture/03-api.md)
+    1. [Компонентная схема](./docs/04-architecture/01-arch.md)
+    2. [Интеграционная схема](./docs/04-architecture/02-integration.md)
+    3. [Описание API](./docs/04-architecture/03-api.md)
 
 # Структура проекта
 
@@ -39,17 +40,19 @@ Marketplace -- это площадка, на которой пользовате
 6. [m1l7-kmp](m1l7-kmp) - Kotlin Multiplatform и интероперабельность с JVM, JS
 7. [m2l3-testing](m2l3-testing) - Тестирование проекта, TDD, MDD
 
-
 ## Транспортные модели, API
 
 1. [specs](specs) - описание API в форме OpenAPI-спецификаций
 2. [ok-marketplace-api-v1-jackson](ok-marketplace-api-v1-jackson) - Генерация первой версии транспортных модеелй с
    Jackson
-3. [ok-marketplace-api-v2-kmp](ok-marketplace-api-v2-kmp) - Генерация второй версии транспортных модеелй с KMP
-4. [ok-marketplace-common](ok-marketplace-common) - модуль с общими классами для модулей проекта. В частности, там
+3. [ok-marketplace-api-v2-kmp](ok-marketplace-api-v2-kmp) - Генерация второй версии транспортных моделей с KMP
+4. [ok-marketplace-api-log1](ok-marketplace-api-log1) - Генерация первой версии моделей логирования
+5. [ok-marketplace-common](ok-marketplace-common) - модуль с общими классами для модулей проекта. В частности, там
    располагаются внутренние модели и контекст.
-5. [ok-marketplace-mappers-v1](ok-marketplace-mappers-v1) - Мапер между внутренними моделями и моделями API v1
-6. [ok-marketplace-mappers-v2](ok-marketplace-mappers-v2) - Мапер между внутренними моделями и моделями API v2
+6. [ok-marketplace-mappers-v1](ok-marketplace-mappers-v1) - Мапер между внутренними моделями и моделями API v1
+7. [ok-marketplace-mappers-v2](ok-marketplace-mappers-v2) - Мапер между внутренними моделями и моделями API v2
+8. [ok-marketplace-mappers-log1](ok-marketplace-mappers-log1) - Мапер между внутренними моделями и моделями логирования
+   первой версии
 
 ## Фреймворки и транспорты
 
@@ -58,13 +61,19 @@ Marketplace -- это площадка, на которой пользовате
 3. [ok-marketplace-app-serverless](ok-marketplace-app-serverless) - Приложение для Yandex.Cloud lambda
 4. [ok-marketplace-app-rabbit](ok-marketplace-app-rabbit) - Микросервис на RabbitMQ
 5. [ok-marketplace-app-kafka](ok-marketplace-app-kafka) - Микросервис на Kafka
-6. [ok-marketplace-stubs](ok-marketplace-stubs) - Стабовые объекты для приложения
 
-[//]: # (## Модули бизнес-логики)
+## Мониторинг и логирование
 
-[//]: # ()
+1. [deploy](deploy) - Инструменты мониторинга и деплоя
+2. [ok-marketplace-lib-logging-common](ok-marketplace-lib-logging-common) - Общие объявления для логирования
+3. [ok-marketplace-lib-logging-kermit](ok-marketplace-lib-logging-kermit) - Библиотека логирования на базе библиотеки
+   Kermit
+4. [ok-marketplace-lib-logging-logback](ok-marketplace-lib-logging-logback) - Библиотека логирования на базе библиотеки
+   Logback
 
-[//]: # (1. [ok-marketplace-stubs]&#40;ok-marketplace-stubs&#41; - Стабы для ответов сервиса)
+## Модули бизнес-логики
+
+1. [ok-marketplace-stubs](ok-marketplace-stubs) - Стабы для ответов сервиса
 
 [//]: # (1. [ok-marketplace-biz]&#40;ok-marketplace-biz&#41; - Модуль бизнес-логики приложения)
 

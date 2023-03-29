@@ -16,7 +16,7 @@ import ru.otus.otuskotlin.marketplace.stubs.MkplAdStub
 class OfferControllerV2 {
 
     @PostMapping("offers")
-    fun searchOffers(@RequestBody request: AdOffersRequest): AdOffersResponse {
+    suspend fun searchOffers(@RequestBody request: AdOffersRequest): AdOffersResponse {
         val context = MkplContext()
         context.fromTransport(request)
         context.adsResponse.add(MkplAdStub.get())
