@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") apply false
 }
 
-val JVM_TAEGET = "11"
+val JVM_TAEGET = "17"
 
 group = "ru.otus.otuskotlin.marketplace"
 version = "0.0.2"
