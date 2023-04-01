@@ -54,6 +54,7 @@ include("ok-marketplace-mappers-v2")
 
 include("ok-marketplace-stubs")
 include("ok-marketplace-biz")
+include("ok-marketplace-lib-cor")
 include("ok-marketplace-app-spring")
 include("ok-marketplace-app-ktor")
 include("ok-marketplace-app-rabbit")
