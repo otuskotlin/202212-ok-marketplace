@@ -1,6 +1,6 @@
 openapi: 3.0.4
 info:
-  title: Marketplace
+  title: "Marketplace ${VERSION_APP}"
   description: This is a place where sellers and buyers meat each other
   license:
     name: Apache 2.0

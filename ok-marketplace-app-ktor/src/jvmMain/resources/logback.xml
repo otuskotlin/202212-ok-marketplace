@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+<configuration scan="true" scanPeriod="30 seconds" debug="false">
+
+    <property name="LOGS_FB_HOSTS" value="${LOGS_FB_HOSTS:-127.0.0.1}"/>
+    <property name="LOGS_FB_PORT" value="${LOGS_FB_PORT:-24224}"/>
+    <property name="SERVICE_NAME" value="${SERVICE_NAME:-ok_marketplace}"/>
+    <property name="LOG_OTUS_LEVEL" value="${LOG_OTUS_LEVEL:-info}"/>
+    <property name="LOG_COMMON_LEVEL" value="${LOG_COMMON_LEVEL:-error}"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level[%marker] %logger{36} - %msg%n%mdc%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--    <if condition='!property("LOGS_FB_HOSTS").equals("LOGS_FB_HOSTS_IS_UNDEFINED")-->
+    <!--                        &amp;&amp; !property("LOGS_FB_HOSTS").isEmpty()'>-->
+    <!--        <then>-->
+
+<!--    <if condition='!property("LOGS_FB_HOSTS").equals("LOGS_FB_HOSTS_IS_UNDEFINED")-->
+<!--                                &amp;&amp; !property("LOGS_FB_HOSTS").isEmpty()'>-->
+<!--        <then>-->
+            <appender name="fluentd" class="ch.qos.logback.more.appenders.DataFluentAppender">
+                <tag>app.logs</tag>
+                <label>normal</label>
+                <remoteHost>${LOGS_FB_HOSTS}</remoteHost>
+                <port>${LOGS_FB_PORT}</port>
+                <maxQueueSize>20</maxQueueSize>
+
+                <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                    <providers>
+                        <timestamp/>
+                        <version/>
+                        <pattern>
+                            <pattern>
+                                {
+                                "component": "${SERVICE_NAME}",
+                                "container-id": "${HOSTNAME}"
+                                }
+                            </pattern>
+                        </pattern>
+                        <message/>
+                        <loggerName/>
+                        <threadName/>
+                        <logLevel/>
+                        <logstashMarkers/>
+                        <callerData/>
+                        <stackTrace/>
+                        <context/>
+                        <mdc/>
+                        <logstashMarkers/>
+                        <arguments/>
+                        <tags/>
+                    </providers>
+                </encoder>
+            </appender>
+<!--        </then>-->
+<!--    </if>-->
+
+    <!--    &lt;!&ndash; For ELK-Stack: Kafka log's host &ndash;&gt;-->
+    <!--    <property name="LOGS_KAFKA_HOSTS" value="${BOOTSTRAP_SERVERS:-localhost:9094}"/>-->
+    <!--    &lt;!&ndash; For ELK-Stack: Kafka log's topic &ndash;&gt;-->
+    <!--    <property name="LOGS_KAFKA_TOPIC" value="${LOGS_KAFKA_TOPIC:-ok-mkpl-logs}"/>-->
+    <!--    <appender name="asyncMyLogKafka"-->
+    <!--              class="net.logstash.logback.appender.LoggingEventAsyncDisruptorAppender">-->
+    <!--        <if condition='!property("LOGS_KAFKA_HOSTS").equals("LOGS_KAFKA_HOSTS_IS_UNDEFINED")-->
+    <!--                            &amp;&amp; !property("LOGS_KAFKA_HOSTS").isEmpty()'>-->
+    <!--            <then>-->
+    <!--                <appender name="kafkaVerboseAppender"-->
+    <!--                          class="com.github.danielwegener.logback.kafka.KafkaAppender">-->
+    <!--                    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">-->
+    <!--                        <providers>-->
+    <!--                            <timestamp/>-->
+    <!--                            <version/>-->
+    <!--                            <pattern>-->
+    <!--                                <pattern>-->
+    <!--                                    {-->
+    <!--                                    "component": "${SERVICE_NAME}",-->
+    <!--                                    "container-id": "${HOSTNAME}"-->
+    <!--                                    }-->
+    <!--                                </pattern>-->
+    <!--                            </pattern>-->
+    <!--                            <message/>-->
+    <!--                            <loggerName/>-->
+    <!--                            <threadName/>-->
+    <!--                            <logLevel/>-->
+    <!--                            <logstashMarkers/>-->
+    <!--                            <callerData/>-->
+    <!--                            <stackTrace/>-->
+    <!--                            <context/>-->
+    <!--                            <mdc/>-->
+    <!--                            <logstashMarkers/>-->
+    <!--                            <arguments/>-->
+    <!--                            <tags/>-->
+    <!--                        </providers>-->
+    <!--                    </encoder>-->
+    <!--                    <topic>${LOGS_KAFKA_TOPIC}</topic>-->
+    <!--                    <deliveryStrategy-->
+    <!--                            class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy"/>-->
+    <!--                    <producerConfig>bootstrap.servers=${LOGS_KAFKA_HOSTS}</producerConfig>-->
+    <!--                </appender>-->
+    <!--            </then>-->
+    <!--        </if>-->
+    <!--    </appender>-->
+
+    <logger name="ru.otus" level="${LOG_OTUS_LEVEL}" additivity="false">
+        <appender-ref ref="fluentd"/>
+        <!--        <appender-ref ref="asyncMyLogKafka"/>-->
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="Application" level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <root level="${LOG_COMMON_LEVEL}">
+        <appender-ref ref="fluentd"/>
+        <!--        <appender-ref ref="asyncMyLogKafka"/>-->
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

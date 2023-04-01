@@ -39,10 +39,16 @@ pluginManagement {
 //include("m1l7-kmp")
 //include("m2l3-testing")
 
+include("ok-marketplace-lib-logging-common")
+include("ok-marketplace-lib-logging-kermit")
+include("ok-marketplace-lib-logging-logback")
+
+include("ok-marketplace-api-log1")
 include("ok-marketplace-api-v1-jackson")
 include("ok-marketplace-api-v2-kmp")
 
 include("ok-marketplace-common")
+include("ok-marketplace-mappers-log1")
 include("ok-marketplace-mappers-v1")
 include("ok-marketplace-mappers-v2")
 

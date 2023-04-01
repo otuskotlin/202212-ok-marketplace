@@ -11,9 +11,12 @@ dependencies {
     val springdocOpenapiUiVersion: String by project
     val coroutinesVersion: String by project
     val serializationVersion: String by project
+    val assertjVersion: String by project
+    val springmockkVersion: String by project
 
     implementation("org.springframework.boot:spring-boot-starter-actuator") // info; refresh; springMvc output
-    implementation("org.springframework.boot:spring-boot-starter-web") // Controller, Service, etc..
+//    implementation("org.springframework.boot:spring-boot-starter-web") // Controller, Service, etc..
+    implementation("org.springframework.boot:spring-boot-starter-webflux") // Controller, Service, etc..
     implementation("org.springframework.boot:spring-boot-starter-websocket") // Controller, Service, etc..
     implementation("org.springdoc:springdoc-openapi-ui:$springdocOpenapiUiVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin") // from models to json and Vice versa
@@ -27,6 +30,7 @@ dependencies {
 
     // transport models
     implementation(project(":ok-marketplace-common"))
+    implementation(project(":ok-marketplace-lib-logging-logback"))
 
     // v1 api
     implementation(project(":ok-marketplace-api-v1-jackson"))
@@ -44,7 +48,8 @@ dependencies {
 
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-webflux") // Controller, Service, etc..
-    testImplementation("com.ninja-squad:springmockk:3.0.1") // mockking beans
+    testImplementation("com.ninja-squad:springmockk:$springmockkVersion") // mockking beans
+    testImplementation("org.assertj:assertj-core:$assertjVersion")
 }
 
 tasks {
@@ -54,15 +59,6 @@ tasks {
         }
     }
 }
-
-/*sourceSets {
-    main {
-        resources {
-            srcDirs("$rootDir/specs")
-            println(srcDirs)
-        }
-    }
-}*/
 
 tasks.withType<Test> {
     useJUnitPlatform()
