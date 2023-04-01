@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import ru.otus.otuskotlin.marketplace.api.v1.apiV1Mapper
 import ru.otus.otuskotlin.marketplace.api.v1.models.IRequest
+import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.helpers.addError
 import ru.otus.otuskotlin.marketplace.common.helpers.asMkplError
@@ -18,7 +19,7 @@ import java.util.*
 
 val sessions = Collections.synchronizedSet<WebSocketSession>(LinkedHashSet())
 
-suspend fun WebSocketSession.wsHandlerV1() {
+suspend fun WebSocketSession.wsHandlerV1(appSettings: MkplAppSettings) {
     sessions.add(this)
 
     // Handle init request

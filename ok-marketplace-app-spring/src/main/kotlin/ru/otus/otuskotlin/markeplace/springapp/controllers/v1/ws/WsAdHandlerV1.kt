@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.markeplace.springapp.api.v1.ws
+package ru.otus.otuskotlin.markeplace.springapp.controllers.v1.ws
 
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Clock
@@ -10,6 +10,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler
 import ru.otus.otuskotlin.marketplace.api.v1.apiV1Mapper
 import ru.otus.otuskotlin.marketplace.api.v1.models.IRequest
 import ru.otus.otuskotlin.marketplace.common.MkplContext
+import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.common.helpers.asMkplError
 import ru.otus.otuskotlin.marketplace.common.helpers.isUpdatableCommand
 import ru.otus.otuskotlin.marketplace.mappers.v1.fromTransport
@@ -18,7 +19,7 @@ import ru.otus.otuskotlin.marketplace.mappers.v1.toTransportInit
 import java.util.*
 
 @Component
-class WsAdHandlerV1 : TextWebSocketHandler() {
+class WsAdHandlerV1(val corSettings: MkplCorSettings) : TextWebSocketHandler() {
     private val sessions = Collections.synchronizedSet<WebSocketSession>(LinkedHashSet())
 
     override fun afterConnectionEstablished(session: WebSocketSession) {

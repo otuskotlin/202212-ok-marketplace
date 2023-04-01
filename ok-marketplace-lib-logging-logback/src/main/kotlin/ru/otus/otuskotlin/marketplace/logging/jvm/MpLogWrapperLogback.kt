@@ -10,7 +10,7 @@ import ru.otus.otuskotlin.marketplace.logging.common.IMpLogWrapper
 import ru.otus.otuskotlin.marketplace.logging.common.LogLevel
 import java.time.Instant
 
-class MpLogWrapperJvm(
+class MpLogWrapperLogback(
     /**
      * Экземпляр логера (Logback)
      */

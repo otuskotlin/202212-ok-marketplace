@@ -1,14 +1,15 @@
-package ru.otus.otuskotlin.markeplace.springapp.api.v2.controller
+package ru.otus.otuskotlin.markeplace.springapp.controllers.v2
 
 import org.springframework.web.bind.annotation.*
 import ru.otus.otuskotlin.marketplace.api.v2.models.*
 import ru.otus.otuskotlin.marketplace.common.MkplContext
+import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.mappers.v2.*
 import ru.otus.otuskotlin.marketplace.stubs.MkplAdStub
 
 @RestController
 @RequestMapping("v2/ad")
-class AdControllerV2 {
+class AdControllerV2(corSettings: MkplCorSettings) {
 
     @PostMapping("create")
     suspend fun createAd(@RequestBody request: AdCreateRequest): AdCreateResponse {

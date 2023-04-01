@@ -1,14 +1,6 @@
 package ru.otus.otuskotlin.marketplace.app
 
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
-import io.ktor.server.http.content.*
-import io.ktor.server.plugins.autohead.*
-import io.ktor.server.plugins.cachingheaders.*
-import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.plugins.cors.routing.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import ru.otus.otuskotlin.marketplace.app.plugins.initAppSettings
@@ -29,10 +21,10 @@ fun Application.module(appSettings: MkplAppSettings = initAppSettings()) {
 //        }
 
         route("v2") {
-            v2Ad()
-            v2Offer()
+            v2Ad(appSettings)
+            v2Offer(appSettings)
             webSocket("/ws") {
-                wsHandlerV2()
+                wsHandlerV2(appSettings)
             }
         }
 

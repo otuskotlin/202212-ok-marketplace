@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.markeplace.springapp.api.v1.ws
+package ru.otus.otuskotlin.markeplace.springapp.controllers.v2.ws
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.socket.config.annotation.EnableWebSocket
@@ -7,9 +7,9 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 
 @Configuration
 @EnableWebSocket
-class WebSocketConfigV1(val handlerV1: WsAdHandlerV1) : WebSocketConfigurer {
+class WebSocketConfigV2(val handlerV2: WsAdHandlerV2) : WebSocketConfigurer {
 
     override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
-        registry.addHandler(handlerV1, "/ws/v1").setAllowedOrigins("*")
+        registry.addHandler(handlerV2, "/ws/v2").setAllowedOrigins("*")
     }
 }

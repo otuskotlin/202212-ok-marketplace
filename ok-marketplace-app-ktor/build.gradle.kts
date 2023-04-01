@@ -24,7 +24,7 @@ dependencies {
 //}
 
 application {
-    mainClass.set("io.ktor.server.netty.EngineMain")
+    mainClass.set("io.ktor.server.cio.EngineMain")
 //    mainClass.set("ru.otus.otuskotlin.marketplace.ApplicationKt")
 }
 
@@ -56,7 +56,11 @@ kotlin {
                 implementation(project(":ok-marketplace-common"))
                 implementation(project(":ok-marketplace-api-v2-kmp"))
                 implementation(project(":ok-marketplace-mappers-v2"))
+                implementation(project(":ok-marketplace-api-log1"))
+                implementation(project(":ok-marketplace-mappers-log1"))
                 implementation(project(":ok-marketplace-stubs"))
+                implementation(project(":ok-marketplace-biz"))
+                implementation(project(":ok-marketplace-lib-logging-kermit"))
 
                 implementation(ktorServer("core")) // "io.ktor:ktor-server-core:$ktorVersion"
                 implementation(ktorServer("cio")) // "io.ktor:ktor-server-cio:$ktorVersion"
@@ -119,7 +123,8 @@ kotlin {
 
                 implementation(ktorServer("auth-jwt")) // "io.ktor:ktor-auth-jwt:$ktorVersion"
 
-                implementation("ch.qos.logback:logback-classic:$logbackVersion")
+//                implementation("ch.qos.logback:logback-classic:$logbackVersion")
+                implementation(project(":ok-marketplace-lib-logging-logback"))
 
                 // transport models
                 implementation(project(":ok-marketplace-common"))
@@ -132,6 +137,9 @@ kotlin {
 
                 // Stubs
                 implementation(project(":ok-marketplace-stubs"))
+
+                implementation("com.sndyuk:logback-more-appenders:1.8.8")
+                implementation("org.fluentd:fluent-logger:0.3.4")
             }
         }
         @Suppress("UNUSED_VARIABLE")

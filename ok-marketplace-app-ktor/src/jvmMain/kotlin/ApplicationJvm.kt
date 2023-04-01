@@ -1,16 +1,11 @@
 package ru.otus.otuskotlin.marketplace.app
 
-import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
-import io.ktor.server.plugins.autohead.*
-import io.ktor.server.plugins.cachingheaders.*
 import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.defaultheaders.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import org.slf4j.event.Level
@@ -38,10 +33,10 @@ fun Application.moduleJvm(appSettings: MkplAppSettings = initAppSettings()) {
 
     routing {
         route("v1") {
-            v1Ad()
-            v1Offer()
+            v1Ad(appSettings)
+            v1Offer(appSettings)
             webSocket("/ws") {
-                wsHandlerV1()
+                wsHandlerV1(appSettings)
             }
         }
         swagger(appSettings)

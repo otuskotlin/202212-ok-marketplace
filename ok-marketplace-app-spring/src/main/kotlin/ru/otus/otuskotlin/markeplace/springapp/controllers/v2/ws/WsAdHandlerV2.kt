@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.markeplace.springapp.api.v2.ws
+package ru.otus.otuskotlin.markeplace.springapp.controllers.v2.ws
 
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Clock

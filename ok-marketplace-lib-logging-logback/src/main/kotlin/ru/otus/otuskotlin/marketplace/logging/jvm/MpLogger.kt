@@ -10,11 +10,11 @@ import kotlin.reflect.KClass
  *
  * @param logger Logback instance from [LoggerFactory.getLogger()]
  */
-fun mpLoggerJvm(logger: Logger): IMpLogWrapper = MpLogWrapperJvm(
+fun mpLoggerLogback(logger: Logger): IMpLogWrapper = MpLogWrapperLogback(
     logger = logger,
     loggerId = logger.name,
 )
 
-fun mpLoggerJvm(clazz: KClass<*>): IMpLogWrapper = mpLoggerJvm(LoggerFactory.getLogger(clazz.java) as Logger)
+fun mpLoggerLogback(clazz: KClass<*>): IMpLogWrapper = mpLoggerLogback(LoggerFactory.getLogger(clazz.java) as Logger)
 @Suppress("unused")
-fun mpLoggerJvm(loggerId: String): IMpLogWrapper = mpLoggerJvm(LoggerFactory.getLogger(loggerId) as Logger)
+fun mpLoggerLogback(loggerId: String): IMpLogWrapper = mpLoggerLogback(LoggerFactory.getLogger(loggerId) as Logger)
