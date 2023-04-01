@@ -22,7 +22,7 @@ suspend fun ApplicationCall.createAd(appSettings: MkplAppSettings) {
         context.fromTransport(request)
         logger.info(
             msg = "${context.command} request is got",
-            data = context.toLog("${logId}-request")
+            data = context.toLog("${logId}-request"),
         )
         context.adResponse = MkplAdStub.get()
         respond(context.toTransportCreate())

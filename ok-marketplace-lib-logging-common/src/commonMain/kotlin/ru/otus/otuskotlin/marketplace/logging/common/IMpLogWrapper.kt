@@ -86,7 +86,7 @@ interface IMpLogWrapper {
     }
 
     companion object {
-        val NONE = object: IMpLogWrapper {
+        val DEFAULT = object: IMpLogWrapper {
             override val loggerId: String = "NONE"
 
             override fun log(

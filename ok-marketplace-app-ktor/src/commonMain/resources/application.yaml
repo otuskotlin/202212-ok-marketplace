@@ -11,6 +11,7 @@ ktor:
   application:
     modules:
       - "ru.otus.otuskotlin.marketplace.app.ApplicationKt.module"
+#  logger: "kmp"
 #  urls:
 #    - "http://127.0.0.1:8080/v1"
 #    - "http://0.0.0.0:8080/v1"

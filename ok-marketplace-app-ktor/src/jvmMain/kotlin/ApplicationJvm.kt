@@ -15,13 +15,20 @@ import ru.otus.otuskotlin.marketplace.app.plugins.swagger
 import ru.otus.otuskotlin.marketplace.app.v1.v1Ad
 import ru.otus.otuskotlin.marketplace.app.v1.v1Offer
 import ru.otus.otuskotlin.marketplace.app.v1.wsHandlerV1
+import ru.otus.otuskotlin.marketplace.logging.jvm.MpLogWrapperLogback
 
+private val clazz = Application::moduleJvm::class.qualifiedName ?: "Application"
 @Suppress("unused") // Referenced in application.conf_
 fun Application.moduleJvm(appSettings: MkplAppSettings = initAppSettings()) {
     module(appSettings)
 
     install(CallLogging) {
         level = Level.INFO
+        val lgr = appSettings
+            .corSettings
+            .loggerProvider
+            .logger(clazz) as? MpLogWrapperLogback
+        lgr?.logger?.also { logger = it }
     }
     install(ContentNegotiation) {
         jackson {

@@ -34,7 +34,6 @@ services:
       - "24224:24224"
       - "24224:24224/udp"
       - "2020:2020"
-      - "7777:7777"
     environment:
       - opensearch_host=opensearch
       - opensearch_user=admin
