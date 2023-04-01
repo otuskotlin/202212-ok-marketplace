@@ -13,11 +13,7 @@ kotlin {
 
     sourceSets {
         val kermitLoggerVersion: String by project
-        val logbackVersion: String by project
-        val logbackEncoderVersion: String by project
-        val logbackKafkaVersion: String by project
         val coroutinesVersion: String by project
-        val janinoVersion: String by project
         val datetimeVersion: String by project
         val serializationVersion: String by project
 
@@ -46,12 +42,6 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
-
-                // logback
-                implementation("net.logstash.logback:logstash-logback-encoder:$logbackEncoderVersion")
-                implementation("com.github.danielwegener:logback-kafka-appender:$logbackKafkaVersion")
-                implementation("org.codehaus.janino:janino:$janinoVersion")
-                api("ch.qos.logback:logback-classic:$logbackVersion")
             }
         }
         @Suppress("UNUSED_VARIABLE")

@@ -8,7 +8,6 @@ version = rootProject.version
 dependencies {
     val logbackVersion: String by project
     val logbackEncoderVersion: String by project
-    val logbackKafkaVersion: String by project
     val coroutinesVersion: String by project
     val janinoVersion: String by project
     val datetimeVersion: String by project
@@ -22,7 +21,7 @@ dependencies {
 
     // logback
     implementation("net.logstash.logback:logstash-logback-encoder:$logbackEncoderVersion")
-    implementation("com.github.danielwegener:logback-kafka-appender:$logbackKafkaVersion")
+//    implementation("com.github.danielwegener:logback-kafka-appender:$logbackKafkaVersion")
     implementation("org.codehaus.janino:janino:$janinoVersion")
     api("ch.qos.logback:logback-classic:$logbackVersion")
 
