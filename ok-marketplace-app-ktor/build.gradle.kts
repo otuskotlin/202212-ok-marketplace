@@ -1,7 +1,9 @@
+import io.ktor.plugin.features.*
 
 val ktorVersion: String by project
 val logbackVersion: String by project
 val serializationVersion: String by project
+val javaVersion: String by project
 
 fun ktorServer(module: String, version: String? = this@Build_gradle.ktorVersion): Any =
     "io.ktor:ktor-server-$module:$version"
@@ -19,13 +21,16 @@ dependencies {
     webjars("org.webjars:swagger-ui:$swaggerUiVersion")
 }
 
-//repositories {
-//    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
-//}
-
 application {
     mainClass.set("io.ktor.server.cio.EngineMain")
-//    mainClass.set("ru.otus.otuskotlin.marketplace.ApplicationKt")
+}
+
+ktor {
+    docker {
+        localImageName.set(project.name)
+        imageTag.set(project.version.toString())
+        jreVersion.set(JreVersion.valueOf("JRE_$javaVersion"))
+    }
 }
 
 kotlin {

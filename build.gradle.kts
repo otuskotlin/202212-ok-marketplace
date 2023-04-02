@@ -6,10 +6,10 @@ plugins {
     kotlin("jvm") apply false
 }
 
-val JVM_TAEGET = "17"
+val javaVersion: String by project
 
 group = "ru.otus.otuskotlin.marketplace"
-version = "0.0.2"
+version = "0.0.3"
 
 allprojects {
     repositories {
@@ -24,9 +24,9 @@ subprojects {
     version = rootProject.version
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = JVM_TAEGET
+        kotlinOptions.jvmTarget = javaVersion
     }
     tasks.withType<KotlinJvmCompile> {
-        kotlinOptions.jvmTarget = JVM_TAEGET
+        kotlinOptions.jvmTarget = javaVersion
     }
 }
