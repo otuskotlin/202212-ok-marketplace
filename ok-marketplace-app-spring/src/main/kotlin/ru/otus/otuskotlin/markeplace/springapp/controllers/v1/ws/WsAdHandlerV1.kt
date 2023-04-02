@@ -7,6 +7,7 @@ import org.springframework.web.socket.CloseStatus
 import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketSession
 import org.springframework.web.socket.handler.TextWebSocketHandler
+import ru.otus.otuskotlin.markeplace.springapp.service.MkplAdBlockingProcessor
 import ru.otus.otuskotlin.marketplace.api.v1.apiV1Mapper
 import ru.otus.otuskotlin.marketplace.api.v1.models.IRequest
 import ru.otus.otuskotlin.marketplace.common.MkplContext
@@ -19,14 +20,17 @@ import ru.otus.otuskotlin.marketplace.mappers.v1.toTransportInit
 import java.util.*
 
 @Component
-class WsAdHandlerV1(val corSettings: MkplCorSettings) : TextWebSocketHandler() {
+class WsAdHandlerV1(
+    corSettings: MkplCorSettings,
+    private val processor: MkplAdBlockingProcessor
+) : TextWebSocketHandler() {
     private val sessions = Collections.synchronizedSet<WebSocketSession>(LinkedHashSet())
 
     override fun afterConnectionEstablished(session: WebSocketSession) {
         sessions.add(session)
 
         val context = MkplContext()
-
+        processor.exec(context)
         val msg = apiV1Mapper.writeValueAsString(context.toTransportInit())
         session.sendMessage(TextMessage(msg))
     }
@@ -38,6 +42,8 @@ class WsAdHandlerV1(val corSettings: MkplCorSettings) : TextWebSocketHandler() {
             try {
                 val request = apiV1Mapper.readValue(message.payload, IRequest::class.java)
                 ctx.fromTransport(request)
+
+                processor.exec(ctx)
 
                 val result = apiV1Mapper.writeValueAsString(ctx.toTransportAd())
                 if (ctx.isUpdatableCommand()) {

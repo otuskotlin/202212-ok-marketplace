@@ -40,11 +40,12 @@ dependencies {
     implementation(project(":ok-marketplace-api-v2-kmp"))
     implementation(project(":ok-marketplace-mappers-v2"))
 
-    // Stubs
-    implementation(project(":ok-marketplace-stubs"))
+    // biz
+    implementation(project(":ok-marketplace-biz"))
 
     // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation(project(":ok-marketplace-stubs"))
 
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-webflux") // Controller, Service, etc..
