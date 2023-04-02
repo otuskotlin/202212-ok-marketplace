@@ -2,6 +2,7 @@ package ru.otus.otuskotlin.marketplace.common.helpers
 
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.models.MkplError
+import ru.otus.otuskotlin.marketplace.common.models.MkplState
 
 fun Throwable.asMkplError(
     code: String = "unknown",
@@ -16,3 +17,8 @@ fun Throwable.asMkplError(
 )
 
 fun MkplContext.addError(vararg error: MkplError) = errors.addAll(error)
+
+fun MkplContext.fail(error: MkplError) {
+    addError(error)
+    state = MkplState.FAILING
+}
