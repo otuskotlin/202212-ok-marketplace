@@ -19,6 +19,7 @@ kotlin {
 
                 implementation(project(":ok-marketplace-common"))
                 implementation(project(":ok-marketplace-stubs"))
+                implementation(project(":ok-marketplace-lib-cor"))
             }
         }
         @Suppress("UNUSED_VARIABLE")
