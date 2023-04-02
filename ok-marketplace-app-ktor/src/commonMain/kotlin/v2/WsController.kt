@@ -10,6 +10,7 @@ import ru.otus.otuskotlin.marketplace.api.v2.apiV2Mapper
 import ru.otus.otuskotlin.marketplace.api.v2.encodeResponse
 import ru.otus.otuskotlin.marketplace.api.v2.models.IRequest
 import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
+import ru.otus.otuskotlin.marketplace.app.process
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.helpers.addError
 import ru.otus.otuskotlin.marketplace.common.helpers.asMkplError
@@ -40,7 +41,7 @@ suspend fun WebSocketSession.wsHandlerV2(appSettings: MkplAppSettings) {
         try {
             val request = apiV2Mapper.decodeFromString<IRequest>(jsonStr)
             context.fromTransport(request)
-            context.adResponse = MkplAdStub.get()
+            process(context)
 
             val result = apiV2Mapper.encodeResponse(context.toTransportAd())
 

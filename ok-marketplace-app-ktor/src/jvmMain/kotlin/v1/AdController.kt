@@ -6,6 +6,7 @@ import io.ktor.server.response.*
 import ru.otus.otuskotlin.marketplace.api.logs.mapper.toLog
 import ru.otus.otuskotlin.marketplace.api.v1.models.*
 import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
+import ru.otus.otuskotlin.marketplace.app.process
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.models.MkplDealSide
 import ru.otus.otuskotlin.marketplace.mappers.v1.*
@@ -24,7 +25,7 @@ suspend fun ApplicationCall.createAd(appSettings: MkplAppSettings) {
             msg = "${context.command} request is got",
             data = context.toLog("${logId}-request"),
         )
-        context.adResponse = MkplAdStub.get()
+        process(context)
         respond(context.toTransportCreate())
         logger.info(
             msg = "${context.command} response is sent",
@@ -37,7 +38,7 @@ suspend fun ApplicationCall.readAd(appSettings: MkplAppSettings) {
     val request = receive<AdReadRequest>()
     val context = MkplContext()
     context.fromTransport(request)
-    context.adResponse = MkplAdStub.get()
+    process(context)
     respond(context.toTransportRead())
 }
 
@@ -45,7 +46,7 @@ suspend fun ApplicationCall.updateAd(appSettings: MkplAppSettings) {
     val request = receive<AdUpdateRequest>()
     val context = MkplContext()
     context.fromTransport(request)
-    context.adResponse = MkplAdStub.get()
+    process(context)
     respond(context.toTransportUpdate())
 }
 
@@ -53,7 +54,7 @@ suspend fun ApplicationCall.deleteAd(appSettings: MkplAppSettings) {
     val request = receive<AdDeleteRequest>()
     val context = MkplContext()
     context.fromTransport(request)
-    context.adResponse = MkplAdStub.get()
+    process(context)
     respond(context.toTransportDelete())
 }
 
@@ -61,6 +62,6 @@ suspend fun ApplicationCall.searchAd(appSettings: MkplAppSettings) {
     val request = receive<AdSearchRequest>()
     val context = MkplContext()
     context.fromTransport(request)
-    context.adsResponse.addAll(MkplAdStub.prepareSearchList("Болт", MkplDealSide.DEMAND))
+    process(context)
     respond(context.toTransportSearch())
 }
