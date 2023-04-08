@@ -68,7 +68,7 @@ class KafkaControllerTest {
         val result = apiV1ResponseDeserialize<AdCreateResponse>(message.value())
         assertEquals(outputTopic, message.topic())
         assertEquals("11111111-1111-1111-1111-111111111111", result.requestId)
-        assertEquals("Требуется болт", result.ad?.title)
+        assertEquals("Some Ad", result.ad?.title)
     }
 
     companion object {

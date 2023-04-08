@@ -1,6 +1,9 @@
 package ru.otus.otuskotlin.markeplace.springapp.api.v1.controller
 
 import org.assertj.core.api.Assertions.assertThat
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.ninjasquad.springmockk.MockkBean
+import io.mockk.coVerify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
@@ -10,10 +13,15 @@ import org.springframework.web.reactive.function.BodyInserters
 import ru.otus.otuskotlin.markeplace.springapp.config.CorConfig
 import ru.otus.otuskotlin.markeplace.springapp.controllers.v1.AdController
 import ru.otus.otuskotlin.markeplace.springapp.controllers.v1.OfferController
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import ru.otus.otuskotlin.markeplace.springapp.service.MkplAdBlockingProcessor
 import ru.otus.otuskotlin.marketplace.api.v1.models.*
+import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.mappers.v1.*
-import ru.otus.otuskotlin.marketplace.stubs.MkplAdStub
 
 // Temporary simple test with stubs
 @WebFluxTest(AdController::class, OfferController::class, CorConfig::class)
@@ -21,25 +29,28 @@ internal class AdControllerTest {
     @Autowired
     private lateinit var webClient: WebTestClient
 
+    @MockkBean(relaxUnitFun = true)
+    private lateinit var processor: MkplAdBlockingProcessor
+
     @Test
     fun createAd() = testStubAd(
         "/v1/ad/create",
         AdCreateRequest(),
-        MkplContext().apply { adResponse = MkplAdStub.get() }.toTransportCreate()
+        MkplContext().toTransportCreate()
     )
 
     @Test
     fun readAd() = testStubAd(
         "/v1/ad/read",
         AdReadRequest(),
-        MkplContext().apply { adResponse = MkplAdStub.get() }.toTransportRead()
+        MkplContext().toTransportRead()
     )
 
     @Test
     fun updateAd() = testStubAd(
         "/v1/ad/update",
         AdUpdateRequest(),
-        MkplContext().apply { adResponse = MkplAdStub.get() }.toTransportUpdate()
+        MkplContext().toTransportUpdate()
     )
 
     @Test
@@ -53,14 +64,14 @@ internal class AdControllerTest {
     fun searchAd() = testStubAd(
         "/v1/ad/search",
         AdSearchRequest(),
-        MkplContext().apply { adsResponse.add(MkplAdStub.get()) }.toTransportSearch()
+        MkplContext().toTransportSearch()
     )
 
     @Test
     fun searchOffers() = testStubAd(
         "/v1/ad/offers",
         AdOffersRequest(),
-        MkplContext().apply { adsResponse.add(MkplAdStub.get()) }.toTransportOffers()
+        MkplContext().toTransportOffers()
     )
 
     private inline fun <reified Req : Any, reified Res : Any> testStubAd(
@@ -80,5 +91,6 @@ internal class AdControllerTest {
                 println("RESPONSE: $it")
                 assertThat(it).isEqualTo(responseObj)
             }
+        coVerify { processor.exec(any()) }
     }
 }
