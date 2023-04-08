@@ -1,56 +1,36 @@
 package ru.otus.otuskotlin.markeplace.springapp.controllers.v2
 
 import org.springframework.web.bind.annotation.*
-import ru.otus.otuskotlin.markeplace.springapp.service.MkplAdBlockingProcessor
 import ru.otus.otuskotlin.marketplace.api.v2.models.*
-import ru.otus.otuskotlin.marketplace.common.MkplContext
-import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
+import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
+import ru.otus.otuskotlin.marketplace.common.models.MkplCommand
+import ru.otus.otuskotlin.marketplace.logging.common.mpLogger
 import ru.otus.otuskotlin.marketplace.mappers.v2.*
 
 @RestController
 @RequestMapping("v2/ad")
 class AdControllerV2(
-    corSettings: MkplCorSettings,
-    private val processor: MkplAdBlockingProcessor
+    private val processor: MkplAdProcessor,
 ) {
 
+    private val logger = mpLogger(AdControllerV2::class)
     @PostMapping("create")
-    suspend fun createAd(@RequestBody request: AdCreateRequest): AdCreateResponse {
-        val context = MkplContext()
-        context.fromTransport(request)
-        processor.exec(context)
-        return context.toTransportCreate()
-    }
+    suspend fun createAd(@RequestBody request: String): String =
+        processV2<AdCreateRequest, AdCreateResponse>(processor, MkplCommand.CREATE, requestString = request, logger, "ad-create")
 
     @PostMapping("read")
-    suspend fun readAd(@RequestBody request: AdReadRequest): AdReadResponse {
-        val context = MkplContext()
-        context.fromTransport(request)
-        processor.exec(context)
-        return context.toTransportRead()
-    }
+    suspend fun readAd(@RequestBody request: String): String =
+        processV2<AdCreateRequest, AdCreateResponse>(processor, MkplCommand.CREATE, requestString = request, logger, "ad-create")
 
     @PostMapping("update")
-    suspend fun updateAd(@RequestBody request: AdUpdateRequest): AdUpdateResponse {
-        val context = MkplContext()
-        context.fromTransport(request)
-        processor.exec(context)
-        return context.toTransportUpdate()
-    }
+    suspend fun updateAd(@RequestBody request: String): String =
+        processV2<AdUpdateRequest, AdUpdateResponse>(processor, MkplCommand.UPDATE, requestString = request, logger, "ad-update")
 
     @PostMapping("delete")
-    suspend fun deleteAd(@RequestBody request: AdDeleteRequest): AdDeleteResponse {
-        val context = MkplContext()
-        context.fromTransport(request)
-        processor.exec(context)
-        return context.toTransportDelete()
-    }
+    suspend fun deleteAd(@RequestBody request: String): String =
+        processV2<AdDeleteRequest, AdDeleteResponse>(processor, MkplCommand.DELETE, requestString = request, logger, "ad-delete")
 
     @PostMapping("search")
-    suspend fun searchAd(@RequestBody request: AdSearchRequest): AdSearchResponse {
-        val context = MkplContext()
-        context.fromTransport(request)
-        processor.exec(context)
-        return context.toTransportSearch()
-    }
+    suspend fun searchAd(@RequestBody request: String): String =
+        processV2<AdSearchRequest, AdSearchResponse>(processor, MkplCommand.SEARCH, requestString = request, logger, "ad-search")
 }

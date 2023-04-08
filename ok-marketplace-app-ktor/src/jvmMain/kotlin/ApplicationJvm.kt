@@ -15,6 +15,7 @@ import ru.otus.otuskotlin.marketplace.app.plugins.swagger
 import ru.otus.otuskotlin.marketplace.app.v1.v1Ad
 import ru.otus.otuskotlin.marketplace.app.v1.v1Offer
 import ru.otus.otuskotlin.marketplace.app.v1.wsHandlerV1
+import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.logging.jvm.MpLogWrapperLogback
 
 private val clazz = Application::moduleJvm::class.qualifiedName ?: "Application"
@@ -38,10 +39,11 @@ fun Application.moduleJvm(appSettings: MkplAppSettings = initAppSettings()) {
     }
     install(DefaultHeaders)
 
+    val processor = MkplAdProcessor()
     routing {
         route("v1") {
-            v1Ad(appSettings)
-            v1Offer(appSettings)
+            v1Ad(processor)
+            v1Offer(processor)
             webSocket("/ws") {
                 wsHandlerV1(appSettings)
             }

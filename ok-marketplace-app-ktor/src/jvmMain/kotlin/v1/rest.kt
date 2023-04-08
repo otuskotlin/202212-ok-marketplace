@@ -3,32 +3,37 @@ package ru.otus.otuskotlin.marketplace.app.v1
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
-import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
+import ru.otus.otuskotlin.marketplace.app.v2.v2Ad
+import ru.otus.otuskotlin.marketplace.app.v2.v2Offer
+import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
+import ru.otus.otuskotlin.marketplace.logging.common.mpLogger
 
-fun Route.v1Ad(appSettings: MkplAppSettings) {
+private val loggerAd = mpLogger(Route::v2Ad::class)
+private val loggerOffers = mpLogger(Route::v2Offer::class)
+fun Route.v1Ad(processor: MkplAdProcessor) {
     route("ad") {
         post("create") {
-            call.createAd(appSettings)
+            call.createAd(processor, loggerAd)
         }
         post("read") {
-            call.readAd(appSettings)
+            call.readAd(processor, loggerAd)
         }
         post("update") {
-            call.updateAd(appSettings)
+            call.updateAd(processor, loggerAd)
         }
         post("delete") {
-            call.deleteAd(appSettings)
+            call.deleteAd(processor, loggerAd)
         }
         post("search") {
-            call.searchAd(appSettings)
+            call.searchAd(processor, loggerAd)
         }
     }
 }
 
-fun Route.v1Offer(appSettings: MkplAppSettings) {
+fun Route.v1Offer(processor: MkplAdProcessor) {
     route("ad") {
         post("offers") {
-            call.offersAd(appSettings)
+            call.offersAd(processor, loggerOffers)
         }
     }
 }

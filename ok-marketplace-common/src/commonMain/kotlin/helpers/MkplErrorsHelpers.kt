@@ -22,3 +22,19 @@ fun MkplContext.fail(error: MkplError) {
     addError(error)
     state = MkplState.FAILING
 }
+fun errorValidation(
+    field: String,
+    /**
+     * Код, характеризующий ошибку. Не должен включать имя поля или указание на валидацию.
+     * Например: empty, badSymbols, tooLong, etc
+     */
+    violationCode: String,
+    description: String,
+    level: MkplError.Level = MkplError.Level.ERROR,
+) = MkplError(
+    code = "validation-$field-$violationCode",
+    field = field,
+    group = "validation",
+    message = "Validation error for field $field: $description",
+    level = level,
+)
