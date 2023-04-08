@@ -6,6 +6,7 @@ import io.ktor.server.http.content.*
 import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.defaultheaders.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import org.slf4j.event.Level
@@ -41,9 +42,12 @@ fun Application.moduleJvm(appSettings: MkplAppSettings = initAppSettings()) {
 
     val processor = MkplAdProcessor()
     routing {
+        get("/") {
+            call.respondText("Hello, world!")
+        }
         route("v1") {
-            v1Ad(processor)
-            v1Offer(processor)
+            v1Ad(processor, appSettings)
+            v1Offer(processor, appSettings)
             webSocket("/ws") {
                 wsHandlerV1(appSettings)
             }

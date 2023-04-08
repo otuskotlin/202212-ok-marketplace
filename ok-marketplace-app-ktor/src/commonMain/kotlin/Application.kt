@@ -18,13 +18,9 @@ fun Application.module(appSettings: MkplAppSettings = initAppSettings()) {
     initPlugins(appSettings)
     val processor = MkplAdProcessor()
     routing {
-        get("/") {
-            call.respondText("Hello, world!")
-        }
-
         route("v2") {
-            v2Ad(processor = processor)
-            v2Offer(processor = processor)
+            v2Ad(processor = processor, appSettings = appSettings)
+            v2Offer(processor = processor, appSettings = appSettings)
             webSocket("/ws") {
                 wsHandlerV2(appSettings)
             }
