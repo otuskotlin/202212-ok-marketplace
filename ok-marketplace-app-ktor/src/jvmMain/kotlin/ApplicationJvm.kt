@@ -42,12 +42,9 @@ fun Application.moduleJvm(appSettings: MkplAppSettings = initAppSettings()) {
 
     val processor = MkplAdProcessor()
     routing {
-        get("/") {
-            call.respondText("Hello, world!")
-        }
         route("v1") {
-            v1Ad(processor, appSettings)
-            v1Offer(processor, appSettings)
+            v1Ad(appSettings)
+            v1Offer(appSettings)
             webSocket("/ws") {
                 wsHandlerV1(appSettings)
             }

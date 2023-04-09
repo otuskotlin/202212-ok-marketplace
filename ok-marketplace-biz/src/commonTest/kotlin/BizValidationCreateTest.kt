@@ -5,6 +5,7 @@ import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.common.models.MkplCommand
 import kotlin.test.Test
 
+// TODO-validation-5: смотрим пример теста валидации, собранного из тестовых функций-оберток
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizValidationCreateTest {
 

@@ -12,6 +12,6 @@ class ApplicationTest {
     fun `root endpoint`() = testApplication {
         application { moduleJvm() }
         val response = client.get("/")
-        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(HttpStatusCode.NotFound, response.status)
     }
 }

@@ -9,18 +9,16 @@ import ru.otus.otuskotlin.marketplace.app.plugins.initPlugins
 import ru.otus.otuskotlin.marketplace.app.v2.v2Ad
 import ru.otus.otuskotlin.marketplace.app.v2.v2Offer
 import ru.otus.otuskotlin.marketplace.app.v2.wsHandlerV2
-import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 
 fun main(args: Array<String>): Unit = io.ktor.server.cio.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
 fun Application.module(appSettings: MkplAppSettings = initAppSettings()) {
     initPlugins(appSettings)
-    val processor = MkplAdProcessor()
     routing {
         route("v2") {
-            v2Ad(processor = processor, appSettings = appSettings)
-            v2Offer(processor = processor, appSettings = appSettings)
+            v2Ad(appSettings = appSettings)
+            v2Offer(appSettings = appSettings)
             webSocket("/ws") {
                 wsHandlerV2(appSettings)
             }

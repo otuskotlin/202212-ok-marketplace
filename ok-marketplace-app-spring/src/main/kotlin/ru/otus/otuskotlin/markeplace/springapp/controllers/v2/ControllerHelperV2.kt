@@ -3,11 +3,11 @@ package ru.otus.otuskotlin.markeplace.springapp.controllers.v2
 import kotlinx.datetime.Clock
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
+import ru.otus.otuskotlin.markeplace.springapp.service.MkplAdBlockingProcessor
 import ru.otus.otuskotlin.marketplace.api.logs.mapper.toLog
 import ru.otus.otuskotlin.marketplace.api.v2.apiV2Mapper
 import ru.otus.otuskotlin.marketplace.api.v2.models.IRequest
 import ru.otus.otuskotlin.marketplace.api.v2.models.IResponse
-import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.helpers.asMkplError
 import ru.otus.otuskotlin.marketplace.common.models.MkplCommand
@@ -17,7 +17,7 @@ import ru.otus.otuskotlin.marketplace.mappers.v2.fromTransport
 import ru.otus.otuskotlin.marketplace.mappers.v2.toTransportAd
 
 suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IResponse> processV2(
-    processor: MkplAdProcessor,
+    processor: MkplAdBlockingProcessor,
     command: MkplCommand? = null,
     requestString: String,
     logger: IMpLogWrapper,
@@ -42,10 +42,15 @@ suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IRespo
             apiV2Mapper.encodeToString(ctx.toTransportAd())
         }
     } catch (e: Throwable) {
-        command?.also { ctx.command = it }
-        ctx.state = MkplState.FAILING
-        ctx.errors.add(e.asMkplError())
-        processor.exec(ctx)
-        apiV2Mapper.encodeToString(ctx.toTransportAd())
+        logger.doWithLogging(id = "${logId}-failure") {
+            command?.also { ctx.command = it }
+            logger.error(
+                msg = "$command handling failed",
+            )
+            ctx.state = MkplState.FAILING
+            ctx.errors.add(e.asMkplError())
+            processor.exec(ctx)
+            apiV2Mapper.encodeToString(ctx.toTransportAd())
+        }
     }
 }

@@ -21,7 +21,7 @@ fun ICorChainDsl<MkplContext>.validateIdProperFormat(title: String) = worker {
             errorValidation(
             field = "id",
             violationCode = "badFormat",
-            description = "value $encodedId must contain only"
+            description = "value $encodedId must contain only letters and numbers"
         )
         )
     }

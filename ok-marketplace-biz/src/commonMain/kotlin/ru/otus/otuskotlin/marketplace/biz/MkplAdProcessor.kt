@@ -10,6 +10,7 @@ import ru.otus.otuskotlin.marketplace.common.models.MkplCommand
 import ru.otus.otuskotlin.marketplace.cor.rootChain
 import ru.otus.otuskotlin.marketplace.cor.worker
 
+// TODO-validation-3: смотрим COR-валидацию
 class MkplAdProcessor() {
     suspend fun exec(ctx: MkplContext) = BusinessChain.exec(ctx)
 
