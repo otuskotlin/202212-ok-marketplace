@@ -45,10 +45,15 @@ suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IRespo
             respond(apiV2Mapper.encodeToString(ctx.toTransportAd()))
         }
     } catch (e: Throwable) {
-        command?.also { ctx.command = it }
-        ctx.state = MkplState.FAILING
-        ctx.errors.add(e.asMkplError())
-        processor.exec(ctx)
-        respond(apiV2Mapper.encodeToString(ctx.toTransportAd()))
+        logger.doWithLogging(id = "${logId}-failure") {
+            command?.also { ctx.command = it }
+            logger.error(
+                msg = "$command handling failed",
+            )
+            ctx.state = MkplState.FAILING
+            ctx.errors.add(e.asMkplError())
+            processor.exec(ctx)
+            respond(apiV2Mapper.encodeToString(ctx.toTransportAd()))
+        }
     }
 }
