@@ -10,6 +10,7 @@ import kotlin.test.assertContains
 import kotlin.test.assertIs
 import kotlin.time.Duration.Companion.days
 
+// TODO-validation-6: Konform - DSL для валидации
 class KonformTest {
     @Test
     fun konform() {
