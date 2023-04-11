@@ -7,32 +7,30 @@ import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
 
 fun Route.v1Ad(appSettings: MkplAppSettings) {
     val loggerAd = appSettings.corSettings.loggerProvider.logger(Route::v1Ad::class)
-    val processor = appSettings.processor
     route("ad") {
         post("create") {
-            call.createAd(processor, loggerAd)
+            call.createAd(appSettings, loggerAd)
         }
         post("read") {
-            call.readAd(processor, loggerAd)
+            call.readAd(appSettings, loggerAd)
         }
         post("update") {
-            call.updateAd(processor, loggerAd)
+            call.updateAd(appSettings, loggerAd)
         }
         post("delete") {
-            call.deleteAd(processor, loggerAd)
+            call.deleteAd(appSettings, loggerAd)
         }
         post("search") {
-            call.searchAd(processor, loggerAd)
+            call.searchAd(appSettings, loggerAd)
         }
     }
 }
 
 fun Route.v1Offer(appSettings: MkplAppSettings) {
     val loggerOffers = appSettings.corSettings.loggerProvider.logger(Route::v1Offer::class)
-    val processor = appSettings.processor
     route("ad") {
         post("offers") {
-            call.offersAd(processor, loggerOffers)
+            call.offersAd(appSettings, loggerOffers)
         }
     }
 }

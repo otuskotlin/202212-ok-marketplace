@@ -10,7 +10,7 @@ import ru.otus.otuskotlin.marketplace.api.logs.mapper.toLog
 import ru.otus.otuskotlin.marketplace.api.v2.apiV2Mapper
 import ru.otus.otuskotlin.marketplace.api.v2.models.IRequest
 import ru.otus.otuskotlin.marketplace.api.v2.models.IResponse
-import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
+import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.helpers.asMkplError
 import ru.otus.otuskotlin.marketplace.common.models.MkplCommand
@@ -21,7 +21,7 @@ import ru.otus.otuskotlin.marketplace.mappers.v2.toTransportAd
 
 // TODO-validation-1: смотрим универсальную функцию обработки запроса (v2)
 suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IResponse> ApplicationCall.processV2(
-    processor: MkplAdProcessor,
+    appSettings: MkplAppSettings,
     logger: IMpLogWrapper,
     logId: String,
     command: MkplCommand? = null,
@@ -29,6 +29,7 @@ suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IRespo
     val ctx = MkplContext(
         timeStart = Clock.System.now(),
     )
+    val processor = appSettings.processor
     try {
         logger.doWithLogging(id = logId) {
             val request = apiV2Mapper.decodeFromString<Q>(receiveText())
