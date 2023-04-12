@@ -6,7 +6,7 @@ import io.ktor.server.routing.*
 import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
 
 fun Route.v2Ad(appSettings: MkplAppSettings) {
-    val loggerAd = appSettings.corSettings.loggerProvider.logger(Route::v2Ad::class)
+    val loggerAd = appSettings.corSettings.loggerProvider.logger(Route::v2Ad)
     route("ad") {
         post("create") {
             call.createAd(appSettings, loggerAd)
