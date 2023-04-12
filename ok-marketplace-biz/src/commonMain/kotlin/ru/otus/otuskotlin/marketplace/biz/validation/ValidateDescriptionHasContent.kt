@@ -6,6 +6,7 @@ import ru.otus.otuskotlin.marketplace.common.helpers.fail
 import ru.otus.otuskotlin.marketplace.cor.ICorChainDsl
 import ru.otus.otuskotlin.marketplace.cor.worker
 
+// TODO-validation-7: пример обработки ошибки в рамках бизнес-цепочки
 fun ICorChainDsl<MkplContext>.validateDescriptionHasContent(title: String) = worker {
     this.title = title
     val regExp = Regex("\\p{L}")
@@ -15,7 +16,7 @@ fun ICorChainDsl<MkplContext>.validateDescriptionHasContent(title: String) = wor
             errorValidation(
             field = "description",
             violationCode = "noContent",
-            description = "field must contain leters"
+            description = "field must contain letters"
         )
         )
     }
