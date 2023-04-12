@@ -1,6 +1,7 @@
 package ru.otus.otuskotlin.marketplace.app
 
 import io.ktor.server.application.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import ru.otus.otuskotlin.marketplace.app.plugins.initAppSettings
@@ -14,15 +15,10 @@ fun main(args: Array<String>): Unit = io.ktor.server.cio.EngineMain.main(args)
 @Suppress("unused") // Referenced in application.conf
 fun Application.module(appSettings: MkplAppSettings = initAppSettings()) {
     initPlugins(appSettings)
-
     routing {
-//        get("/") {
-//            call.respondText("Hello, world!")
-//        }
-
         route("v2") {
-            v2Ad(appSettings)
-            v2Offer(appSettings)
+            v2Ad(appSettings = appSettings)
+            v2Offer(appSettings = appSettings)
             webSocket("/ws") {
                 wsHandlerV2(appSettings)
             }

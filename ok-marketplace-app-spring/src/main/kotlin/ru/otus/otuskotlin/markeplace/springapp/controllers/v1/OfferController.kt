@@ -7,23 +7,18 @@ import org.springframework.web.bind.annotation.RestController
 import ru.otus.otuskotlin.markeplace.springapp.service.MkplAdBlockingProcessor
 import ru.otus.otuskotlin.marketplace.api.v1.models.AdOffersRequest
 import ru.otus.otuskotlin.marketplace.api.v1.models.AdOffersResponse
-import ru.otus.otuskotlin.marketplace.common.MkplContext
-import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
-import ru.otus.otuskotlin.marketplace.mappers.v1.fromTransport
-import ru.otus.otuskotlin.marketplace.mappers.v1.toTransportOffers
+import ru.otus.otuskotlin.marketplace.common.models.MkplCommand
+import ru.otus.otuskotlin.marketplace.logging.common.MpLoggerProvider
 
 @RestController
 @RequestMapping("v1/ad")
 class OfferController(
-    corSettings: MkplCorSettings,
-    private val processor: MkplAdBlockingProcessor
+    private val processor: MkplAdBlockingProcessor,
+    private val loggerProvider: MpLoggerProvider,
 ) {
 
     @PostMapping("offers")
-    fun searchOffers(@RequestBody request: AdOffersRequest): AdOffersResponse {
-        val context = MkplContext()
-        context.fromTransport(request)
-        processor.exec(context)
-        return context.toTransportOffers()
-    }
+    suspend fun searchOffers(@RequestBody request: AdOffersRequest): AdOffersResponse =
+        processV1(processor, MkplCommand.OFFERS, request = request, loggerProvider.logger(OfferController::class), "ad-offers")
+
 }

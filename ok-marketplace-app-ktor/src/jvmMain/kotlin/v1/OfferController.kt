@@ -1,20 +1,11 @@
 package ru.otus.otuskotlin.marketplace.app.v1
 
 import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
 import ru.otus.otuskotlin.marketplace.api.v1.models.AdOffersRequest
+import ru.otus.otuskotlin.marketplace.api.v1.models.AdOffersResponse
 import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
-import ru.otus.otuskotlin.marketplace.common.MkplContext
-import ru.otus.otuskotlin.marketplace.common.models.MkplDealSide
-import ru.otus.otuskotlin.marketplace.mappers.v1.fromTransport
-import ru.otus.otuskotlin.marketplace.mappers.v1.toTransportOffers
-import ru.otus.otuskotlin.marketplace.stubs.MkplAdStub
+import ru.otus.otuskotlin.marketplace.common.models.MkplCommand
+import ru.otus.otuskotlin.marketplace.logging.common.IMpLogWrapper
 
-suspend fun ApplicationCall.offersAd(appSettings: MkplAppSettings) {
-    val request = receive<AdOffersRequest>()
-    val context = MkplContext()
-    context.fromTransport(request)
-    context.adsResponse.addAll(MkplAdStub.prepareOffersList("Болт", MkplDealSide.SUPPLY))
-    respond(context.toTransportOffers())
-}
+suspend fun ApplicationCall.offersAd(appSettings: MkplAppSettings, logger: IMpLogWrapper) =
+    processV1<AdOffersRequest, AdOffersResponse>(appSettings, logger, "ad-offers", MkplCommand.OFFERS)

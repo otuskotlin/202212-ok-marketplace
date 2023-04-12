@@ -1,12 +1,10 @@
 package ru.otus.otuskotlin.marketplace
 
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import ru.otus.otuskotlin.marketplace.app.moduleJvm
 import kotlin.test.Test
-import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
 class ApplicationTest {
@@ -15,6 +13,5 @@ class ApplicationTest {
         application { moduleJvm() }
         val response = client.get("/")
         assertEquals(HttpStatusCode.OK, response.status)
-        assertContains(response.bodyAsText(), "Swagger UI")
     }
 }

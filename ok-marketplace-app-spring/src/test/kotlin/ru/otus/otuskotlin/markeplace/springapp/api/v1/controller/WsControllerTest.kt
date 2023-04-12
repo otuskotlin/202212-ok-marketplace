@@ -1,6 +1,7 @@
 package ru.otus.otuskotlin.markeplace.springapp.api.v1.controller
 
 import io.kotest.common.runBlocking
+import jakarta.websocket.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -14,7 +15,6 @@ import ru.otus.otuskotlin.marketplace.api.v1.models.AdInitResponse
 import ru.otus.otuskotlin.marketplace.api.v1.models.IResponse
 import ru.otus.otuskotlin.marketplace.api.v1.models.ResponseResult
 import java.net.URI
-import javax.websocket.*
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
