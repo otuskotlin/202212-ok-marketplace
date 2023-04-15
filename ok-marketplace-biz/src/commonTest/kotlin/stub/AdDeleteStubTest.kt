@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.biz.stub
+package ru.otus.otuskotlin.marketplace.biz.validation.stub
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -11,16 +11,16 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AdReadStubTest {
+class AdDeleteStubTest {
 
     private val processor = MkplAdProcessor()
     val id = MkplAdId("666")
 
     @Test
-    fun read() = runTest {
+    fun delete() = runTest {
 
         val ctx = MkplContext(
-            command = MkplCommand.READ,
+            command = MkplCommand.DELETE,
             state = MkplState.NONE,
             workMode = MkplWorkMode.STUB,
             stubCase = MkplStubs.SUCCESS,
@@ -29,19 +29,19 @@ class AdReadStubTest {
             ),
         )
         processor.exec(ctx)
-        with (MkplAdStub.get()) {
-            assertEquals(id, ctx.adResponse.id)
-            assertEquals(title, ctx.adResponse.title)
-            assertEquals(description, ctx.adResponse.description)
-            assertEquals(adType, ctx.adResponse.adType)
-            assertEquals(visibility, ctx.adResponse.visibility)
-        }
+
+        val stub = MkplAdStub.get()
+        assertEquals(stub.id, ctx.adResponse.id)
+        assertEquals(stub.title, ctx.adResponse.title)
+        assertEquals(stub.description, ctx.adResponse.description)
+        assertEquals(stub.adType, ctx.adResponse.adType)
+        assertEquals(stub.visibility, ctx.adResponse.visibility)
     }
 
     @Test
     fun badId() = runTest {
         val ctx = MkplContext(
-            command = MkplCommand.READ,
+            command = MkplCommand.DELETE,
             state = MkplState.NONE,
             workMode = MkplWorkMode.STUB,
             stubCase = MkplStubs.BAD_ID,
@@ -56,7 +56,7 @@ class AdReadStubTest {
     @Test
     fun databaseError() = runTest {
         val ctx = MkplContext(
-            command = MkplCommand.READ,
+            command = MkplCommand.DELETE,
             state = MkplState.NONE,
             workMode = MkplWorkMode.STUB,
             stubCase = MkplStubs.DB_ERROR,
@@ -72,7 +72,7 @@ class AdReadStubTest {
     @Test
     fun badNoCase() = runTest {
         val ctx = MkplContext(
-            command = MkplCommand.READ,
+            command = MkplCommand.DELETE,
             state = MkplState.NONE,
             workMode = MkplWorkMode.STUB,
             stubCase = MkplStubs.BAD_TITLE,

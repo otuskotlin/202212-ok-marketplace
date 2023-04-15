@@ -46,7 +46,7 @@ kotlin {
     nativeTarget.apply {
         binaries {
             executable {
-                entryPoint = "ru.otus.otuskotlin.marketplace.main"
+                entryPoint = "ru.otus.otuskotlin.marketplace.app.main"
             }
         }
     }

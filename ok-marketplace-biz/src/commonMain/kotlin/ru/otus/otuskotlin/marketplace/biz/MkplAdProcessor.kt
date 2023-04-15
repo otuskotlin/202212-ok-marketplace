@@ -7,6 +7,7 @@ import ru.otus.otuskotlin.marketplace.biz.workers.*
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.models.MkplAdId
 import ru.otus.otuskotlin.marketplace.common.models.MkplCommand
+import ru.otus.otuskotlin.marketplace.biz.statemachine.computeAdState
 import ru.otus.otuskotlin.marketplace.cor.rootChain
 import ru.otus.otuskotlin.marketplace.cor.worker
 
@@ -54,6 +55,7 @@ class MkplAdProcessor() {
 
                     finishAdValidation("Успешное завершение процедуры валидации")
                 }
+                computeAdState("Вычисление состояния объявления")
             }
             operation("Изменить объявление", MkplCommand.UPDATE) {
                 stubs("Обработка стабов") {
