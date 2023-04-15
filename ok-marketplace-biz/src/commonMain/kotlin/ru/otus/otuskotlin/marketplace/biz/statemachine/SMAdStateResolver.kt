@@ -9,7 +9,7 @@ import kotlin.time.Duration.Companion.seconds
 class SMAdStateResolver {
     fun resolve(signal: SMAdSignal): SMTransition {
         require(signal.duration >= 0.milliseconds) { "Publication duration cannot be negative" }
-        require(signal.views > 0) { "View count cannot be negative" }
+        require(signal.views >= 0) { "View count cannot be negative" }
         val sig = Sig(
             st = signal.state,
             dur = SMDurs.values().first { signal.duration >= it.min && signal.duration < it.max },
@@ -23,7 +23,7 @@ class SMAdStateResolver {
         private enum class SMDurs(val min: Duration, val max: Duration) {
             D_NEW(0.seconds, 3.days),
             D_ACT(3.days, 14.days),
-            D_OLD(14.days, Int.MAX_VALUE.seconds)
+            D_OLD(14.days, Int.MAX_VALUE.seconds),
         }
         private enum class SMViews(val min: Int, val max: Int) { FEW(0, 30), MODER(30, 100), LARGE(100, Int.MAX_VALUE) }
         private data class Sig(
@@ -34,10 +34,7 @@ class SMAdStateResolver {
 
         private val TR_MX = mapOf(
             Sig(SMAdStates.NEW, SMDurs.D_NEW, SMViews.FEW) to SMTransition(SMAdStates.NEW, "Новое без изменений"),
-            Sig(SMAdStates.NEW, SMDurs.D_ACT, SMViews.FEW) to SMTransition(
-                SMAdStates.ACTUAL,
-                "Вышло время, перевод из нового в актуальное"
-            ),
+            Sig(SMAdStates.NEW, SMDurs.D_ACT, SMViews.FEW) to SMTransition(SMAdStates.ACTUAL, "Вышло время, перевод из нового в актуальное"),
             Sig(SMAdStates.NEW, SMDurs.D_NEW, SMViews.MODER) to SMTransition(
                 SMAdStates.HIT,
                 "Много просмотров, стало хитом"

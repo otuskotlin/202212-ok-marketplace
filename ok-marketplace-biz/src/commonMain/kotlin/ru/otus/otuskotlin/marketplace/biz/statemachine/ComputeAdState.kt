@@ -19,12 +19,13 @@ fun ICorChainDsl<MkplContext>.computeAdState(title: String) = worker {
     on { state == MkplState.RUNNING }
     handle {
         val log = settings.loggerProvider.logger(clazz)
+        val timeNow = Clock.System.now()
         val ad = adValidated
         val prevState = ad.adState
-        val created = ad.timeCreated.takeIf { it != Instant.NONE } ?: Clock.System.now()
+        val timePublished = ad.timePublished.takeIf { it != Instant.NONE } ?: timeNow
         val signal = SMAdSignal(
             state = prevState.takeIf { it != SMAdStates.NONE } ?: SMAdStates.NEW,
-            duration = created - Clock.System.now(),
+            duration = timeNow - timePublished,
             views = ad.views,
         )
         val transition = machine.resolve(signal)

@@ -9,6 +9,7 @@ import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.days
 
 class SMAdStateTest {
+
     @Test
     fun new2actual() {
         val machine = SMAdStateResolver()

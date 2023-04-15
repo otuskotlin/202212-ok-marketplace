@@ -12,7 +12,7 @@ data class MkplAd(
     var adType: MkplDealSide = MkplDealSide.NONE,
     var adState: SMAdStates = SMAdStates.NONE,
     var views: Int = 0,
-    var timeCreated: Instant = Instant.NONE,
+    var timePublished: Instant = Instant.NONE,
     var timeUpdated: Instant = Instant.NONE,
     var visibility: MkplVisibility = MkplVisibility.NONE,
     var productId: MkplProductId = MkplProductId.NONE,
