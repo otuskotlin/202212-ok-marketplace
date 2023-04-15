@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.biz.stub
+package ru.otus.otuskotlin.marketplace.biz.validation.stub
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -13,52 +13,40 @@ import kotlin.test.assertTrue
 import kotlin.test.fail
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AdOffersStubTest {
+class AdSearchStubTest {
 
     private val processor = MkplAdProcessor()
-    val id = MkplAdId("777")
+    val filter = MkplAdFilter(searchString = "bolt")
 
     @Test
-    fun offers() = runTest {
+    fun read() = runTest {
 
         val ctx = MkplContext(
-            command = MkplCommand.OFFERS,
+            command = MkplCommand.SEARCH,
             state = MkplState.NONE,
             workMode = MkplWorkMode.STUB,
             stubCase = MkplStubs.SUCCESS,
-            adRequest = MkplAd(
-                id = id,
-            ),
+            adFilterRequest = filter,
         )
         processor.exec(ctx)
-
-        assertEquals(id, ctx.adResponse.id)
-
-        with(MkplAdStub.get()) {
-            assertEquals(title, ctx.adResponse.title)
-            assertEquals(description, ctx.adResponse.description)
-            assertEquals(adType, ctx.adResponse.adType)
-            assertEquals(visibility, ctx.adResponse.visibility)
-        }
-
         assertTrue(ctx.adsResponse.size > 1)
         val first = ctx.adsResponse.firstOrNull() ?: fail("Empty response list")
-        assertTrue(first.title.contains(ctx.adResponse.title))
-        assertTrue(first.description.contains(ctx.adResponse.title))
-        assertEquals(MkplDealSide.SUPPLY, first.adType)
-        assertEquals(MkplAdStub.get().visibility, first.visibility)
+        assertTrue(first.title.contains(filter.searchString))
+        assertTrue(first.description.contains(filter.searchString))
+        with (MkplAdStub.get()) {
+            assertEquals(adType, first.adType)
+            assertEquals(visibility, first.visibility)
+        }
     }
 
     @Test
     fun badId() = runTest {
         val ctx = MkplContext(
-            command = MkplCommand.OFFERS,
+            command = MkplCommand.SEARCH,
             state = MkplState.NONE,
             workMode = MkplWorkMode.STUB,
             stubCase = MkplStubs.BAD_ID,
-            adRequest = MkplAd(
-                id = id,
-            ),
+            adFilterRequest = filter,
         )
         processor.exec(ctx)
         assertEquals(MkplAd(), ctx.adResponse)
@@ -69,13 +57,11 @@ class AdOffersStubTest {
     @Test
     fun databaseError() = runTest {
         val ctx = MkplContext(
-            command = MkplCommand.OFFERS,
+            command = MkplCommand.SEARCH,
             state = MkplState.NONE,
             workMode = MkplWorkMode.STUB,
             stubCase = MkplStubs.DB_ERROR,
-            adRequest = MkplAd(
-                id = id,
-            ),
+            adFilterRequest = filter,
         )
         processor.exec(ctx)
         assertEquals(MkplAd(), ctx.adResponse)
@@ -85,13 +71,11 @@ class AdOffersStubTest {
     @Test
     fun badNoCase() = runTest {
         val ctx = MkplContext(
-            command = MkplCommand.OFFERS,
+            command = MkplCommand.SEARCH,
             state = MkplState.NONE,
             workMode = MkplWorkMode.STUB,
             stubCase = MkplStubs.BAD_TITLE,
-            adRequest = MkplAd(
-                id = id,
-            ),
+            adFilterRequest = filter,
         )
         processor.exec(ctx)
         assertEquals(MkplAd(), ctx.adResponse)
