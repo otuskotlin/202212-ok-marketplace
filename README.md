@@ -74,10 +74,9 @@ Marketplace -- это площадка, на которой пользовате
 ## Модули бизнес-логики
 
 1. [ok-marketplace-stubs](ok-marketplace-stubs) - Стабы для ответов сервиса
-
-[//]: # (1. [ok-marketplace-biz]&#40;ok-marketplace-biz&#41; - Модуль бизнес-логики приложения)
-
-[//]: # ()
+2. [ok-marketplace-lib-cor](ok-marketplace-lib-cor) - Библиотека цепочки обязанностей для бизнес-логики
+3. [ok-marketplace-biz](ok-marketplace-biz) - Модуль бизнес-логики приложения
+4. [ok-marketplace-lib-konform](ok-marketplace-lib-konform) - Применение библиотеки валидации Konform
 
 [//]: # (## Хранение, репозитории, базы данных)
 
@@ -92,33 +91,3 @@ Marketplace -- это площадка, на которой пользовате
 [//]: # (4. [ok-marketplace-repo-cassandra]&#40;ok-marketplace-repo-cassandra&#41; - Репозиторий на базе Cassandra)
 
 [//]: # (5. [ok-marketplace-repo-gremlin]&#40;ok-marketplace-repo-gremlin&#41; - Репозиторий на базе Apache TinkerPop Gremlin и ArcadeDb)
-
-[//]: # (### Функции &#40;эндпониты&#41;)
-
-[//]: # ()
-
-[//]: # (1. CRUDS &#40;create, read, update, delete, search&#41; для объявлений &#40;ad&#41;)
-
-[//]: # (1. ad.offers &#40;опционально&#41;)
-
-[//]: # ()
-
-[//]: # (### Описание сущности ad)
-
-[//]: # ()
-
-[//]: # (1. Info)
-
-[//]: # (    1. Title)
-
-[//]: # (    2. Description)
-
-[//]: # (    3. Owner)
-
-[//]: # (    4. Visibility)
-
-[//]: # (2. DealSide: Demand/Supply)
-
-[//]: # (3. ProductType &#40;гаечный ключ, ...&#41;)
-
-[//]: # (4. ProductId - идентификатор модели товара)
