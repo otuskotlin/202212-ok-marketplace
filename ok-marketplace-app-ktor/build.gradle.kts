@@ -67,6 +67,7 @@ kotlin {
                 implementation(project(":ok-marketplace-biz"))
                 implementation(project(":ok-marketplace-lib-logging-kermit"))
                 implementation(project(":ok-marketplace-mappers-log1"))
+                implementation(project(":ok-marketplace-repo-in-memory"))
 
                 implementation(ktorServer("core")) // "io.ktor:ktor-server-core:$ktorVersion"
                 implementation(ktorServer("cio")) // "io.ktor:ktor-server-cio:$ktorVersion"
@@ -90,7 +91,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-
+                implementation(project(":ok-marketplace-repo-tests"))
                 implementation(ktorServer("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
                 implementation(ktorClient("content-negotiation"))
             }

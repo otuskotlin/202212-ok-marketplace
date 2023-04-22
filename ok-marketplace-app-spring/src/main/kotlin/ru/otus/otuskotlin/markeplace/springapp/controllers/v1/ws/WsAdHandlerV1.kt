@@ -11,7 +11,6 @@ import ru.otus.otuskotlin.markeplace.springapp.service.MkplAdBlockingProcessor
 import ru.otus.otuskotlin.marketplace.api.v1.apiV1Mapper
 import ru.otus.otuskotlin.marketplace.api.v1.models.IRequest
 import ru.otus.otuskotlin.marketplace.common.MkplContext
-import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.common.helpers.asMkplError
 import ru.otus.otuskotlin.marketplace.common.helpers.isUpdatableCommand
 import ru.otus.otuskotlin.marketplace.mappers.v1.fromTransport
@@ -21,7 +20,6 @@ import java.util.*
 
 @Component
 class WsAdHandlerV1(
-    corSettings: MkplCorSettings,
     private val processor: MkplAdBlockingProcessor
 ) : TextWebSocketHandler() {
     private val sessions = Collections.synchronizedSet<WebSocketSession>(LinkedHashSet())

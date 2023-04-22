@@ -28,6 +28,7 @@ suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IRespo
 ) {
     val ctx = MkplContext(
         timeStart = Clock.System.now(),
+        settings = appSettings.corSettings,
     )
     val processor = appSettings.processor
     try {

@@ -58,6 +58,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-webflux") // Controller, Service, etc..
     testImplementation("com.ninja-squad:springmockk:$springmockkVersion") // mockking beans
     testImplementation("org.assertj:assertj-core:$assertjVersion")
+    testImplementation(project(":ok-marketplace-repo-in-memory"))
 }
 
 tasks {

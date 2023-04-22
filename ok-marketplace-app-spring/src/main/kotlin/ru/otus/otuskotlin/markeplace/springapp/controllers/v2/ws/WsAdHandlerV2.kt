@@ -21,7 +21,9 @@ import ru.otus.otuskotlin.marketplace.mappers.v2.toTransportAd
 import ru.otus.otuskotlin.marketplace.mappers.v2.toTransportInit
 
 @Component
-class WsAdHandlerV2(private val processor: MkplAdBlockingProcessor) : TextWebSocketHandler() {
+class WsAdHandlerV2(
+    private val processor: MkplAdBlockingProcessor,
+) : TextWebSocketHandler() {
     private val sessions = mutableMapOf<String, WebSocketSession>()
 
     override fun afterConnectionEstablished(session: WebSocketSession) {

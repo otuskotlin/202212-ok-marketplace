@@ -28,6 +28,10 @@ kotlin {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
 
+                implementation(project(":ok-marketplace-repo-stubs"))
+                implementation(project(":ok-marketplace-repo-tests"))
+                implementation(project(":ok-marketplace-repo-in-memory"))
+
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
             }
         }

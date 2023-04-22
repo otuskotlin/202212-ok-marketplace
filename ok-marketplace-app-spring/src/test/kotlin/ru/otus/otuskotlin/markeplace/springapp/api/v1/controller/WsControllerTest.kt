@@ -10,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
+import org.springframework.context.annotation.Import
+import ru.otus.otuskotlin.markeplace.springapp.config.TestConfig
 import ru.otus.otuskotlin.marketplace.api.v1.apiV1Mapper
 import ru.otus.otuskotlin.marketplace.api.v1.models.AdInitResponse
 import ru.otus.otuskotlin.marketplace.api.v1.models.IResponse
@@ -18,6 +20,7 @@ import java.net.URI
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(TestConfig::class)
 class WsControllerTest {
 
     @LocalServerPort

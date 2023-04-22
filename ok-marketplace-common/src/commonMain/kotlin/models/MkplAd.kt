@@ -22,4 +22,8 @@ data class MkplAd(
         permissionsClient = permissionsClient.toMutableSet(),
     )
 
+    companion object {
+        val NONE get() = MkplAd()
+    }
+
 }

@@ -1,8 +1,6 @@
 package ru.otus.otuskotlin.marketplace.app.v1
 
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import kotlinx.datetime.Clock
@@ -26,6 +24,7 @@ suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IRespo
 ) {
     val ctx = MkplContext(
         timeStart = Clock.System.now(),
+        settings = appSettings.corSettings,
     )
     val processor = appSettings.processor
     try {
