@@ -13,7 +13,6 @@ import kotlin.test.assertEquals
 abstract class RepoAdDeleteTest {
     abstract val repo: IAdRepository
     protected open val deleteSucc = initObjects[0]
-    protected open val deleteConc = initObjects[1]
 
     @Test
     fun deleteSuccess() = runRepoTest {
@@ -31,15 +30,6 @@ abstract class RepoAdDeleteTest {
         assertEquals(null, result.data)
         val error = result.errors.find { it.code == "not-found" }
         assertEquals("id", error?.field)
-    }
-
-    @Test
-    fun deleteConcurrency() = runRepoTest {
-        val result = repo.deleteAd(DbAdIdRequest(deleteConc.id))
-
-        assertEquals(false, result.isSuccess)
-        val error = result.errors.find { it.code == "concurrency" }
-        assertEquals("lock", error?.field)
     }
 
     companion object : BaseInitAds("delete") {

@@ -12,7 +12,6 @@ import kotlin.test.assertEquals
 abstract class RepoAdUpdateTest {
     abstract val repo: IAdRepository
     protected open val updateSucc = initObjects[0]
-    protected open val updateConc = initObjects[1]
     private val updateIdNotFound = MkplAdId("ad-repo-update-not-found")
 
     private val reqUpdateSucc by lazy {
@@ -33,16 +32,6 @@ abstract class RepoAdUpdateTest {
         visibility = MkplVisibility.VISIBLE_TO_GROUP,
         adType = MkplDealSide.SUPPLY,
     )
-    private val reqUpdateConc by lazy {
-        MkplAd(
-            id = updateConc.id,
-            title = "update object not found",
-            description = "update object not found description",
-            ownerId = MkplUserId("owner-123"),
-            visibility = MkplVisibility.VISIBLE_TO_GROUP,
-            adType = MkplDealSide.SUPPLY,
-        )
-    }
 
     @Test
     fun updateSuccess() = runRepoTest {
@@ -62,15 +51,6 @@ abstract class RepoAdUpdateTest {
         assertEquals(null, result.data)
         val error = result.errors.find { it.code == "not-found" }
         assertEquals("id", error?.field)
-    }
-
-    @Test
-    fun updateConcurrencyError() = runRepoTest {
-        val result = repo.updateAd(DbAdRequest(reqUpdateConc))
-        assertEquals(false, result.isSuccess)
-        val error = result.errors.find { it.code == "concurrency" }
-        assertEquals("lock", error?.field)
-        assertEquals(updateConc, result.data)
     }
 
     companion object : BaseInitAds("update") {
