@@ -10,10 +10,8 @@ import ru.otus.otuskotlin.marketplace.api.v2.apiV2Mapper
 import ru.otus.otuskotlin.marketplace.api.v2.models.*
 import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
 import ru.otus.otuskotlin.marketplace.app.module
-import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.common.models.*
-import ru.otus.otuskotlin.marketplace.common.repo.IAdRepository
 import ru.otus.otuskotlin.marketplace.repo.inmemory.AdRepoInMemory
 import ru.otus.otuskotlin.marketplace.stubs.MkplAdStub
 import kotlin.test.Test
@@ -43,7 +41,7 @@ class V2AdInmemoryApiTest {
     fun create() = testApplication {
         val repo = AdRepoInMemory(randomUuid = { uuidNew })
         application {
-            module(getAppSettingsWithRepo(repo))
+            module(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
         }
 
         val createAd = AdCreateObject(
@@ -79,7 +77,7 @@ class V2AdInmemoryApiTest {
     fun read() = testApplication {
         val repo = AdRepoInMemory(initObjects = listOf(initAd), randomUuid = { uuidNew })
         application {
-            module(getAppSettingsWithRepo(repo))
+            module(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
         }
 
         val response = client.post("/v2/ad/read") {
@@ -104,7 +102,7 @@ class V2AdInmemoryApiTest {
     fun update() = testApplication {
         val repo = AdRepoInMemory(initObjects = listOf(initAd), randomUuid = { uuidNew })
         application {
-            module(getAppSettingsWithRepo(repo))
+            module(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
         }
 
         val adUpdate = AdUpdateObject(
@@ -141,7 +139,7 @@ class V2AdInmemoryApiTest {
     fun delete() = testApplication {
         val repo = AdRepoInMemory(initObjects = listOf(initAd), randomUuid = { uuidNew })
         application {
-            module(getAppSettingsWithRepo(repo))
+            module(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
         }
 
         val response = client.post("/v2/ad/delete") {
@@ -168,7 +166,7 @@ class V2AdInmemoryApiTest {
     fun search() = testApplication {
         val repo = AdRepoInMemory(initObjects = listOf(initAd), randomUuid = { uuidNew })
         application {
-            module(getAppSettingsWithRepo(repo))
+            module(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
         }
 
         val response = client.post("/v2/ad/search") {
@@ -194,7 +192,7 @@ class V2AdInmemoryApiTest {
     fun offers() = testApplication {
         val repo = AdRepoInMemory(initObjects = listOf(initAd, initAdSupply), randomUuid = { uuidNew })
         application {
-            module(getAppSettingsWithRepo(repo))
+            module(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
         }
 
         val response = client.post("/v2/ad/offers") {
@@ -216,14 +214,5 @@ class V2AdInmemoryApiTest {
         assertEquals(200, response.status.value)
         assertNotEquals(0, responseObj.ads?.size)
         assertEquals(uuidSup, responseObj.ads?.first()?.id)
-    }
-
-    private fun getAppSettingsWithRepo(repo: IAdRepository): MkplAppSettings {
-        val corSettings = MkplCorSettings(repoTest = repo)
-        return MkplAppSettings(
-            appUrls = emptyList(),
-            corSettings = corSettings,
-            processor = MkplAdProcessor(corSettings)
-        )
     }
 }
