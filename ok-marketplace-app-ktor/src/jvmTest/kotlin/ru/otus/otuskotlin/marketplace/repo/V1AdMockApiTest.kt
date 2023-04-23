@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.app.ktor.repo
+package ru.otus.otuskotlin.marketplace.repo
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
@@ -10,9 +10,10 @@ import io.ktor.serialization.jackson.*
 import io.ktor.server.testing.*
 import org.junit.Test
 import ru.otus.otuskotlin.marketplace.api.v1.models.*
-import ru.otus.otuskotlin.marketplace.app.getAppSettingsWithRepo
+import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
 import ru.otus.otuskotlin.marketplace.app.moduleJvm
 import ru.otus.otuskotlin.marketplace.backend.repo.tests.AdRepositoryMock
+import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.common.models.MkplAd
 import ru.otus.otuskotlin.marketplace.common.models.MkplDealSide
 import ru.otus.otuskotlin.marketplace.common.repo.DbAdResponse
@@ -37,7 +38,7 @@ class V1AdMockApiTest {
             }
         )
         application {
-            moduleJvm(getAppSettingsWithRepo(repo))
+            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
         }
         val client = myClient()
 
@@ -82,7 +83,7 @@ class V1AdMockApiTest {
             }
         )
         application {
-            moduleJvm(getAppSettingsWithRepo(repo))
+            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
         }
         val client = myClient()
 
@@ -122,7 +123,7 @@ class V1AdMockApiTest {
             }
         )
         application {
-            moduleJvm(getAppSettingsWithRepo(repo))
+            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
         }
         val client = myClient()
 
@@ -185,7 +186,7 @@ class V1AdMockApiTest {
                     )
                 }
             )
-            moduleJvm(getAppSettingsWithRepo(repo))
+            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
         }
 
         val client = myClient()
@@ -229,7 +230,7 @@ class V1AdMockApiTest {
                         )
                     }
                 )
-            moduleJvm(getAppSettingsWithRepo(repo))
+            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
         }
         val client = myClient()
 
@@ -277,7 +278,7 @@ class V1AdMockApiTest {
                         )
                     }
                 )
-            moduleJvm(getAppSettingsWithRepo(repo))
+            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
         }
         val client = myClient()
 
