@@ -23,7 +23,7 @@ data class MkplAd(
     )
 
     companion object {
-        val NONE get() = MkplAd()
+        private val NONE = MkplAd()
     }
 
 }

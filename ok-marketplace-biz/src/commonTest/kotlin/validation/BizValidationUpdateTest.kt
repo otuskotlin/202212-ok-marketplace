@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.biz.validation
+package validation
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.AdRepoStub
@@ -7,11 +7,10 @@ import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.common.models.MkplCommand
 import kotlin.test.Test
 
-// TODO-validation-5: смотрим пример теста валидации, собранного из тестовых функций-оберток
 @OptIn(ExperimentalCoroutinesApi::class)
-class BizValidationCreateTest {
+class BizValidationUpdateTest {
 
-    private val command = MkplCommand.CREATE
+    private val command = MkplCommand.UPDATE
     private val settings by lazy {
         MkplCorSettings(
             repoTest = AdRepoStub()
@@ -28,6 +27,12 @@ class BizValidationCreateTest {
     @Test fun trimDescription() = validationDescriptionTrim(command, processor)
     @Test fun emptyDescription() = validationDescriptionEmpty(command, processor)
     @Test fun badSymbolsDescription() = validationDescriptionSymbols(command, processor)
+
+    @Test fun correctId() = validationIdCorrect(command, processor)
+    @Test fun trimId() = validationIdTrim(command, processor)
+    @Test fun emptyId() = validationIdEmpty(command, processor)
+    @Test fun badFormatId() = validationIdFormat(command, processor)
+
 
 }
 

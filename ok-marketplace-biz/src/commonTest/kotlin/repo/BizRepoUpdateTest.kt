@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.biz.repo
+package repo
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -10,13 +10,12 @@ import ru.otus.otuskotlin.marketplace.common.models.*
 import ru.otus.otuskotlin.marketplace.common.repo.DbAdResponse
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class BizRepoDeleteTest {
+class BizRepoUpdateTest {
 
     private val userId = MkplUserId("321")
-    private val command = MkplCommand.DELETE
+    private val command = MkplCommand.UPDATE
     private val initAd = MkplAd(
         id = MkplAdId("123"),
         title = "abc",
@@ -25,24 +24,26 @@ class BizRepoDeleteTest {
         adType = MkplDealSide.DEMAND,
         visibility = MkplVisibility.VISIBLE_PUBLIC,
     )
-    private val repo by lazy {
-        AdRepositoryMock(
-            invokeReadAd = {
-               DbAdResponse(
-                   isSuccess = true,
-                   data = initAd,
-               )
-            },
-            invokeDeleteAd = {
-                if (it.id == initAd.id)
-                    DbAdResponse(
-                        isSuccess = true,
-                        data = initAd
-                    )
-                else DbAdResponse(isSuccess = false, data = null)
-            }
-        )
-    }
+    private val repo by lazy { AdRepositoryMock(
+        invokeReadAd = {
+            DbAdResponse(
+                isSuccess = true,
+                data = initAd,
+            )
+        },
+        invokeUpdateAd = {
+            DbAdResponse(
+                isSuccess = true,
+                data = MkplAd(
+                    id = MkplAdId("123"),
+                    title = "xyz",
+                    description = "xyz",
+                    adType = MkplDealSide.DEMAND,
+                    visibility = MkplVisibility.VISIBLE_TO_GROUP,
+                )
+            )
+        }
+    ) }
     private val settings by lazy {
         MkplCorSettings(
             repoTest = repo
@@ -51,9 +52,13 @@ class BizRepoDeleteTest {
     private val processor by lazy { MkplAdProcessor(settings) }
 
     @Test
-    fun repoDeleteSuccessTest() = runTest {
+    fun repoUpdateSuccessTest() = runTest {
         val adToUpdate = MkplAd(
             id = MkplAdId("123"),
+            title = "xyz",
+            description = "xyz",
+            adType = MkplDealSide.DEMAND,
+            visibility = MkplVisibility.VISIBLE_TO_GROUP,
         )
         val ctx = MkplContext(
             command = command,
@@ -63,14 +68,13 @@ class BizRepoDeleteTest {
         )
         processor.exec(ctx)
         assertEquals(MkplState.FINISHING, ctx.state)
-        assertTrue { ctx.errors.isEmpty() }
-        assertEquals(initAd.id, ctx.adResponse.id)
-        assertEquals(initAd.title, ctx.adResponse.title)
-        assertEquals(initAd.description, ctx.adResponse.description)
-        assertEquals(initAd.adType, ctx.adResponse.adType)
-        assertEquals(initAd.visibility, ctx.adResponse.visibility)
+        assertEquals(adToUpdate.id, ctx.adResponse.id)
+        assertEquals(adToUpdate.title, ctx.adResponse.title)
+        assertEquals(adToUpdate.description, ctx.adResponse.description)
+        assertEquals(adToUpdate.adType, ctx.adResponse.adType)
+        assertEquals(adToUpdate.visibility, ctx.adResponse.visibility)
     }
 
     @Test
-    fun repoDeleteNotFoundTest() = repoNotFoundTest(command)
+    fun repoUpdateNotFoundTest() = repoNotFoundTest(command)
 }

@@ -1,4 +1,4 @@
-# Модуль `ok-marketplace-repo-in-memory`
+# Модуль `ok-marketplace-repo-stubs`
 
 
 Модуль реализует интерфейс репозитария в виде стабов.

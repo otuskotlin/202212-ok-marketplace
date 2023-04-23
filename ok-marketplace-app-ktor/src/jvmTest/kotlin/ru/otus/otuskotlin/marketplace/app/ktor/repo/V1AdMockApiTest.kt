@@ -214,7 +214,7 @@ class V1AdMockApiTest {
     @Test
     fun search() = testApplication {
         application {
-            val repo by lazy {
+            val repo =
                 AdRepositoryMock(
                     invokeSearchAd = {
                         DbAdsResponse(
@@ -229,7 +229,6 @@ class V1AdMockApiTest {
                         )
                     }
                 )
-            }
             moduleJvm(getAppSettingsWithRepo(repo))
         }
         val client = myClient()
@@ -253,7 +252,7 @@ class V1AdMockApiTest {
     @Test
     fun offers() = testApplication {
         application {
-            val repo by lazy {
+            val repo =
                 AdRepositoryMock(
                     invokeReadAd = {
                         DbAdResponse(
@@ -278,7 +277,6 @@ class V1AdMockApiTest {
                         )
                     }
                 )
-            }
             moduleJvm(getAppSettingsWithRepo(repo))
         }
         val client = myClient()
