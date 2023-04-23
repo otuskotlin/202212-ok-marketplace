@@ -68,6 +68,7 @@ kotlin {
                 implementation(project(":ok-marketplace-lib-logging-kermit"))
                 implementation(project(":ok-marketplace-mappers-log1"))
                 implementation(project(":ok-marketplace-repo-in-memory"))
+                implementation(project(":ok-marketplace-repo-stubs"))
 
                 implementation(ktorServer("core")) // "io.ktor:ktor-server-core:$ktorVersion"
                 implementation(ktorServer("cio")) // "io.ktor:ktor-server-cio:$ktorVersion"
