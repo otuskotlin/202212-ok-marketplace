@@ -9,10 +9,10 @@ import org.springframework.web.socket.CloseStatus
 import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketSession
 import org.springframework.web.socket.handler.TextWebSocketHandler
-import ru.otus.otuskotlin.markeplace.springapp.service.MkplAdBlockingProcessor
 import ru.otus.otuskotlin.marketplace.api.v2.apiV2Mapper
 import ru.otus.otuskotlin.marketplace.api.v2.encodeResponse
 import ru.otus.otuskotlin.marketplace.api.v2.models.IRequest
+import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.helpers.asMkplError
 import ru.otus.otuskotlin.marketplace.common.helpers.isUpdatableCommand
@@ -22,7 +22,7 @@ import ru.otus.otuskotlin.marketplace.mappers.v2.toTransportInit
 
 @Component
 class WsAdHandlerV2(
-    private val processor: MkplAdBlockingProcessor,
+    private val processor: MkplAdProcessor,
 ) : TextWebSocketHandler() {
     private val sessions = mutableMapOf<String, WebSocketSession>()
 

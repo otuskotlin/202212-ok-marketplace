@@ -50,6 +50,12 @@ dependencies {
     implementation(project(":ok-marketplace-mappers-log1"))
     implementation(project(":ok-marketplace-api-log1"))
 
+    // Repository
+    implementation(project(":ok-marketplace-repo-in-memory"))
+
+    // Stubs
+    implementation(project(":ok-marketplace-repo-stubs"))
+
     // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(project(":ok-marketplace-stubs"))
