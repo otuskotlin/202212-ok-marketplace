@@ -3,10 +3,6 @@ package ru.otus.otuskotlin.marketplace.biz.validation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.AdRepoStub
 import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
-import ru.otus.otuskotlin.marketplace.biz.validation.validation.validationIdCorrect
-import ru.otus.otuskotlin.marketplace.biz.validation.validation.validationIdEmpty
-import ru.otus.otuskotlin.marketplace.biz.validation.validation.validationIdFormat
-import ru.otus.otuskotlin.marketplace.biz.validation.validation.validationIdTrim
 import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.common.models.MkplCommand
 import kotlin.test.Test
