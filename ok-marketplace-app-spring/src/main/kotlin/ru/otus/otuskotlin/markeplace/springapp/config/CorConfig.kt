@@ -20,7 +20,7 @@ class CorConfig {
     fun prodRepository() = AdRepoInMemory()
 
     @Bean
-    fun testRepository() = AdRepoStub()
+    fun testRepository() = AdRepoInMemory()
 
     @Bean
     fun stubRepository() = AdRepoStub()
