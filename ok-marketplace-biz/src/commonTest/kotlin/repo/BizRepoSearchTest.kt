@@ -1,4 +1,4 @@
-package repo
+package ru.otus.otuskotlin.marketplace.biz.repo
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

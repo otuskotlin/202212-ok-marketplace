@@ -11,7 +11,7 @@ import ru.otus.otuskotlin.marketplace.repo.inmemory.AdRepoInMemory
 fun Application.initAppSettings(): MkplAppSettings {
     val corSettings = MkplCorSettings(
         loggerProvider = getLoggerProviderConf(),
-        repoTest = AdRepoStub(),
+        repoTest = AdRepoInMemory(),
         repoProd = AdRepoInMemory(),
         repoStub = AdRepoStub(),
     )
