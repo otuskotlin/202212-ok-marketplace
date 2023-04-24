@@ -8,7 +8,6 @@ import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.common.models.*
 import ru.otus.otuskotlin.marketplace.common.repo.DbAdResponse
-import ru.otus.otuskotlin.marketplace.common.repo.IAdRepository
 import kotlin.test.assertEquals
 
 private val initAd = MkplAd(
@@ -18,8 +17,7 @@ private val initAd = MkplAd(
     adType = MkplDealSide.DEMAND,
     visibility = MkplVisibility.VISIBLE_PUBLIC,
 )
-private val repo: IAdRepository
-    get() = AdRepositoryMock(
+private val repo = AdRepositoryMock(
         invokeReadAd = {
             if (it.id == initAd.id) {
                 DbAdResponse(
