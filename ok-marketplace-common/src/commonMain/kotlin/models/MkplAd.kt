@@ -16,6 +16,7 @@ data class MkplAd(
     var timeUpdated: Instant = Instant.NONE,
     var visibility: MkplVisibility = MkplVisibility.NONE,
     var productId: MkplProductId = MkplProductId.NONE,
+    var lock: MkplAdLock = MkplAdLock.NONE,
     val permissionsClient: MutableSet<MkplAdPermissionClient> = mutableSetOf()
 ) {
     fun deepCopy(): MkplAd = copy(
@@ -25,7 +26,7 @@ data class MkplAd(
     fun isEmpty() = this == NONE
 
     companion object {
-        private val NONE = MkplAd()
+        val NONE = MkplAd()
     }
 
 }

@@ -1,6 +1,8 @@
 package ru.otus.otuskotlin.marketplace.common.helpers
 
 import ru.otus.otuskotlin.marketplace.common.MkplContext
+import ru.otus.otuskotlin.marketplace.common.exceptions.RepoConcurrencyException
+import ru.otus.otuskotlin.marketplace.common.models.MkplAdLock
 import ru.otus.otuskotlin.marketplace.common.models.MkplError
 import ru.otus.otuskotlin.marketplace.common.models.MkplState
 
@@ -47,6 +49,7 @@ fun errorAdministration(
     field: String = "",
     violationCode: String,
     description: String,
+    exception: Exception? = null,
     level: MkplError.Level = MkplError.Level.ERROR,
 ) = MkplError(
     field = field,
@@ -54,4 +57,17 @@ fun errorAdministration(
     group = "administration",
     message = "Microservice management error: $description",
     level = level,
+    exception = exception,
+)
+
+fun errorRepoConcurrency(
+    expectedLock: MkplAdLock,
+    actualLock: MkplAdLock?,
+    exception: Exception? = null,
+) = MkplError(
+    field = "lock",
+    code = "concurrency",
+    group = "repo",
+    message = "The object has been changed concurrently by another user or process",
+    exception = exception ?: RepoConcurrencyException(expectedLock, actualLock),
 )

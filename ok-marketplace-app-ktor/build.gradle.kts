@@ -39,11 +39,9 @@ kotlin {
     val nativeTarget = when (System.getProperty("os.name")) {
         "Mac OS X" -> macosX64("native")
         "Linux" -> linuxX64("native")
-        // Windows is currently not supported
-        // Other supported targets are listed here: https://ktor.io/docs/native-server.html#targets
-        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
+        else -> null
     }
-    nativeTarget.apply {
+    nativeTarget?.apply {
         binaries {
             executable {
                 entryPoint = "ru.otus.otuskotlin.marketplace.app.main"
@@ -97,21 +95,26 @@ kotlin {
                 implementation(ktorClient("content-negotiation"))
             }
         }
-        @Suppress("UNUSED_VARIABLE")
-       val nativeMain by getting {
-            dependencies {
-            }
-        }
-        @Suppress("UNUSED_VARIABLE")
-        val nativeTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
 
-                implementation(ktorServer("test-host"))
-                implementation(ktorClient("content-negotiation"))
-                implementation(ktorClient("websockets"))
+        if (nativeTarget != null) {
+            @Suppress("UNUSED_VARIABLE")
+            val nativeMain by getting {
+                dependencies {
+                }
+            }
+
+            @Suppress("UNUSED_VARIABLE")
+            val nativeTest by getting {
+                dependencies {
+                    implementation(kotlin("test"))
+
+                    implementation(ktorServer("test-host"))
+                    implementation(ktorClient("content-negotiation"))
+                    implementation(ktorClient("websockets"))
+                }
             }
         }
+
         @Suppress("UNUSED_VARIABLE")
         val jvmMain by getting {
             dependencies {
