@@ -38,3 +38,20 @@ fun errorValidation(
     message = "Validation error for field $field: $description",
     level = level,
 )
+
+fun errorAdministration(
+    /**
+     * Код, характеризующий ошибку. Не должен включать имя поля или указание на валидацию.
+     * Например: empty, badSymbols, tooLong, etc
+     */
+    field: String = "",
+    violationCode: String,
+    description: String,
+    level: MkplError.Level = MkplError.Level.ERROR,
+) = MkplError(
+    field = field,
+    code = "administration-$violationCode",
+    group = "administration",
+    message = "Microservice management error: $description",
+    level = level,
+)

@@ -1,8 +1,6 @@
 package ru.otus.otuskotlin.marketplace.app.v1
 
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import kotlinx.datetime.Clock

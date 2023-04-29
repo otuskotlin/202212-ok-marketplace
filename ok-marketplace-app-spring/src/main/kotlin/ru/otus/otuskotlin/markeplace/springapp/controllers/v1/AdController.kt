@@ -1,8 +1,8 @@
 package ru.otus.otuskotlin.markeplace.springapp.controllers.v1
 
 import org.springframework.web.bind.annotation.*
-import ru.otus.otuskotlin.markeplace.springapp.service.MkplAdBlockingProcessor
 import ru.otus.otuskotlin.marketplace.api.v1.models.*
+import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.common.models.MkplCommand
 import ru.otus.otuskotlin.marketplace.logging.common.MpLoggerProvider
 import ru.otus.otuskotlin.marketplace.mappers.v1.*
@@ -10,7 +10,7 @@ import ru.otus.otuskotlin.marketplace.mappers.v1.*
 @RestController
 @RequestMapping("v1/ad")
 class AdController(
-    private val processor: MkplAdBlockingProcessor,
+    private val processor: MkplAdProcessor,
     private val loggerProvider: MpLoggerProvider,
 ) {
 

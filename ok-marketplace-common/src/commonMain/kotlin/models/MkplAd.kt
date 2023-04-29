@@ -22,4 +22,10 @@ data class MkplAd(
         permissionsClient = permissionsClient.toMutableSet(),
     )
 
+    fun isEmpty() = this == NONE
+
+    companion object {
+        private val NONE = MkplAd()
+    }
+
 }

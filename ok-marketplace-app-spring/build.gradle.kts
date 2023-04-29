@@ -50,6 +50,12 @@ dependencies {
     implementation(project(":ok-marketplace-mappers-log1"))
     implementation(project(":ok-marketplace-api-log1"))
 
+    // Repository
+    implementation(project(":ok-marketplace-repo-in-memory"))
+
+    // Stubs
+    implementation(project(":ok-marketplace-repo-stubs"))
+
     // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(project(":ok-marketplace-stubs"))
@@ -58,6 +64,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-webflux") // Controller, Service, etc..
     testImplementation("com.ninja-squad:springmockk:$springmockkVersion") // mockking beans
     testImplementation("org.assertj:assertj-core:$assertjVersion")
+    testImplementation(project(":ok-marketplace-repo-in-memory"))
 }
 
 tasks {

@@ -1,9 +1,8 @@
 package ru.otus.otuskotlin.markeplace.springapp.api.v1.controller
 
-import org.assertj.core.api.Assertions.assertThat
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coVerify
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
@@ -13,11 +12,6 @@ import org.springframework.web.reactive.function.BodyInserters
 import ru.otus.otuskotlin.markeplace.springapp.config.CorConfig
 import ru.otus.otuskotlin.markeplace.springapp.controllers.v1.AdController
 import ru.otus.otuskotlin.markeplace.springapp.controllers.v1.OfferController
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import ru.otus.otuskotlin.markeplace.springapp.service.MkplAdBlockingProcessor
 import ru.otus.otuskotlin.marketplace.api.v1.models.*
 import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.common.MkplContext
@@ -30,7 +24,7 @@ internal class AdControllerTest {
     private lateinit var webClient: WebTestClient
 
     @MockkBean(relaxUnitFun = true)
-    private lateinit var processor: MkplAdBlockingProcessor
+    private lateinit var processor: MkplAdProcessor
 
     @Test
     fun createAd() = testStubAd(

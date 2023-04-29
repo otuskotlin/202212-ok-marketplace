@@ -62,3 +62,7 @@ include("ok-marketplace-app-ktor")
 include("ok-marketplace-app-rabbit")
 include("ok-marketplace-app-serverless")
 include("ok-marketplace-app-kafka")
+
+include("ok-marketplace-repo-in-memory")
+include("ok-marketplace-repo-stubs")
+include("ok-marketplace-repo-tests")
