@@ -64,5 +64,6 @@ include("ok-marketplace-app-serverless")
 include("ok-marketplace-app-kafka")
 
 include("ok-marketplace-repo-in-memory")
+include("ok-marketplace-repo-postgresql")
 include("ok-marketplace-repo-stubs")
 include("ok-marketplace-repo-tests")

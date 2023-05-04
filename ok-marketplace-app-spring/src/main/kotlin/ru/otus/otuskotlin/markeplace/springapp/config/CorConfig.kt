@@ -3,6 +3,7 @@ package ru.otus.otuskotlin.markeplace.springapp.config
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import ru.otus.otuskotlin.marketplace.backend.repo.sql.RepoAdSQL
 import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.AdRepoStub
 import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
@@ -17,7 +18,7 @@ class CorConfig {
     fun loggerProvider(): MpLoggerProvider = MpLoggerProvider { mpLoggerLogback(it) }
 
     @Bean
-    fun prodRepository() = AdRepoInMemory()
+    fun prodRepository() = RepoAdSQL()
 
     @Bean
     fun testRepository() = AdRepoInMemory()
