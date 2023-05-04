@@ -9,6 +9,7 @@ data class AdEntity(
     val ownerId: String? = null,
     val adType: String? = null,
     val visibility: String? = null,
+    val lock: String? = null,
 ) {
     constructor(model: MkplAd): this(
         id = model.id.asString().takeIf { it.isNotBlank() },
@@ -17,6 +18,7 @@ data class AdEntity(
         ownerId = model.ownerId.asString().takeIf { it.isNotBlank() },
         adType = model.adType.takeIf { it != MkplDealSide.NONE }?.name,
         visibility = model.visibility.takeIf { it != MkplVisibility.NONE }?.name,
+        lock = model.lock.asString().takeIf { it.isNotBlank() }
     )
 
     fun toInternal() = MkplAd(
@@ -26,5 +28,6 @@ data class AdEntity(
         ownerId = ownerId?.let { MkplUserId(it) }?: MkplUserId.NONE,
         adType = adType?.let { MkplDealSide.valueOf(it) }?: MkplDealSide.NONE,
         visibility = visibility?.let { MkplVisibility.valueOf(it) }?: MkplVisibility.NONE,
+        lock = lock?.let { MkplAdLock(it) } ?: MkplAdLock.NONE,
     )
 }

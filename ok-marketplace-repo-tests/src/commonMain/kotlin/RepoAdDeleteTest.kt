@@ -1,6 +1,7 @@
 package ru.otus.otuskotlin.marketplace.backend.repo.tests
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import ru.otus.otuskotlin.marketplace.common.models.MkplAd
 import ru.otus.otuskotlin.marketplace.common.models.MkplAdId
 import ru.otus.otuskotlin.marketplace.common.repo.DbAdIdRequest
@@ -12,11 +13,10 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepoAdDeleteTest {
     abstract val repo: IAdRepository
-    protected open val deleteSucc = initObjects[0]
 
     @Test
     fun deleteSuccess() = runRepoTest {
-        val result = repo.deleteAd(DbAdIdRequest(deleteSucc.id))
+        val result = repo.deleteAd(DbAdIdRequest(successId, lock = lockOld))
 
         assertEquals(true, result.isSuccess)
         assertEquals(emptyList(), result.errors)
@@ -32,11 +32,23 @@ abstract class RepoAdDeleteTest {
         assertEquals("id", error?.field)
     }
 
+    @Test
+    fun deleteConcurrency() = runTest {
+        val result = repo.deleteAd(DbAdIdRequest(concurrencyId, lock = lockBad))
+
+        assertEquals(false, result.isSuccess)
+        val error = result.errors.find { it.code == "concurrency" }
+        assertEquals("lock", error?.field)
+        assertEquals(lockOld, result.data?.lock)
+    }
+
     companion object : BaseInitAds("delete") {
         override val initObjects: List<MkplAd> = listOf(
             createInitTestModel("delete"),
             createInitTestModel("deleteLock"),
         )
+        val successId = MkplAdId(initObjects[0].id.asString())
         val notFoundId = MkplAdId("ad-repo-delete-notFound")
+        val concurrencyId = MkplAdId(initObjects[1].id.asString())
     }
 }

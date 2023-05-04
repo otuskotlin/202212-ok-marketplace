@@ -13,6 +13,8 @@ import kotlin.test.assertNotEquals
 abstract class RepoAdCreateTest {
     abstract val repo: IAdRepository
 
+    protected open val lockNew: MkplAdLock = MkplAdLock("20000000-0000-0000-0000-000000000002")
+
     private val createObj = MkplAd(
         title = "create object",
         description = "create object description",
