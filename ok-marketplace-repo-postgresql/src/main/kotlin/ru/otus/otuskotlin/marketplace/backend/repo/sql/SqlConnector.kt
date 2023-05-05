@@ -7,11 +7,8 @@ import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class SqlConnector(
-    private val url: String,
-    private val user: String,
-    private val password: String,
-    private val schema: String,
-    private val databaseConfig: DatabaseConfig = DatabaseConfig {  }
+    private val properties: SqlProperties,
+    private val databaseConfig: DatabaseConfig = DatabaseConfig { }
 ) {
     // Sample of describing different db drivers in case of multiple DB connections with different data bases
     private enum class DbType(val driver: String) {
@@ -20,7 +17,7 @@ class SqlConnector(
     }
 
     // Sample of different db types
-    private val dbType: DbType = url.let { url ->
+    private val dbType: DbType = properties.url.let { url ->
         when {
             url.startsWith("jdbc:mysql://") -> DbType.MYSQL
             url.startsWith("jdbc:postgresql://") -> DbType.POSTGRESQL
@@ -29,7 +26,10 @@ class SqlConnector(
     }
 
     // Global connection to PSQL
-    private val globalConnection = Database.connect(url, dbType.driver, user, password, databaseConfig = databaseConfig)
+    private val globalConnection = Database.connect(
+        properties.url, dbType.driver,
+        properties.user, properties.password, databaseConfig = databaseConfig
+    )
 
     // Ensure creation of new connection with options to migrate/pre-drop database
     fun connect(vararg tables: Table): Database {
@@ -39,28 +39,35 @@ class SqlConnector(
                 DbType.MYSQL -> {
                     val dbSettings = " DEFAULT CHARACTER SET utf8mb4\n" +
                             " DEFAULT COLLATE utf8mb4_general_ci"
-                    connection.prepareStatement("CREATE DATABASE IF NOT EXISTS $schema\n$dbSettings", false)
+                    connection.prepareStatement(
+                        "CREATE DATABASE IF NOT EXISTS ${properties.schema}\n$dbSettings",
+                        false
+                    )
                         .executeUpdate()
-                    connection.prepareStatement("ALTER DATABASE $schema\n$dbSettings", false).executeUpdate()
+                    connection.prepareStatement("ALTER DATABASE ${properties.schema}\n$dbSettings", false)
+                        .executeUpdate()
                 }
+
                 DbType.POSTGRESQL -> {
-                    connection.prepareStatement("CREATE SCHEMA IF NOT EXISTS $schema", false).executeUpdate()
+                    connection.prepareStatement("CREATE SCHEMA IF NOT EXISTS ${properties.schema}", false)
+                        .executeUpdate()
                 }
             }
         }
 
         // Create connection for all supported db types
         val connect = Database.connect(
-            url, dbType.driver, user, password,
+            properties.url, dbType.driver, properties.user, properties.password,
             databaseConfig = databaseConfig,
             setupConnection = { connection ->
                 when (dbType) {
                     DbType.MYSQL -> {
-                        connection.schema = schema
-                        connection.catalog = schema
+                        connection.schema = properties.schema
+                        connection.catalog = properties.schema
                     }
+
                     DbType.POSTGRESQL -> {
-                        connection.schema = schema
+                        connection.schema = properties.schema
                     }
                 }
             }
@@ -71,10 +78,10 @@ class SqlConnector(
         //   - exec migrations if needed;
         //   - otherwise unsure to create tables
         transaction(connect) {
-            if (System.getenv("ok.mp.sql_drop_db")?.toBoolean() == true) {
+            if (properties.dropDatabase) {
                 SchemaUtils.drop(*tables, inBatch = true)
                 SchemaUtils.create(*tables, inBatch = true)
-            } else if (System.getenv("ok.mp.sql_fast_migration").toBoolean()) {
+            } else if (!properties.fastMigration) {
                 // TODO: Place to exec migration: create and ensure tables
             } else {
                 SchemaUtils.createMissingTablesAndColumns(*tables, inBatch = true)

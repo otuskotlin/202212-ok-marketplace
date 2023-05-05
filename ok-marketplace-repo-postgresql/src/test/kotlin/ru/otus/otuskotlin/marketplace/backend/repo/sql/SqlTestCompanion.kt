@@ -28,6 +28,7 @@ object SqlTestCompanion {
         initObjects: Collection<MkplAd> = emptyList(),
         randomUuid: () -> String = { uuid4().toString() },
     ): RepoAdSQL {
-        return RepoAdSQL(url, USER, PASS, SCHEMA, initObjects, randomUuid = randomUuid)
+        return RepoAdSQL(SqlProperties(url, USER, PASS, SCHEMA, dropDatabase = true),
+            initObjects, randomUuid = randomUuid)
     }
 }

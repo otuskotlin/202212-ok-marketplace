@@ -31,14 +31,11 @@ import java.util.*
 private const val notFoundCode = "not-found"
 
 class RepoAdSQL(
-    url: String = System.getenv("JDBC_URL") ?: "jdbc:postgresql://localhost:5432/marketplacedevdb",
-    user: String = System.getenv("JDBC_USER") ?: "postgres",
-    password: String = System.getenv("JDBC_PASSWORD") ?: "marketplace-pass",
-    schema: String = System.getenv("JDBC_SCHEMA") ?: "marketplace",
+    properties: SqlProperties,
     initObjects: Collection<MkplAd> = emptyList(),
     val randomUuid: () -> String = { uuid4().toString() },
 ) : IAdRepository {
-    private val db by lazy { SqlConnector(url, user, password, schema).connect(AdsTable, UsersTable) }
+    private val db by lazy { SqlConnector(properties).connect(AdsTable, UsersTable) }
 
     init {
         initObjects.forEach {

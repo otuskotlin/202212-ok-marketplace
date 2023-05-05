@@ -2,13 +2,6 @@ plugins {
     kotlin("jvm")
 }
 
-tasks {
-    withType<Test> {
-        environment("ok.mp.sql_drop_db", true)
-        environment("ok.mp.sql_fast_migration", true)
-    }
-}
-
 dependencies {
     val exposedVersion: String by project
     val postgresDriverVersion: String by project
