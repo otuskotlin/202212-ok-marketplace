@@ -13,7 +13,5 @@ class SqlPropertiesEx
         user: String,
         password: String,
         schema: String,
-        dropDatabase: Boolean,
-        fastMigration: Boolean,
-    ): SqlProperties(url, user, password, schema, dropDatabase, fastMigration) {
-}
+        dropDatabase: Boolean
+    ): SqlProperties(url, user, password, schema, dropDatabase)
