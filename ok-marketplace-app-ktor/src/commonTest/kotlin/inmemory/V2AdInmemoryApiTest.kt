@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.app.ktor.repo
+package ru.otus.otuskotlin.marketplace.app.inmemory
 
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -9,6 +9,7 @@ import kotlinx.serialization.encodeToString
 import ru.otus.otuskotlin.marketplace.api.v2.apiV2Mapper
 import ru.otus.otuskotlin.marketplace.api.v2.models.*
 import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
+import ru.otus.otuskotlin.marketplace.app.helpers.testSettings
 import ru.otus.otuskotlin.marketplace.app.module
 import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.common.models.*
@@ -40,10 +41,7 @@ class V2AdInmemoryApiTest {
 
     @Test
     fun create() = testApplication {
-        val repo = AdRepoInMemory(randomUuid = { uuidNew })
-        application {
-            module(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
-        }
+        application { module(testSettings(AdRepoInMemory(randomUuid = { uuidNew }))) }
 
         val createAd = AdCreateObject(
             title = "Болт",
