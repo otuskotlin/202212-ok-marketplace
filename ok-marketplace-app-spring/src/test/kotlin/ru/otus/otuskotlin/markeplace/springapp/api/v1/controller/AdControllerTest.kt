@@ -13,6 +13,7 @@ import ru.otus.otuskotlin.markeplace.springapp.config.CorConfig
 import ru.otus.otuskotlin.markeplace.springapp.controllers.v1.AdController
 import ru.otus.otuskotlin.markeplace.springapp.controllers.v1.OfferController
 import ru.otus.otuskotlin.marketplace.api.v1.models.*
+import ru.otus.otuskotlin.marketplace.backend.repo.sql.RepoAdSQL
 import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.mappers.v1.*
@@ -25,6 +26,9 @@ internal class AdControllerTest {
 
     @MockkBean(relaxUnitFun = true)
     private lateinit var processor: MkplAdProcessor
+
+    @MockkBean
+    private lateinit var repo: RepoAdSQL
 
     @Test
     fun createAd() = testStubAd(

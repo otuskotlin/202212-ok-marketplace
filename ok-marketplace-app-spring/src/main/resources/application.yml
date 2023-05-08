@@ -20,3 +20,11 @@ springdoc:
         url: specs-ad-v1.yaml
       - name: v2
         url: specs-ad-v2.yaml
+
+sql:
+  url: ${SQL_URL:jdbc:postgresql://localhost:5432/marketplace}
+  user: ${SQL_USER:postgres}
+  password: ${SQL_PASSWORD:marketplace-pass}
+  schema: ${SQL_SCHEMA:marketplace}
+  drop-database: ${SQL_DROP_DATABASE:false}
+  fast-migration: ${SQL_FAST_MIGRATION:true}

@@ -1,5 +1,6 @@
 package ru.otus.otuskotlin.markeplace.springapp.api.v1.controller
 
+import com.ninjasquad.springmockk.MockkBean
 import io.kotest.common.runBlocking
 import jakarta.websocket.*
 import kotlinx.coroutines.Dispatchers
@@ -14,6 +15,7 @@ import ru.otus.otuskotlin.marketplace.api.v1.apiV1Mapper
 import ru.otus.otuskotlin.marketplace.api.v1.models.AdInitResponse
 import ru.otus.otuskotlin.marketplace.api.v1.models.IResponse
 import ru.otus.otuskotlin.marketplace.api.v1.models.ResponseResult
+import ru.otus.otuskotlin.marketplace.backend.repo.sql.RepoAdSQL
 import java.net.URI
 
 
@@ -22,6 +24,9 @@ class WsControllerTest {
 
     @LocalServerPort
     private var port: Int = 0
+
+    @MockkBean
+    private lateinit var repo: RepoAdSQL
 
     private lateinit var container: WebSocketContainer
     private lateinit var client: TestWebSocketClient

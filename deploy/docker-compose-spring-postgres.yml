@@ -1,0 +1,37 @@
+version: '3'
+services:
+  psql:
+    image: postgres
+    container_name: postgresql
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_PASSWORD: marketplace-pass
+      POSTGRES_USER: postgres
+      POSTGRES_DB: marketplace
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: ok-marketplace-app-spring:0.0.3
+    container_name: app-spring
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    environment:
+      SQL_URL: jdbc:postgresql://psql:5432/marketplace
+    depends_on:
+      psql:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+
