@@ -1,24 +1,87 @@
 package ru.otus.otuskotlin.marketplace.backend.repo.cassandra
 
 import com.benasher44.uuid.uuid4
+import com.datastax.oss.driver.api.core.CqlSession
+import com.datastax.oss.driver.api.querybuilder.SchemaBuilder
+import com.datastax.oss.driver.internal.core.type.codec.extras.enums.EnumNameCodec
+import com.datastax.oss.driver.internal.core.type.codec.registry.DefaultCodecRegistry
 import kotlinx.coroutines.future.await
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.slf4j.LoggerFactory
 import ru.otus.otuskotlin.marketplace.backend.repo.cassandra.model.AdCassandraDTO
+import ru.otus.otuskotlin.marketplace.backend.repo.cassandra.model.AdDealSide
+import ru.otus.otuskotlin.marketplace.backend.repo.cassandra.model.AdVisibility
 import ru.otus.otuskotlin.marketplace.common.helpers.asMkplError
 import ru.otus.otuskotlin.marketplace.common.models.MkplAd
 import ru.otus.otuskotlin.marketplace.common.models.MkplAdId
 import ru.otus.otuskotlin.marketplace.common.models.MkplAdLock
 import ru.otus.otuskotlin.marketplace.common.models.MkplError
 import ru.otus.otuskotlin.marketplace.common.repo.*
+import java.net.InetAddress
+import java.net.InetSocketAddress
 import java.util.concurrent.CompletionStage
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 class RepoAdCassandra(
-    private val dao: AdCassandraDAO,
-    private val timeoutMillis: Long = 300_000,
-    private val randomUuid: () -> String = { uuid4().toString() }
+    private val keyspaceName: String,
+    private val host: String = "",
+    private val port: Int = 9042,
+    private val user: String = "cassandra",
+    private val pass: String = "cassandra",
+    private val testing: Boolean = false,
+    private val timeout: Duration = 30.toDuration(DurationUnit.SECONDS),
+    private val randomUuid: () -> String = { uuid4().toString() },
+    initObjects: Collection<MkplAd> = emptyList(),
 ) : IAdRepository {
     private val log = LoggerFactory.getLogger(javaClass)
+
+    private val codecRegistry by lazy {
+        DefaultCodecRegistry("default").apply {
+            register(EnumNameCodec(AdVisibility::class.java))
+            register(EnumNameCodec(AdDealSide::class.java))
+        }
+    }
+
+    private val session by lazy {
+        CqlSession.builder()
+            .addContactPoints(parseAddresses(host, port))
+            .withLocalDatacenter("datacenter1")
+            .withAuthCredentials(user, pass)
+            .withCodecRegistry(codecRegistry)
+            .build()
+    }
+
+    private val mapper by lazy { CassandraMapper.builder(session).build() }
+
+    private fun createSchema(keyspace: String) {
+        session.execute(
+            SchemaBuilder
+                .createKeyspace(keyspace)
+                .ifNotExists()
+                .withSimpleStrategy(1)
+                .build()
+        )
+        session.execute(AdCassandraDTO.table(keyspace, AdCassandraDTO.TABLE_NAME))
+        session.execute(AdCassandraDTO.titleIndex(keyspace, AdCassandraDTO.TABLE_NAME))
+    }
+
+    private val dao by lazy {
+        if (testing) {
+            createSchema(keyspaceName)
+        }
+        mapper.adDao(keyspaceName, AdCassandraDTO.TABLE_NAME).apply {
+            runBlocking {
+                initObjects.map { model ->
+                    withTimeout(timeout) {
+                        create(AdCassandraDTO(model)).await()
+                    }
+                }
+            }
+        }
+    }
 
     private fun errorToAdResponse(e: Exception) = DbAdResponse.error(e.asMkplError())
     private fun errorToAdsResponse(e: Exception) = DbAdsResponse.error(e.asMkplError())
@@ -31,7 +94,7 @@ class RepoAdCassandra(
     ): Response = doDbAction(
         name,
         {
-            val dbRes = withTimeout(timeoutMillis) { daoAction().await() }
+            val dbRes = withTimeout(timeout) { daoAction().await() }
             okToResponse(dbRes)
         },
         errorToResponse
@@ -110,7 +173,7 @@ class RepoAdCassandra(
             new,
             { dao.update(dto, prevLock) },
             ::errorToAdResponse
-            )
+        )
     }
 
     override suspend fun deleteAd(rq: DbAdIdRequest): DbAdResponse =
@@ -141,3 +204,7 @@ class RepoAdCassandra(
             DbAdResponse.error(MkplError(field = "lock", code = "concurrency", message = "Concurrent modification"))
     }
 }
+
+private fun parseAddresses(hosts: String, port: Int): Collection<InetSocketAddress> = hosts
+    .split(Regex("""\s*,\s*"""))
+    .map { InetSocketAddress(InetAddress.getByName(it), port) }

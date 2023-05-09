@@ -27,4 +27,3 @@ interface AdCassandraDAO {
     @QueryProvider(providerClass = AdCassandraSearchProvider::class, entityHelpers = [AdCassandraDTO::class])
     fun search(filter: DbAdFilterRequest): CompletionStage<Collection<AdCassandraDTO>>
 }
-
