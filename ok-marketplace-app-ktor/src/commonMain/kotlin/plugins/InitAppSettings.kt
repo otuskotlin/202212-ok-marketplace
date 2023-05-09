@@ -9,8 +9,8 @@ import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 fun Application.initAppSettings(): MkplAppSettings {
     val corSettings = MkplCorSettings(
         loggerProvider = getLoggerProviderConf(),
-        repoTest = getDadtabaseConf(AdDbType.TEST),
-        repoProd = getDadtabaseConf(AdDbType.PROD),
+        repoTest = getDatabaseConf(AdDbType.TEST),
+        repoProd = getDatabaseConf(AdDbType.PROD),
         repoStub = AdRepoStub(),
     )
     return MkplAppSettings(

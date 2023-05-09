@@ -152,6 +152,10 @@ kotlin {
                 // Stubs
                 implementation(project(":ok-marketplace-stubs"))
 
+                // Repo
+                implementation(project(":ok-marketplace-repo-cassandra"))
+                implementation(project(":ok-marketplace-repo-postgresql"))
+
                 implementation("com.sndyuk:logback-more-appenders:1.8.8")
                 implementation("org.fluentd:fluent-logger:0.3.4")
             }
