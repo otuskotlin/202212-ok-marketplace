@@ -8,6 +8,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import ru.otus.otuskotlin.marketplace.api.v2.apiV2Mapper
 import ru.otus.otuskotlin.marketplace.api.v2.models.*
+import ru.otus.otuskotlin.marketplace.app.helpers.testSettings
 import ru.otus.otuskotlin.marketplace.app.module
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -130,9 +131,7 @@ class V2WebsocketStubTest {
         request: IRequest,
         crossinline assertBlock: (T) -> Unit
     ) = testApplication {
-        application {
-            module()
-        }
+        application { module(testSettings()) }
         val client = createClient {
             install(WebSockets)
         }

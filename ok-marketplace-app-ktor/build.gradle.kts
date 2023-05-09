@@ -4,6 +4,7 @@ val ktorVersion: String by project
 val logbackVersion: String by project
 val serializationVersion: String by project
 val javaVersion: String by project
+val datetimeVersion: String by project
 
 fun ktorServer(module: String, version: String? = this@Build_gradle.ktorVersion): Any =
     "io.ktor:ktor-server-$module:$version"
@@ -65,6 +66,7 @@ kotlin {
                 implementation(project(":ok-marketplace-biz"))
                 implementation(project(":ok-marketplace-lib-logging-kermit"))
                 implementation(project(":ok-marketplace-mappers-log1"))
+
                 implementation(project(":ok-marketplace-repo-in-memory"))
                 implementation(project(":ok-marketplace-repo-stubs"))
 
@@ -83,6 +85,7 @@ kotlin {
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
             }
         }
         @Suppress("UNUSED_VARIABLE")
