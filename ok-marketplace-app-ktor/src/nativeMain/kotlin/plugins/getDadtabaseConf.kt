@@ -4,6 +4,6 @@ import io.ktor.server.application.*
 import ru.otus.otuskotlin.marketplace.common.repo.IAdRepository
 import ru.otus.otuskotlin.marketplace.repo.inmemory.AdRepoInMemory
 
-actual fun Application.getDadtabaseConf(type: AdDbType): IAdRepository {
+actual fun Application.getDatabaseConf(type: AdDbType): IAdRepository {
     return AdRepoInMemory()
 }

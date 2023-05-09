@@ -17,6 +17,8 @@ import ru.otus.otuskotlin.marketplace.app.v1.v1Offer
 import ru.otus.otuskotlin.marketplace.app.v1.wsHandlerV1
 import ru.otus.otuskotlin.marketplace.logging.jvm.MpLogWrapperLogback
 
+fun main(args: Array<String>) = io.ktor.server.cio.EngineMain.main(args)
+
 private val clazz = Application::moduleJvm::class.qualifiedName ?: "Application"
 @Suppress("unused") // Referenced in application.conf_
 fun Application.moduleJvm(appSettings: MkplAppSettings = initAppSettings()) {
