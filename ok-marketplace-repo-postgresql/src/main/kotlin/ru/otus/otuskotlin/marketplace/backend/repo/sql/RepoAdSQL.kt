@@ -100,16 +100,16 @@ class RepoAdSQL(
             }
         }
 
-    override suspend fun updateAd(rq: DbAdRequest): DbAdResponse =
-        update(rq.ad.id, rq.ad.lock) {
-            AdTable.update({ AdTable.id eq rq.ad.id.asString() }) {
-                to(it, rq.ad, randomUuid)
-            }
-            read(rq.ad.id)
+
+    override suspend fun updateAd(rq: DbAdRequest): DbAdResponse = update(rq.ad.id, rq.ad.lock) {
+        AdTable.update({ AdTable.id eq rq.ad.id.asString() }) {
+            to(it, rq.ad.copy(lock = MkplAdLock(randomUuid())), randomUuid)
         }
+        read(rq.ad.id)
+    }
 
     override suspend fun deleteAd(rq: DbAdIdRequest): DbAdResponse = update(rq.id, rq.lock) {
-        AdTable.deleteWhere { AdTable.id eq rq.id.asString() }
+        AdTable.deleteWhere { id eq rq.id.asString() }
         DbAdResponse.success(it)
     }
 
@@ -134,6 +134,6 @@ class RepoAdSQL(
             }
             DbAdsResponse(data = res.map { AdTable.from(it) }, isSuccess = true)
         }, {
-          DbAdsResponse.error(it.asMkplError())
+            DbAdsResponse.error(it.asMkplError())
         })
 }
