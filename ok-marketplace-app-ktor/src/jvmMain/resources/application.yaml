@@ -1,17 +1,32 @@
 #  application.yaml работает в jvm и native, но не работает в режиме сервлета с Tomcat
 # в этом случае необходимо сформировать application.conf
-
 ktor:
-  development: true
+  application:
+    modules:
+      - ru.otus.otuskotlin.marketplace.app.ApplicationJvmKt.moduleJvm
   deployment:
     port: 8080
+  urls:
+    - http://127.0.0.1:8080/
+    - http://0.0.0.0:8080/
+    - http://192.168.0.182:8080/
   watch:
     - classes
     - resources
-  application:
-    modules:
-      - "ru.otus.otuskotlin.marketplace.app.ApplicationJvmKt.moduleJvm"
-  urls:
-    - "http://127.0.0.1:8080/"
-    - "http://0.0.0.0:8080/"
-    - "http://192.168.0.182:8080/"
+marketplace:
+  repository:
+    test: inmemory
+    prod: inmemory
+    # prod: cassandra
+    # prod: psql
+    cassandra:
+      hosts: localhost
+      keyspace: test_keyspace
+      pass: cassandra
+      port: 9042
+      user: cassandra
+    psql:
+      password: marketplace-pass
+      schema: marketplace
+      url: jdbc:postgresql://localhost:5432/marketplace
+      user: postgres
