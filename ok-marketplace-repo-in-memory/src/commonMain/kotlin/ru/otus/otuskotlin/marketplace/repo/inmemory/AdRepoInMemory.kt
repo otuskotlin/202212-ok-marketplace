@@ -58,43 +58,55 @@ class AdRepoInMemory(
             } ?: resultErrorNotFound
     }
 
-    private suspend fun doUpdate(
-        id: MkplAdId,
-        oldLock: MkplAdLock,
-        okBlock: (key: String, oldAd: AdEntity) -> DbAdResponse
-    ): DbAdResponse {
-        val key = id.takeIf { it != MkplAdId.NONE }?.asString() ?: return resultErrorEmptyId
-        val oldLockStr = oldLock.takeIf { it != MkplAdLock.NONE }?.asString()
-            ?: return resultErrorEmptyLock
-
+    override suspend fun updateAd(rq: DbAdRequest): DbAdResponse {
+        val key = rq.ad.id.takeIf { it != MkplAdId.NONE }?.asString() ?: return resultErrorEmptyId
+        val oldLock = rq.ad.lock.takeIf { it != MkplAdLock.NONE }?.asString() ?: return resultErrorEmptyLock
+        val newAd = rq.ad.copy(lock = MkplAdLock(randomUuid()))
+        val entity = AdEntity(newAd)
         return mutex.withLock {
             val oldAd = cache.get(key)
             when {
                 oldAd == null -> resultErrorNotFound
-                oldAd.lock != oldLockStr -> DbAdResponse.errorConcurrent(
-                    oldLock,
-                    oldAd.toInternal()
+                oldAd.lock != oldLock -> DbAdResponse(
+                    data = oldAd.toInternal(),
+                    isSuccess = false,
+                    errors = listOf(errorRepoConcurrency(MkplAdLock(oldLock), oldAd.lock?.let { MkplAdLock(it) }))
                 )
 
-                else -> okBlock(key, oldAd)
+                else -> {
+                    cache.put(key, entity)
+                    DbAdResponse(
+                        data = newAd,
+                        isSuccess = true,
+                    )
+                }
             }
         }
     }
 
-    override suspend fun updateAd(rq: DbAdRequest): DbAdResponse =
-        doUpdate(rq.ad.id, rq.ad.lock) { key, _ ->
-            val newAd = rq.ad.copy(lock = MkplAdLock(randomUuid()))
-            val entity = AdEntity(newAd)
-            cache.put(key, entity)
-            DbAdResponse.success(newAd)
-        }
+    override suspend fun deleteAd(rq: DbAdIdRequest): DbAdResponse {
+        val key = rq.id.takeIf { it != MkplAdId.NONE }?.asString() ?: return resultErrorEmptyId
+        val oldLock = rq.lock.takeIf { it != MkplAdLock.NONE }?.asString() ?: return resultErrorEmptyLock
+        return mutex.withLock {
+            val oldAd = cache.get(key)
+            when {
+                oldAd == null -> resultErrorNotFound
+                oldAd.lock != oldLock -> DbAdResponse(
+                    data = oldAd.toInternal(),
+                    isSuccess = false,
+                    errors = listOf(errorRepoConcurrency(MkplAdLock(oldLock), oldAd.lock?.let { MkplAdLock(it) }))
+                )
 
-
-    override suspend fun deleteAd(rq: DbAdIdRequest): DbAdResponse =
-        doUpdate(rq.id, rq.lock) { key, oldAd ->
-            cache.invalidate(key)
-            DbAdResponse.success(oldAd.toInternal())
+                else -> {
+                    cache.invalidate(key)
+                    DbAdResponse(
+                        data = oldAd.toInternal(),
+                        isSuccess = true,
+                    )
+                }
+            }
         }
+    }
 
     /**
      * Поиск объявлений по фильтру

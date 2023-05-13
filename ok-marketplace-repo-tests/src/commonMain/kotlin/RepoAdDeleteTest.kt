@@ -14,6 +14,7 @@ abstract class RepoAdDeleteTest {
     abstract val repo: IAdRepository
     protected open val deleteSucc = initObjects[0]
     protected open val deleteConc = initObjects[1]
+    protected open val notFoundId = MkplAdId("ad-repo-delete-notFound")
 
     @Test
     fun deleteSuccess() = runRepoTest {
@@ -51,6 +52,5 @@ abstract class RepoAdDeleteTest {
             createInitTestModel("delete"),
             createInitTestModel("deleteLock"),
         )
-        val notFoundId = MkplAdId("ad-repo-delete-notFound")
     }
 }

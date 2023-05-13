@@ -16,6 +16,6 @@ data class PostgresConfig(
     )
 
     companion object {
-        const val PATH = "marketplace.repository.psql"
+        const val PATH = "${ConfigPaths.repository}.psql"
     }
 }

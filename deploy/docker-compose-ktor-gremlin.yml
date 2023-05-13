@@ -1,0 +1,33 @@
+version: '3'
+services:
+  gremlin:
+    image: "arcadedata/arcadedb:23.4.1"
+    container_name: gremlin
+    ports:
+      - "2480:2480"
+      - "2424:2424"
+      - "8182:8182"
+    volumes:
+      - gremlin_data:/home/arcadedb/databases
+    environment:
+      JAVA_OPTS: "-Darcadedb.server.rootPassword=root_root -Darcadedb.server.plugins=GremlinServer:com.arcadedb.server.gremlin.GremlinServerPlugin"
+
+  app:
+    image: "ok-marketplace-app-ktor:0.0.3"
+    container_name: app-ktor
+    ports:
+      - "8080:8080"
+#    expose:
+#      - "8080"
+    environment:
+      DB_TYPE_PROD: gremlin
+      DB_GREMLIN_HOST: gremlin
+      DB_GREMLIN_PORT: 8182
+      DB_GREMLIN_USER: root
+      DB_GREMLIN_PASS: root_root
+    depends_on:
+      - gremlin
+
+volumes:
+  gremlin_data:
+

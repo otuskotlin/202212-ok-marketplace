@@ -84,5 +84,4 @@ Marketplace -- это площадка, на которой пользовате
 2. [ok-marketplace-repo-in-memory](ok-marketplace-repo-in-memory) - Репозиторий на базе кэша в памяти для тестирования
 3. [ok-marketplace-repo-postgresql](ok-marketplace-repo-postgresql) - Репозиторий на базе PostgreSQL
 4. [ok-marketplace-repo-cassandra](ok-marketplace-repo-cassandra) - Репозиторий на базе Cassandra
-
-[//]: # (5. [ok-marketplace-repo-gremlin]&#40;ok-marketplace-repo-gremlin&#41; - Репозиторий на базе Apache TinkerPop Gremlin и ArcadeDb)
+5. [ok-marketplace-repo-gremlin](ok-marketplace-repo-gremlin) - Репозиторий на базе Apache TinkerPop Gremlin и ArcadeDb
