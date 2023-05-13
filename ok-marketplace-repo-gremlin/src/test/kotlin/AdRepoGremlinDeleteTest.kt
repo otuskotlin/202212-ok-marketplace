@@ -2,6 +2,7 @@ package ru.otus.otuskotlin.marketplace.backend.repository.gremlin
 
 import ru.otus.otuskotlin.marketplace.backend.repo.tests.RepoAdDeleteTest
 import ru.otus.otuskotlin.marketplace.common.models.MkplAd
+import ru.otus.otuskotlin.marketplace.common.models.MkplAdId
 
 class AdRepoGremlinDeleteTest : RepoAdDeleteTest() {
     override val repo: AdRepoGremlin by lazy {
@@ -17,4 +18,5 @@ class AdRepoGremlinDeleteTest : RepoAdDeleteTest() {
     }
     override val deleteSucc: MkplAd by lazy { repo.initializedObjects[0] }
     override val deleteConc: MkplAd by lazy { repo.initializedObjects[1] }
+    override val notFoundId: MkplAdId = MkplAdId("#3100:0")
 }

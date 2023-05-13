@@ -3,6 +3,7 @@ package ru.otus.otuskotlin.marketplace.backend.repo.tests
 import ru.otus.otuskotlin.marketplace.common.models.*
 
 abstract class BaseInitAds(val op: String): IInitObjects<MkplAd> {
+
     open val lockOld: MkplAdLock = MkplAdLock("20000000-0000-0000-0000-000000000001")
     open val lockBad: MkplAdLock = MkplAdLock("20000000-0000-0000-0000-000000000009")
 
