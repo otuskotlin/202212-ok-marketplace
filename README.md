@@ -78,7 +78,7 @@ Marketplace -- это площадка, на которой пользовате
 3. [ok-marketplace-biz](ok-marketplace-biz) - Модуль бизнес-логики приложения
 4. [ok-marketplace-lib-konform](ok-marketplace-lib-konform) - Применение библиотеки валидации Konform
 
-# (## Хранение, репозитории, базы данных)
+## Хранение, репозитории, базы данных
 
 1. [ok-marketplace-repo-tests](ok-marketplace-repo-tests) - Базовые тесты для репозиториев всех баз данных
 2. [ok-marketplace-repo-in-memory](ok-marketplace-repo-in-memory) - Репозиторий на базе кэша в памяти для тестирования
