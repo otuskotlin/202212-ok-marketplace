@@ -7,18 +7,16 @@ ktor:
   deployment:
     port: 8080
   urls:
-    - http://127.0.0.1:8080/
-    - http://0.0.0.0:8080/
-    - http://192.168.0.182:8080/
+    - "http://127.0.0.1:8080/"
+    - "http://0.0.0.0:8080/"
+    - "http://192.168.0.182:8080/"
   watch:
     - classes
     - resources
 marketplace:
   repository:
-    test: inmemory
-    prod: inmemory
-    # prod: cassandra
-    # prod: psql
+    test: "$DB_TYPE_TEST:inmemory"
+    prod: "$DB_TYPE_PROD:gremlin"
     cassandra:
       hosts: localhost
       keyspace: test_keyspace
@@ -28,5 +26,11 @@ marketplace:
     psql:
       password: marketplace-pass
       schema: marketplace
-      url: jdbc:postgresql://localhost:5432/marketplace
+      url: "jdbc:postgresql://localhost:5432/marketplace"
       user: postgres
+    gremlin:
+      host: "$DB_GREMLIN_HOST:localhost"
+      user: "$DB_GREMLIN_HOST:root"
+      password: "$DB_GREMLIN_HOST:root_root"
+      port: "$DB_GREMLIN_PORT:8182"
+      enableSsl: false

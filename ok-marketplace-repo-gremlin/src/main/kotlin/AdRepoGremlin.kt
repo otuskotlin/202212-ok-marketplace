@@ -1,6 +1,8 @@
 package ru.otus.otuskotlin.marketplace.backend.repository.gremlin
 
 import com.benasher44.uuid.uuid4
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.apache.tinkerpop.gremlin.driver.Cluster
 import org.apache.tinkerpop.gremlin.driver.exception.ResponseException
 import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection
@@ -68,10 +70,12 @@ class AdRepoGremlin(
         val key = randomUuid()
         val ad = rq.ad.copy(id = MkplAdId(key), lock = MkplAdLock(randomUuid()))
         val dbRes = try {
-            g.addV(ad.label())
-                .addMkplAd(ad)
-                .listMkplAd()
-                .toList()
+            withContext(Dispatchers.IO) {
+                g.addV(ad.label())
+                    .addMkplAd(ad)
+                    .listMkplAd()
+                    .toList()
+            }
         } catch (e: Throwable) {
             if (e is ResponseException || e.cause is ResponseException) {
                 return resultErrorNotFound(key)
@@ -88,6 +92,7 @@ class AdRepoGremlin(
                 data = dbRes.first().toMkplAd(),
                 isSuccess = true,
             )
+
             else -> errorDuplication(key)
         }
     }
@@ -95,7 +100,9 @@ class AdRepoGremlin(
     override suspend fun readAd(rq: DbAdIdRequest): DbAdResponse {
         val key = rq.id.takeIf { it != MkplAdId.NONE }?.asString() ?: return resultErrorEmptyId
         val dbRes = try {
-            g.V(key).listMkplAd().toList()
+            withContext(Dispatchers.IO) {
+                g.V(key).listMkplAd().toList()
+            }
         } catch (e: Throwable) {
             if (e is ResponseException || e.cause is ResponseException) {
                 return resultErrorNotFound(key)
@@ -112,6 +119,7 @@ class AdRepoGremlin(
                 data = dbRes.first().toMkplAd(),
                 isSuccess = true,
             )
+
             else -> errorDuplication(key)
         }
     }
@@ -122,17 +130,19 @@ class AdRepoGremlin(
         val newLock = MkplAdLock(randomUuid())
         val newAd = rq.ad.copy(lock = newLock)
         val dbRes = try {
-            g
-                .V(key)
-                .`as`("a")
-                .choose(
-                    gr.select<Vertex, Any>("a")
-                        .values<String>(FIELD_LOCK)
-                        .`is`(oldLock.asString()),
-                    gr.select<Vertex, Vertex>("a").addMkplAd(newAd).listMkplAd(),
-                    gr.select<Vertex, Vertex>("a").listMkplAd(result = RESULT_LOCK_FAILURE)
-                )
-                .toList()
+            withContext(Dispatchers.IO) {
+                g
+                    .V(key)
+                    .`as`("a")
+                    .choose(
+                        gr.select<Vertex, Any>("a")
+                            .values<String>(FIELD_LOCK)
+                            .`is`(oldLock.asString()),
+                        gr.select<Vertex, Vertex>("a").addMkplAd(newAd).listMkplAd(),
+                        gr.select<Vertex, Vertex>("a").listMkplAd(result = RESULT_LOCK_FAILURE)
+                    )
+                    .toList()
+            }
         } catch (e: Throwable) {
             if (e is ResponseException || e.cause is ResponseException) {
                 return resultErrorNotFound(key)
@@ -157,6 +167,7 @@ class AdRepoGremlin(
                     ),
                 )
             )
+
             else -> DbAdResponse(
                 data = adResult,
                 isSuccess = true,
@@ -168,21 +179,22 @@ class AdRepoGremlin(
         val key = rq.id.takeIf { it != MkplAdId.NONE }?.asString() ?: return resultErrorEmptyId
         val oldLock = rq.lock.takeIf { it != MkplAdLock.NONE } ?: return resultErrorEmptyLock
         val dbRes = try {
-            g
-                .V(key)
-                .`as`("a")
-                .choose(
-                    gr.select<Vertex, Vertex>("a")
-                        .values<String>(FIELD_LOCK)
-                        .`is`(oldLock.asString()),
-                    gr.select<Vertex, Vertex>("a")
-                        .sideEffect(gr.drop<Vertex>())
-                        .listMkplAd(),
-                    gr.select<Vertex,Vertex>("a")
-                        .listMkplAd(result = RESULT_LOCK_FAILURE)
-                )
-                .toList()
-
+            withContext(Dispatchers.IO) {
+                g
+                    .V(key)
+                    .`as`("a")
+                    .choose(
+                        gr.select<Vertex, Vertex>("a")
+                            .values<String>(FIELD_LOCK)
+                            .`is`(oldLock.asString()),
+                        gr.select<Vertex, Vertex>("a")
+                            .sideEffect(gr.drop<Vertex>())
+                            .listMkplAd(),
+                        gr.select<Vertex, Vertex>("a")
+                            .listMkplAd(result = RESULT_LOCK_FAILURE)
+                    )
+                    .toList()
+            }
         } catch (e: Throwable) {
             if (e is ResponseException || e.cause is ResponseException) {
                 return resultErrorNotFound(key)
@@ -208,6 +220,7 @@ class AdRepoGremlin(
                     ),
                 )
             )
+
             else -> DbAdResponse(
                 data = adResult,
                 isSuccess = true,
@@ -221,12 +234,16 @@ class AdRepoGremlin(
      */
     override suspend fun searchAd(rq: DbAdFilterRequest): DbAdsResponse {
         val result = try {
-            g.V()
-                .apply { rq.ownerId.takeIf { it != MkplUserId.NONE }?.also { has(FIELD_OWNER_ID, it.asString()) } }
-                .apply { rq.dealSide.takeIf { it != MkplDealSide.NONE }?.also { has(FIELD_AD_TYPE, it.name) } }
-                .apply { rq.titleFilter.takeIf { it.isNotBlank() }?.also { has(FIELD_TITLE, TextP.containing(it)) } }
-                .listMkplAd()
-                .toList()
+            withContext(Dispatchers.IO) {
+                g.V()
+                    .apply { rq.ownerId.takeIf { it != MkplUserId.NONE }?.also { has(FIELD_OWNER_ID, it.asString()) } }
+                    .apply { rq.dealSide.takeIf { it != MkplDealSide.NONE }?.also { has(FIELD_AD_TYPE, it.name) } }
+                    .apply {
+                        rq.titleFilter.takeIf { it.isNotBlank() }?.also { has(FIELD_TITLE, TextP.containing(it)) }
+                    }
+                    .listMkplAd()
+                    .toList()
+            }
         } catch (e: Throwable) {
             return DbAdsResponse(
                 isSuccess = false,
@@ -261,6 +278,7 @@ class AdRepoGremlin(
                 )
             )
         )
+
         fun resultErrorNotFound(key: String) = DbAdResponse(
             isSuccess = false,
             data = null,

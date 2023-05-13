@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+  arcadedb:
+    image: "arcadedata/arcadedb:23.4.1"
+    ports:
+      - "2480:2480"
+      - "2424:2424"
+      - "8182:8182"
+#    volumes:
+#      - ./arcadedb:/home/arcadedb/databases
+    environment:
+      JAVA_OPTS: "-Darcadedb.server.rootPassword=root_root -Darcadedb.server.plugins=GremlinServer:com.arcadedb.server.gremlin.GremlinServerPlugin"

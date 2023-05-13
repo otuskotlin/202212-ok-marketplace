@@ -2,6 +2,8 @@ package ru.otus.otuskotlin.marketplace.app.plugins
 
 import io.ktor.server.application.*
 import ru.otus.otuskotlin.marketplace.app.configs.CassandraConfig
+import ru.otus.otuskotlin.marketplace.app.configs.ConfigPaths
+import ru.otus.otuskotlin.marketplace.app.configs.GremlinConfig
 import ru.otus.otuskotlin.marketplace.app.configs.PostgresConfig
 import ru.otus.otuskotlin.marketplace.backend.repo.cassandra.RepoAdCassandra
 import ru.otus.otuskotlin.marketplace.backend.repo.sql.RepoAdSQL
@@ -12,8 +14,8 @@ import ru.otus.otuskotlin.marketplace.repo.inmemory.AdRepoInMemory
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
-actual fun Application.getDadtabaseConf(type: AdDbType): IAdRepository {
-    val dbSettingPath = "db.${type.confName}"
+actual fun Application.getDatabaseConf(type: AdDbType): IAdRepository {
+    val dbSettingPath = "${ConfigPaths.repository}.${type.confName}"
     val dbSetting = environment.config.propertyOrNull(dbSettingPath)?.getString()?.lowercase()
     return when (dbSetting) {
         "in-memory", "inmemory", "memory", "mem" -> initInMemory()
@@ -51,29 +53,13 @@ private fun Application.initCassandra(): IAdRepository {
 }
 
 private fun Application.initGremliln(): IAdRepository {
-    val prefix = "db.gremlin"
-    val hostPath = "$prefix.host"
-    val portPath = "$prefix.port"
-    val userPath = "$prefix.user"
-    val passPath = "$prefix.pass"
-    val sslPath = "$prefix.enableSsl"
-    val errorMessage = "must be set in application.conf/application.yml"
-    val host = environment.config.propertyOrNull(hostPath)?.getString()
-        ?: throw IllegalArgumentException("$hostPath $errorMessage")
-    val port = environment.config.propertyOrNull(portPath)?.getString()?.toIntOrNull()
-        ?: throw IllegalArgumentException("$portPath $errorMessage")
-    val user = environment.config.propertyOrNull(userPath)?.getString()
-        ?: throw IllegalArgumentException("$userPath $errorMessage")
-    val pass = environment.config.propertyOrNull(passPath)?.getString()
-        ?: throw IllegalArgumentException("$passPath $errorMessage")
-    val ssl = environment.config.propertyOrNull(sslPath)?.getString()?.toBoolean()
-        ?: false
+    val config = GremlinConfig(environment.config)
     return AdRepoGremlin(
-        hosts = host,
-        port = port,
-        user = user,
-        pass = pass,
-        enableSsl = ssl,
+        hosts = config.host,
+        port = config.port,
+        user = config.user,
+        pass = config.pass,
+        enableSsl = config.enableSsl,
     )
 }
 

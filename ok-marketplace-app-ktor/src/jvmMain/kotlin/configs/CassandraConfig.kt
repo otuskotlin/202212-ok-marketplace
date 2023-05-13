@@ -18,6 +18,6 @@ data class CassandraConfig(
     )
 
     companion object {
-        const val PATH = "marketplace.repository.cassandra"
+        const val PATH = "${ConfigPaths.repository}.cassandra"
     }
 }

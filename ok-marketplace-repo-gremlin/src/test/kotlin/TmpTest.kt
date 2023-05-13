@@ -30,7 +30,7 @@ class TmpTest {
 
         val authProp = AuthProperties().apply {
             with(AuthProperties.Property.USERNAME, "root")
-            with(AuthProperties.Property.PASSWORD, "playwithdata")
+            with(AuthProperties.Property.PASSWORD, "root_root")
         }
         val cluster = Cluster.build()
             .addContactPoints("localhost")

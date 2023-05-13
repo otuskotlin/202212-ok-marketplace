@@ -26,6 +26,10 @@ application {
     mainClass.set("io.ktor.server.cio.EngineMain")
 }
 
+jib {
+    container { mainClass = application.mainClass.get() }
+}
+
 ktor {
     docker {
         localImageName.set(project.name)
@@ -171,6 +175,10 @@ kotlin {
 }
 
 tasks {
+    shadowJar {
+        isZip64 = true
+    }
+
     @Suppress("UnstableApiUsage")
     withType<ProcessResources>().configureEach {
         println("RESOURCES: ${this.name} ${this::class}")
