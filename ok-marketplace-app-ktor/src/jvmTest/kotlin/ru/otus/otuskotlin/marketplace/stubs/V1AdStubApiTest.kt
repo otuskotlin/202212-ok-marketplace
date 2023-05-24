@@ -10,14 +10,19 @@ import io.ktor.serialization.jackson.*
 import io.ktor.server.testing.*
 import org.junit.Test
 import ru.otus.otuskotlin.marketplace.api.v1.models.*
+import ru.otus.otuskotlin.marketplace.app.base.KtorAuthConfig
 import ru.otus.otuskotlin.marketplace.app.helpers.testSettings
+import ru.otus.otuskotlin.marketplace.app.module
 import ru.otus.otuskotlin.marketplace.app.moduleJvm
+import ru.otus.otuskotlin.marketplace.app.ru.otus.otuskotlin.marketplace.auth.addAuth
 import kotlin.test.assertEquals
 
 class V1AdStubApiTest {
     @Test
     fun create() = testApplication {
-        application { moduleJvm(testSettings()) }
+        application {
+            moduleJvm(appSettings = testSettings(), authConfig = KtorAuthConfig.TEST)
+        }
         val client = myClient()
 
         val response = client.post("/v1/ad/create") {
@@ -34,6 +39,7 @@ class V1AdStubApiTest {
                     stub = AdRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -45,7 +51,9 @@ class V1AdStubApiTest {
 
     @Test
     fun read() = testApplication {
-        application { moduleJvm(testSettings()) }
+        application {
+            moduleJvm(appSettings = testSettings(), authConfig = KtorAuthConfig.TEST)
+        }
         val client = myClient()
 
         val response = client.post("/v1/ad/read") {
@@ -57,6 +65,7 @@ class V1AdStubApiTest {
                     stub = AdRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -67,7 +76,9 @@ class V1AdStubApiTest {
 
     @Test
     fun update() = testApplication {
-        application { moduleJvm(testSettings()) }
+        application {
+            moduleJvm(appSettings = testSettings(), authConfig = KtorAuthConfig.TEST)
+        }
         val client = myClient()
 
         val response = client.post("/v1/ad/update") {
@@ -85,6 +96,7 @@ class V1AdStubApiTest {
                     stub = AdRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -95,7 +107,9 @@ class V1AdStubApiTest {
 
     @Test
     fun delete() = testApplication {
-        application { moduleJvm(testSettings()) }
+        application {
+            moduleJvm(appSettings = testSettings(), authConfig = KtorAuthConfig.TEST)
+        }
         val client = myClient()
 
         val response = client.post("/v1/ad/delete") {
@@ -109,6 +123,7 @@ class V1AdStubApiTest {
                     stub = AdRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -119,7 +134,9 @@ class V1AdStubApiTest {
 
     @Test
     fun search() = testApplication {
-        application { moduleJvm(testSettings()) }
+        application {
+            moduleJvm(appSettings = testSettings(), authConfig = KtorAuthConfig.TEST)
+        }
         val client = myClient()
 
         val response = client.post("/v1/ad/search") {
@@ -131,6 +148,7 @@ class V1AdStubApiTest {
                     stub = AdRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -141,7 +159,7 @@ class V1AdStubApiTest {
 
     @Test
     fun offers() = testApplication {
-        application { moduleJvm(testSettings()) }
+        application { moduleJvm(testSettings(), authConfig = KtorAuthConfig.TEST) }
         val client = myClient()
 
         val response = client.post("/v1/ad/offers") {
@@ -155,6 +173,7 @@ class V1AdStubApiTest {
                     stub = AdRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }

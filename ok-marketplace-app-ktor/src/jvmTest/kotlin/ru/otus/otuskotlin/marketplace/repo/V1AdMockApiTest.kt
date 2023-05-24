@@ -11,7 +11,9 @@ import io.ktor.server.testing.*
 import org.junit.Test
 import ru.otus.otuskotlin.marketplace.api.v1.models.*
 import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
+import ru.otus.otuskotlin.marketplace.app.base.KtorAuthConfig
 import ru.otus.otuskotlin.marketplace.app.moduleJvm
+import ru.otus.otuskotlin.marketplace.app.ru.otus.otuskotlin.marketplace.auth.addAuth
 import ru.otus.otuskotlin.marketplace.backend.repo.tests.AdRepositoryMock
 import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.common.models.MkplAd
@@ -39,7 +41,7 @@ class V1AdMockApiTest {
             }
         )
         application {
-            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
+            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)), authConfig = KtorAuthConfig.TEST)
         }
         val client = myClient()
 
@@ -59,6 +61,7 @@ class V1AdMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<AdCreateResponse>()
@@ -84,7 +87,7 @@ class V1AdMockApiTest {
             }
         )
         application {
-            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
+            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)), authConfig = KtorAuthConfig.TEST)
         }
         val client = myClient()
 
@@ -97,6 +100,7 @@ class V1AdMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<AdReadResponse>()
@@ -125,7 +129,7 @@ class V1AdMockApiTest {
             }
         )
         application {
-            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
+            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)), authConfig = KtorAuthConfig.TEST)
         }
         val client = myClient()
 
@@ -154,6 +158,7 @@ class V1AdMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<AdUpdateResponse>()
@@ -188,7 +193,7 @@ class V1AdMockApiTest {
                     )
                 }
             )
-            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
+            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)), authConfig = KtorAuthConfig.TEST)
         }
 
         val client = myClient()
@@ -207,6 +212,7 @@ class V1AdMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<AdDeleteResponse>()
@@ -232,7 +238,7 @@ class V1AdMockApiTest {
                         )
                     }
                 )
-            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
+            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)), authConfig = KtorAuthConfig.TEST)
         }
         val client = myClient()
 
@@ -245,6 +251,7 @@ class V1AdMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<AdSearchResponse>()
@@ -280,7 +287,7 @@ class V1AdMockApiTest {
                         )
                     }
                 )
-            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)))
+            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)), authConfig = KtorAuthConfig.TEST)
         }
         val client = myClient()
 
@@ -296,6 +303,7 @@ class V1AdMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<AdOffersResponse>()

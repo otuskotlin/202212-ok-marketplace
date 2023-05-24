@@ -26,12 +26,13 @@ import ru.otus.otuskotlin.marketplace.logging.jvm.MpLogWrapperLogback
 fun main(args: Array<String>) = io.ktor.server.cio.EngineMain.main(args)
 
 private val clazz = Application::moduleJvm::class.qualifiedName ?: "Application"
+
 @Suppress("unused") // Referenced in application.conf_
 fun Application.moduleJvm(
     appSettings: MkplAppSettings = initAppSettings(),
     authConfig: KtorAuthConfig = KtorAuthConfig(environment),
 ) {
-    module(appSettings)
+    module(appSettings, authConfig)
 
     install(CallLogging) {
         level = Level.INFO
@@ -75,13 +76,13 @@ fun Application.moduleJvm(
     }
 
     routing {
-        authenticate("auth-jwt") {
-            route("v1") {
+        route("v1") {
+            authenticate("auth-jwt") {
                 v1Ad(appSettings)
                 v1Offer(appSettings)
-                webSocket("/ws") {
-                    wsHandlerV1(appSettings)
-                }
+            }
+            webSocket("/ws") {
+                wsHandlerV1(appSettings)
             }
         }
         swagger(appSettings)
