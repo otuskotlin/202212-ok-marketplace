@@ -18,7 +18,7 @@ class V2AdStubApiTest {
 
     @Test
     fun create() = testApplication {
-        application { module(testSettings(), authConfig = KtorAuthConfig.TEST) }
+        application { module(testSettings()) }
         val response = client.post("/v2/ad/create") {
             val requestObj = AdCreateRequest(
                 requestId = "12345",
@@ -46,7 +46,7 @@ class V2AdStubApiTest {
 
     @Test
     fun read() = testApplication {
-        application { module(testSettings(), authConfig = KtorAuthConfig.TEST) }
+        application { module(testSettings()) }
         val response = client.post("/v2/ad/read") {
             val requestObj = AdReadRequest(
                 requestId = "12345",
@@ -69,7 +69,7 @@ class V2AdStubApiTest {
 
     @Test
     fun update() = testApplication {
-        application { module(testSettings(), authConfig = KtorAuthConfig.TEST) }
+        application { module(testSettings()) }
         val response = client.post("/v2/ad/update") {
             val requestObj = AdUpdateRequest(
                 requestId = "12345",
@@ -98,7 +98,7 @@ class V2AdStubApiTest {
 
     @Test
     fun delete() = testApplication {
-        application { module(testSettings(), authConfig = KtorAuthConfig.TEST) }
+        application { module(testSettings()) }
         val response = client.post("/v2/ad/delete") {
             val requestObj = AdDeleteRequest(
                 requestId = "12345",
@@ -124,7 +124,7 @@ class V2AdStubApiTest {
 
     @Test
     fun search() = testApplication {
-        application { module(testSettings(), authConfig = KtorAuthConfig.TEST) }
+        application { module(testSettings()) }
         val response = client.post("/v2/ad/search") {
             val requestObj = AdSearchRequest(
                 requestId = "12345",
@@ -147,7 +147,7 @@ class V2AdStubApiTest {
 
     @Test
     fun offers() = testApplication {
-        application { module(testSettings(), authConfig = KtorAuthConfig.TEST) }
+        application { module(testSettings()) }
         val response = client.post("/v2/ad/offers") {
             val requestObj = AdOffersRequest(
                 requestId = "12345",

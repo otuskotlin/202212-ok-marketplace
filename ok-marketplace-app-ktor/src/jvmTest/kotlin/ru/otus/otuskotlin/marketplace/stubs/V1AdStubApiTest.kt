@@ -12,7 +12,6 @@ import org.junit.Test
 import ru.otus.otuskotlin.marketplace.api.v1.models.*
 import ru.otus.otuskotlin.marketplace.app.base.KtorAuthConfig
 import ru.otus.otuskotlin.marketplace.app.helpers.testSettings
-import ru.otus.otuskotlin.marketplace.app.module
 import ru.otus.otuskotlin.marketplace.app.moduleJvm
 import ru.otus.otuskotlin.marketplace.app.ru.otus.otuskotlin.marketplace.auth.addAuth
 import kotlin.test.assertEquals
@@ -21,7 +20,7 @@ class V1AdStubApiTest {
     @Test
     fun create() = testApplication {
         application {
-            moduleJvm(appSettings = testSettings(), authConfig = KtorAuthConfig.TEST)
+            moduleJvm(appSettings = testSettings())
         }
         val client = myClient()
 
@@ -52,7 +51,7 @@ class V1AdStubApiTest {
     @Test
     fun read() = testApplication {
         application {
-            moduleJvm(appSettings = testSettings(), authConfig = KtorAuthConfig.TEST)
+            moduleJvm(appSettings = testSettings())
         }
         val client = myClient()
 
@@ -77,7 +76,7 @@ class V1AdStubApiTest {
     @Test
     fun update() = testApplication {
         application {
-            moduleJvm(appSettings = testSettings(), authConfig = KtorAuthConfig.TEST)
+            moduleJvm(appSettings = testSettings())
         }
         val client = myClient()
 
@@ -108,7 +107,7 @@ class V1AdStubApiTest {
     @Test
     fun delete() = testApplication {
         application {
-            moduleJvm(appSettings = testSettings(), authConfig = KtorAuthConfig.TEST)
+            moduleJvm(appSettings = testSettings())
         }
         val client = myClient()
 
@@ -135,7 +134,7 @@ class V1AdStubApiTest {
     @Test
     fun search() = testApplication {
         application {
-            moduleJvm(appSettings = testSettings(), authConfig = KtorAuthConfig.TEST)
+            moduleJvm(appSettings = testSettings())
         }
         val client = myClient()
 
@@ -159,7 +158,7 @@ class V1AdStubApiTest {
 
     @Test
     fun offers() = testApplication {
-        application { moduleJvm(testSettings(), authConfig = KtorAuthConfig.TEST) }
+        application { moduleJvm(testSettings()) }
         val client = myClient()
 
         val response = client.post("/v1/ad/offers") {

@@ -10,12 +10,11 @@ import io.ktor.serialization.jackson.*
 import io.ktor.server.testing.*
 import org.junit.Test
 import ru.otus.otuskotlin.marketplace.api.v1.models.*
-import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
 import ru.otus.otuskotlin.marketplace.app.base.KtorAuthConfig
+import ru.otus.otuskotlin.marketplace.app.helpers.testSettings
 import ru.otus.otuskotlin.marketplace.app.moduleJvm
 import ru.otus.otuskotlin.marketplace.app.ru.otus.otuskotlin.marketplace.auth.addAuth
 import ru.otus.otuskotlin.marketplace.backend.repo.tests.AdRepositoryMock
-import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.common.models.MkplAd
 import ru.otus.otuskotlin.marketplace.common.models.MkplAdLock
 import ru.otus.otuskotlin.marketplace.common.models.MkplDealSide
@@ -41,7 +40,7 @@ class V1AdMockApiTest {
             }
         )
         application {
-            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)), authConfig = KtorAuthConfig.TEST)
+            moduleJvm(testSettings(repo))
         }
         val client = myClient()
 
@@ -87,7 +86,7 @@ class V1AdMockApiTest {
             }
         )
         application {
-            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)), authConfig = KtorAuthConfig.TEST)
+            moduleJvm(testSettings(repo))
         }
         val client = myClient()
 
@@ -129,7 +128,7 @@ class V1AdMockApiTest {
             }
         )
         application {
-            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)), authConfig = KtorAuthConfig.TEST)
+            moduleJvm(testSettings(repo))
         }
         val client = myClient()
 
@@ -193,7 +192,7 @@ class V1AdMockApiTest {
                     )
                 }
             )
-            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)), authConfig = KtorAuthConfig.TEST)
+            moduleJvm(testSettings(repo))
         }
 
         val client = myClient()
@@ -238,7 +237,7 @@ class V1AdMockApiTest {
                         )
                     }
                 )
-            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)), authConfig = KtorAuthConfig.TEST)
+            moduleJvm(testSettings(repo))
         }
         val client = myClient()
 
@@ -287,7 +286,7 @@ class V1AdMockApiTest {
                         )
                     }
                 )
-            moduleJvm(MkplAppSettings(corSettings = MkplCorSettings(repoTest = repo)), authConfig = KtorAuthConfig.TEST)
+            moduleJvm(testSettings(repo))
         }
         val client = myClient()
 

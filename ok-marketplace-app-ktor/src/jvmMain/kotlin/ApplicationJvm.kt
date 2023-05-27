@@ -13,7 +13,6 @@ import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import org.slf4j.event.Level
 import ru.otus.otuskotlin.marketplace.api.v1.apiV1Mapper
-import ru.otus.otuskotlin.marketplace.app.base.KtorAuthConfig
 import ru.otus.otuskotlin.marketplace.app.base.KtorAuthConfig.Companion.GROUPS_CLAIM
 import ru.otus.otuskotlin.marketplace.app.base.resolveAlgorithm
 import ru.otus.otuskotlin.marketplace.app.plugins.initAppSettings
@@ -30,9 +29,8 @@ private val clazz = Application::moduleJvm::class.qualifiedName ?: "Application"
 @Suppress("unused") // Referenced in application.conf_
 fun Application.moduleJvm(
     appSettings: MkplAppSettings = initAppSettings(),
-    authConfig: KtorAuthConfig = KtorAuthConfig(environment),
 ) {
-    module(appSettings, authConfig)
+    module(appSettings)
 
     install(CallLogging) {
         level = Level.INFO
@@ -52,6 +50,7 @@ fun Application.moduleJvm(
 
     install(Authentication) {
         jwt("auth-jwt") {
+            val authConfig = appSettings.auth
             realm = authConfig.realm
 
             verifier {
