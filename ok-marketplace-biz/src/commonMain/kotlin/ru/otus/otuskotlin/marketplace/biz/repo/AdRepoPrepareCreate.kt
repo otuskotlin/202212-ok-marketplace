@@ -11,6 +11,7 @@ fun ICorChainDsl<MkplContext>.repoPrepareCreate(title: String) = worker {
     on { state == MkplState.RUNNING }
     handle {
         adRepoRead = adValidated.deepCopy()
+        adRepoRead.ownerId = principal.id
         adRepoPrepare = adRepoRead
 
     }

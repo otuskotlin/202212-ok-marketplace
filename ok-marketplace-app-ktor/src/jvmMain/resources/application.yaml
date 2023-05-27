@@ -34,3 +34,10 @@ marketplace:
       password: "$DB_GREMLIN_HOST:root_root"
       port: "$DB_GREMLIN_PORT:8182"
       enableSsl: false
+
+jwt:
+  secret: "secret"
+  issuer: "OtusKotlin"
+  audience: "ad-users"
+  realm: "mp-ads"
+  clientId: "otus-marketplace-service"

@@ -8,7 +8,9 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import ru.otus.otuskotlin.marketplace.api.v2.apiV2Mapper
 import ru.otus.otuskotlin.marketplace.api.v2.models.*
+import ru.otus.otuskotlin.marketplace.app.base.KtorAuthConfig
 import ru.otus.otuskotlin.marketplace.app.helpers.testSettings
+import ru.otus.otuskotlin.marketplace.app.ru.otus.otuskotlin.marketplace.auth.addAuth
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -32,6 +34,7 @@ class V2AdStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(config = KtorAuthConfig.TEST)
             val requestJson = apiV2Mapper.encodeToString(requestObj)
             setBody(requestJson)
         }
@@ -54,6 +57,7 @@ class V2AdStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(config = KtorAuthConfig.TEST)
             val requestJson = apiV2Mapper.encodeToString(requestObj)
             setBody(requestJson)
         }
@@ -82,6 +86,7 @@ class V2AdStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(config = KtorAuthConfig.TEST)
             val requestJson = apiV2Mapper.encodeToString(requestObj)
             setBody(requestJson)
         }
@@ -107,6 +112,7 @@ class V2AdStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(config = KtorAuthConfig.TEST)
             val requestJson = apiV2Mapper.encodeToString(requestObj)
             setBody(requestJson)
         }
@@ -129,6 +135,7 @@ class V2AdStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(config = KtorAuthConfig.TEST)
             val requestJson = apiV2Mapper.encodeToString(requestObj)
             setBody(requestJson)
         }
@@ -152,6 +159,7 @@ class V2AdStubApiTest {
                     stub = AdRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             val requestJson = apiV2Mapper.encodeToString(requestObj)
             setBody(requestJson)

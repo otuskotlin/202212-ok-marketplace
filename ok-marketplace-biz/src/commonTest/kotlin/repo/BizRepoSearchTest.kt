@@ -7,6 +7,8 @@ import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.common.models.*
+import ru.otus.otuskotlin.marketplace.common.permissions.MkplPrincipalModel
+import ru.otus.otuskotlin.marketplace.common.permissions.MkplUserGroups
 import ru.otus.otuskotlin.marketplace.common.repo.DbAdsResponse
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -48,6 +50,13 @@ class BizRepoSearchTest {
             adFilterRequest = MkplAdFilter(
                 searchString = "ab",
                 dealSide = MkplDealSide.DEMAND
+            ),
+            principal = MkplPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    MkplUserGroups.USER,
+                    MkplUserGroups.TEST,
+                )
             ),
         )
         processor.exec(ctx)

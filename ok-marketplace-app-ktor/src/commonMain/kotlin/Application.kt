@@ -1,7 +1,6 @@
 package ru.otus.otuskotlin.marketplace.app
 
 import io.ktor.server.application.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import ru.otus.otuskotlin.marketplace.app.plugins.initAppSettings
@@ -23,6 +22,5 @@ fun Application.module(appSettings: MkplAppSettings = initAppSettings()) {
                 wsHandlerV2(appSettings)
             }
         }
-
     }
 }

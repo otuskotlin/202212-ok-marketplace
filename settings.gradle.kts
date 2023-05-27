@@ -53,6 +53,7 @@ include("ok-marketplace-mappers-v1")
 include("ok-marketplace-mappers-v2")
 
 include("ok-marketplace-stubs")
+include("ok-marketplace-auth")
 include("ok-marketplace-biz")
 include("ok-marketplace-lib-cor")
 include("ok-marketplace-lib-konform")

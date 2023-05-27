@@ -1,6 +1,8 @@
 package ru.otus.otuskotlin.marketplace.app.v1
 
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import kotlinx.datetime.Clock
@@ -8,6 +10,7 @@ import ru.otus.otuskotlin.marketplace.api.logs.mapper.toLog
 import ru.otus.otuskotlin.marketplace.api.v1.models.IRequest
 import ru.otus.otuskotlin.marketplace.api.v1.models.IResponse
 import ru.otus.otuskotlin.marketplace.app.MkplAppSettings
+import ru.otus.otuskotlin.marketplace.app.base.toModel
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.helpers.asMkplError
 import ru.otus.otuskotlin.marketplace.common.models.MkplCommand
@@ -28,6 +31,7 @@ suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IRespo
     val processor = appSettings.processor
     try {
         logger.doWithLogging(id = logId) {
+            ctx.principal = principal<JWTPrincipal>().toModel()
             val request = receive<Q>()
             ctx.fromTransport(request)
             logger.info(

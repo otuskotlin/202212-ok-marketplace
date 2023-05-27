@@ -15,6 +15,9 @@ import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.helpers.asMkplError
 import ru.otus.otuskotlin.marketplace.common.models.MkplCommand
 import ru.otus.otuskotlin.marketplace.common.models.MkplState
+import ru.otus.otuskotlin.marketplace.common.models.MkplUserId
+import ru.otus.otuskotlin.marketplace.common.permissions.MkplPrincipalModel
+import ru.otus.otuskotlin.marketplace.common.permissions.MkplUserGroups
 import ru.otus.otuskotlin.marketplace.logging.common.IMpLogWrapper
 import ru.otus.otuskotlin.marketplace.mappers.v2.fromTransport
 import ru.otus.otuskotlin.marketplace.mappers.v2.toTransportAd
@@ -32,6 +35,7 @@ suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IRespo
     val processor = appSettings.processor
     try {
         logger.doWithLogging(id = logId) {
+            ctx.principal = mkplPrincipal(appSettings)
             val request = apiV2Mapper.decodeFromString<Q>(receiveText())
             ctx.fromTransport(request)
             logger.info(
@@ -58,3 +62,13 @@ suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IRespo
         }
     }
 }
+
+// TODO: костыль для решения проблемы отсутствия jwt в native
+@Suppress("UnusedReceiverParameter", "UNUSED_PARAMETER")
+fun ApplicationCall.mkplPrincipal(appSettings: MkplAppSettings): MkplPrincipalModel = MkplPrincipalModel(
+    id = MkplUserId("user-1"),
+    fname = "Ivan",
+    mname = "Ivanovich",
+    lname = "Ivanov",
+    groups = setOf(MkplUserGroups.TEST, MkplUserGroups.USER),
+)

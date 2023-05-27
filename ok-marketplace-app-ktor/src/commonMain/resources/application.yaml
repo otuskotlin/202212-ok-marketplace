@@ -16,3 +16,10 @@ ktor:
 #    - "http://127.0.0.1:8080/v1"
 #    - "http://0.0.0.0:8080/v1"
 #    - "http://192.168.0.182:8080/v1"
+
+jwt:
+  secret: "secret"
+  issuer: "OtusKotlin"
+  audience: "ad-users"
+  realm: "mp-ads"
+  clientId: "otus-marketplace-service"

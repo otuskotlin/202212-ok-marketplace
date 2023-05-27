@@ -7,6 +7,8 @@ import ru.otus.otuskotlin.marketplace.biz.MkplAdProcessor
 import ru.otus.otuskotlin.marketplace.common.MkplContext
 import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.marketplace.common.models.*
+import ru.otus.otuskotlin.marketplace.common.permissions.MkplPrincipalModel
+import ru.otus.otuskotlin.marketplace.common.permissions.MkplUserGroups
 import ru.otus.otuskotlin.marketplace.common.repo.DbAdResponse
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -49,6 +51,13 @@ class BizRepoCreateTest {
                 description = "abc",
                 adType = MkplDealSide.DEMAND,
                 visibility = MkplVisibility.VISIBLE_PUBLIC,
+            ),
+            principal = MkplPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    MkplUserGroups.USER,
+                    MkplUserGroups.TEST,
+                )
             ),
         )
         processor.exec(ctx)
