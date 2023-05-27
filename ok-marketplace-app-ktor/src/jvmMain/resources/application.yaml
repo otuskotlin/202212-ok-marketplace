@@ -35,9 +35,16 @@ marketplace:
       port: "$DB_GREMLIN_PORT:8182"
       enableSsl: false
 
+#jwt:
+#  secret: "secret"
+#  issuer: "OtusKotlin"
+#  audience: "ad-users"
+#  realm: "mp-ads"
+#  clientId: "otus-marketplace-service"
+
 jwt:
-  secret: "secret"
-  issuer: "OtusKotlin"
+  issuer: "http://localhost:8081/auth/realms/otus-marketplace"
   audience: "ad-users"
-  realm: "mp-ads"
+  realm: "otus-marketplace"
   clientId: "otus-marketplace-service"
+  certUrl: "http://localhost:8081/auth/realms/otus-marketplace/protocol/openid-connect/certs"
