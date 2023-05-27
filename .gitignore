@@ -14,3 +14,5 @@ gradle-app.setting
 
 /.idea/
 **/yarn.lock
+
+/deploy/keycloak/hsperfdata_jboss
