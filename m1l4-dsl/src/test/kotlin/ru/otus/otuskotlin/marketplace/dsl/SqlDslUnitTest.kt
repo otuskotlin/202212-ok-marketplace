@@ -6,11 +6,38 @@ import ru.otus.otuskotlin.marketplace.dsl.SqlDsl.query
 import kotlin.test.assertFailsWith
 
 // Реализуйте dsl для составления sql запроса, чтобы все тесты стали зелеными.
-interface SqlCondition {
+interface SqlConditionBuilder {
     fun build(): String
 }
 
-class SqlEqStringCondition(val column: String, val value: String?) : SqlCondition {
+abstract class SqlListConditionExpressionBuilder : SqlConditionBuilder {
+    val sqlConditionBuilders = mutableListOf<SqlConditionBuilder>()
+    infix fun String.eq(value: String?): SqlConditionBuilder {
+        return SqlEqStringConditionBuilder(this, value).also { sqlConditionBuilders.add(it) }
+    }
+
+    infix fun String.eq(value: Number): SqlConditionBuilder {
+        return SqlEqNumberConditionBuilder(this, value).also { sqlConditionBuilders.add(it) }
+    }
+
+    infix fun String.nonEq(value: String?): SqlConditionBuilder {
+        return SqlNonEqStringConditionBuilder(this, value).also { sqlConditionBuilders.add(it) }
+    }
+
+    infix fun String.nonEq(value: Number): SqlConditionBuilder {
+        return SqlNonEqNumberConditionBuilder(this, value).also { sqlConditionBuilders.add(it) }
+    }
+
+    fun or(block: SqlOrConditionExpressionBuilder.() -> Unit): SqlConditionBuilder {
+        return SqlOrConditionExpressionBuilder().apply { block.invoke(this) }.also { sqlConditionBuilders.add(it) }
+    }
+
+    fun and(block: SqlAndConditionExpressionBuilder.() -> Unit): SqlConditionBuilder {
+        return SqlAndConditionExpressionBuilder().apply { block.invoke(this) }.also { sqlConditionBuilders.add(it) }
+    }
+}
+
+class SqlEqStringConditionBuilder(val column: String, val value: String?) : SqlConditionBuilder {
     override fun build(): String {
         return if (value != null) {
             "$column = '$value'"
@@ -20,14 +47,14 @@ class SqlEqStringCondition(val column: String, val value: String?) : SqlConditio
     }
 }
 
-class SqlEqNumberCondition(val column: String, val value: Number) : SqlCondition {
+class SqlEqNumberConditionBuilder(val column: String, val value: Number) : SqlConditionBuilder {
     override fun build(): String {
         return "$column = $value"
     }
 }
 
 
-class SqlNonEqStringCondition(val column: String, val value: String?) : SqlCondition {
+class SqlNonEqStringConditionBuilder(val column: String, val value: String?) : SqlConditionBuilder {
     override fun build(): String {
         return if (value != null) {
             "$column <> '$value'"
@@ -37,7 +64,7 @@ class SqlNonEqStringCondition(val column: String, val value: String?) : SqlCondi
     }
 }
 
-class SqlNonEqNumberCondition(val column: String, val value: Number) : SqlCondition {
+class SqlNonEqNumberConditionBuilder(val column: String, val value: Number) : SqlConditionBuilder {
     override fun build(): String {
         return "$column != $value"
     }
@@ -45,20 +72,21 @@ class SqlNonEqNumberCondition(val column: String, val value: Number) : SqlCondit
 
 class SqlOrConditionExpressionBuilder : SqlListConditionExpressionBuilder() {
     override fun build(): String {
-        return if (sqlConditions.size <= 1) {
-            sqlConditions.firstOrNull()?.build() ?: ""
-        } else sqlConditions.map { it.build() }.joinToString(
+        return if (sqlConditionBuilders.size <= 1) {
+            sqlConditionBuilders.firstOrNull()?.build() ?: ""
+        } else sqlConditionBuilders.map { it.build() }.joinToString(
             separator = " or ",
             prefix = "(",
             postfix = ")"
         )
     }
 }
+
 class SqlAndConditionExpressionBuilder : SqlListConditionExpressionBuilder() {
     override fun build(): String {
-        return if (sqlConditions.size <= 1) {
-            sqlConditions.firstOrNull()?.build() ?: ""
-        } else sqlConditions.map { it.build() }.joinToString(
+        return if (sqlConditionBuilders.size <= 1) {
+            sqlConditionBuilders.firstOrNull()?.build() ?: ""
+        } else sqlConditionBuilders.map { it.build() }.joinToString(
             separator = " and ",
             prefix = "(",
             postfix = ")"
@@ -66,48 +94,18 @@ class SqlAndConditionExpressionBuilder : SqlListConditionExpressionBuilder() {
     }
 }
 
-abstract class SqlListConditionExpressionBuilder : SqlCondition {
-    val sqlConditions = mutableListOf<SqlCondition>()
-    infix fun String.eq(value: String?): SqlCondition {
-        return SqlEqStringCondition(this, value).also { sqlConditions.add(it) }
-    }
-
-    infix fun String.eq(value: Number): SqlCondition {
-        return SqlEqNumberCondition(this, value).also { sqlConditions.add(it) }
-    }
-
-    infix fun String.nonEq(value: String?): SqlCondition {
-        return SqlNonEqStringCondition(this, value).also { sqlConditions.add(it) }
-    }
-
-    infix fun String.nonEq(value: Number): SqlCondition {
-        return SqlNonEqNumberCondition(this, value).also { sqlConditions.add(it) }
-    }
-
-    fun or(block: SqlOrConditionExpressionBuilder.() -> Unit): SqlCondition {
-        return SqlOrConditionExpressionBuilder().apply { block.invoke(this) }.also { sqlConditions.add(it) }
-    }
-
-    fun and(block: SqlAndConditionExpressionBuilder.() -> Unit): SqlCondition {
-        return SqlAndConditionExpressionBuilder().apply { block.invoke(this) }.also { sqlConditions.add(it) }
-    }
-}
-
-class SqlWhereBuilder : SqlListConditionExpressionBuilder() {
-
-
-
+class SqlWhereBuilderBuilder : SqlListConditionExpressionBuilder() {
     //where contains only one condition
     override fun build(): String {
-        require(sqlConditions.size <= 1) { "Count of 'where' conditions must be one or zero, but there are ${sqlConditions.size} conditions" }
-        return sqlConditions.takeIf { it.size == 1 }?.let { " where " + it.first().build() } ?: ""
+        require(sqlConditionBuilders.size <= 1) { "Count of 'where' conditions must be one or zero, but there are ${sqlConditionBuilders.size} conditions" }
+        return sqlConditionBuilders.takeIf { it.size == 1 }?.let { " where " + it.first().build() } ?: ""
     }
 }
 
 class SqlSelectBuilder {
     var table: String? = null
     var col = mutableListOf<String>()
-    val sqlWhereBuilder = SqlWhereBuilder()
+    val sqlWhereBuilder = SqlWhereBuilderBuilder()
     fun from(table: String) {
         this.table = table
     }
@@ -116,7 +114,7 @@ class SqlSelectBuilder {
         this.col.addAll(col)
     }
 
-    fun where(block: SqlWhereBuilder.() -> Unit) {
+    fun where(block: SqlWhereBuilderBuilder.() -> Unit) {
         sqlWhereBuilder.apply(block)
     }
 
@@ -242,6 +240,7 @@ class SqlDslUnitTest {
 
         checkSQL(expected, real)
     }
+
     @Test
     fun `when 'and' conditions are specified then they are respected`() {
         val expected = "select * from table where (col_a = 4 and col_b !is null)"
@@ -258,9 +257,11 @@ class SqlDslUnitTest {
 
         checkSQL(expected, real)
     }
+
     @Test
     fun `when or and and conditions are specified then they are respected`() {
-        val expected = "select * from table where (col_a = 4 and col_b !is null and (col_c = 50 or col_d is null) and (col_e = 'val_e' and col_f <> 'val_f'))"
+        val expected =
+            "select * from table where (col_a = 4 and col_b !is null and (col_c = 50 or col_d is null) and (col_e = 'val_e' and col_f <> 'val_f'))"
 
         val real = query {
             from("table")
