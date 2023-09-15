@@ -54,6 +54,17 @@ class SqlOrConditionExpressionBuilder : SqlListConditionExpressionBuilder() {
         )
     }
 }
+class SqlAndConditionExpressionBuilder : SqlListConditionExpressionBuilder() {
+    override fun build(): String {
+        return if (sqlConditions.size <= 1) {
+            sqlConditions.firstOrNull()?.build() ?: ""
+        } else sqlConditions.map { it.build() }.joinToString(
+            separator = " and ",
+            prefix = "(",
+            postfix = ")"
+        )
+    }
+}
 
 abstract class SqlListConditionExpressionBuilder : SqlCondition {
     val sqlConditions = mutableListOf<SqlCondition>()
@@ -72,13 +83,19 @@ abstract class SqlListConditionExpressionBuilder : SqlCondition {
     infix fun String.nonEq(value: Number): SqlCondition {
         return SqlNonEqNumberCondition(this, value).also { sqlConditions.add(it) }
     }
-}
-
-class SqlWhereBuilder : SqlListConditionExpressionBuilder() {
 
     fun or(block: SqlOrConditionExpressionBuilder.() -> Unit): SqlCondition {
         return SqlOrConditionExpressionBuilder().apply { block.invoke(this) }.also { sqlConditions.add(it) }
     }
+
+    fun and(block: SqlAndConditionExpressionBuilder.() -> Unit): SqlCondition {
+        return SqlAndConditionExpressionBuilder().apply { block.invoke(this) }.also { sqlConditions.add(it) }
+    }
+}
+
+class SqlWhereBuilder : SqlListConditionExpressionBuilder() {
+
+
 
     //where contains only one condition
     override fun build(): String {
@@ -219,6 +236,46 @@ class SqlDslUnitTest {
                 or {
                     "col_a" eq 4
                     "col_b" nonEq null
+                }
+            }
+        }
+
+        checkSQL(expected, real)
+    }
+    @Test
+    fun `when 'and' conditions are specified then they are respected`() {
+        val expected = "select * from table where (col_a = 4 and col_b !is null)"
+
+        val real = query {
+            from("table")
+            where {
+                and {
+                    "col_a" eq 4
+                    "col_b" nonEq null
+                }
+            }
+        }
+
+        checkSQL(expected, real)
+    }
+    @Test
+    fun `when or and and conditions are specified then they are respected`() {
+        val expected = "select * from table where (col_a = 4 and col_b !is null and (col_c = 50 or col_d is null) and (col_e = 'val_e' and col_f <> 'val_f'))"
+
+        val real = query {
+            from("table")
+            where {
+                and {
+                    "col_a" eq 4
+                    "col_b" nonEq null
+                    or {
+                        "col_c" eq 50
+                        "col_d" eq null
+                    }
+                    and {
+                        "col_e" eq "val_e"
+                        "col_f" nonEq "val_f"
+                    }
                 }
             }
         }
